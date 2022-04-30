@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
                     throw Error('Weak password');
                 case 'auth/email-already-in-use':
                     throw Error('Email already in use');
+                default:
             }
         }
     };
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }) => {
                     throw Error('Wrong password');
                 case 'auth/user-not-found':
                     throw Error('User not found');
+                default:
             }
         }
     };
@@ -48,6 +50,7 @@ export const AuthProvider = ({ children }) => {
             switch (error.code) {
                 case 'auth/user-not-found':
                     throw Error('User not found');
+                default:
             }
         }
     };

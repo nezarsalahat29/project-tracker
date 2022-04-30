@@ -3,13 +3,6 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Form, Input, Row, Col, Button, Alert, Typography } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 
-const formItemLayout = {
-    labelCol: {
-        xs: { span: 24 },
-        // sm: { span: 8 },
-    },
-};
-
 const { Title } = Typography;
 
 export default function SignIn() {
