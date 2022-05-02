@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { auth } from '../firebase';
+import { createUserDocument, getUserDocument } from '../firestore';
 
 const AuthContext = createContext();
 
@@ -11,9 +12,12 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
 
-    const signup = async (email, password) => {
+    const signup = async (email, password, otherData) => {
         try {
             await auth.createUserWithEmailAndPassword(email, password);
+            createUserDocument(auth.currentUser, otherData);
+            const userData = await getUserDocument(auth.currentUser.uid);
+            setCurrentUser(userData);
         } catch (error) {
             switch (error.code) {
                 case 'auth/weak-password':
@@ -21,6 +25,7 @@ export const AuthProvider = ({ children }) => {
                 case 'auth/email-already-in-use':
                     throw Error('Email already in use');
                 default:
+                // throw Error('Weird error');
             }
         }
     };
@@ -28,6 +33,8 @@ export const AuthProvider = ({ children }) => {
     const signin = async (email, password) => {
         try {
             await auth.signInWithEmailAndPassword(email, password);
+            const userData = await getUserDocument(auth.currentUser.uid);
+            setCurrentUser(userData);
         } catch (error) {
             switch (error.code) {
                 case 'auth/wrong-password':
@@ -39,8 +46,13 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const logout = () => {
-        auth.signOut();
+    const logout = async () => {
+        try {
+            auth.signOut();
+            setCurrentUser(null);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const resetPassword = async (email) => {
@@ -64,13 +76,48 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            setCurrentUser(user);
-            setLoading(false);
-        });
+        const getUserData = async () => {
+            if (auth.currentUser && auth.currentUser.uid) {
+                const userData = await getUserDocument(auth.currentUser.uid);
+                return userData;
+            }
+        };
 
-        return unsubscribe;
+        try {
+            setCurrentUser(getUserData());
+        } catch (error) {
+            console.log('error');
+        }
+        setLoading(false);
     }, []);
+
+    // useEffect(() => {
+    //     const moreUserData = currentUser
+    //         ? getUserDocument(currentUser.uid)
+    //         : null;
+
+    //     const unsubscribe = auth.onAuthStateChanged((user) => {
+    //         if (user) {
+    //             // User is signed in, see docs for a list of available properties
+    //             // https://firebase.google.com/docs/reference/js/firebase.User
+    //             // const moreUserData = getUserDocument(user.uid);
+    //             user = { uid: user.uid, ...moreUserData };
+    //             console.log('logged in');
+    //             console.log(user);
+    //             setCurrentUser(user);
+    //             // ...
+    //         } else {
+    //             // User is signed out
+    //             // ...
+    //             console.log('logged out');
+    //             console.log(user);
+    //             setCurrentUser(user);
+    //         }
+    //         setLoading(false);
+    //     });
+
+    //     return unsubscribe;
+    // }, []);
 
     const value = {
         currentUser,

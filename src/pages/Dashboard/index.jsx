@@ -40,6 +40,7 @@ const items = [
 export default function Dashboard() {
     const [collapsed, setCollapsed] = useState(false);
     const { logout, currentUser } = useAuth();
+    console.log(currentUser);
 
     return (
         <Layout
