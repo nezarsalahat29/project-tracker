@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+    useRef,
+} from 'react';
 import { auth } from '../firebase';
 import { createUserDocument, getUserDocument } from '../firestore';
 
@@ -12,12 +18,22 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
 
+    const setCurrentUserInStateAndLocalStorage = (fullUserData) => {
+        setCurrentUser(fullUserData);
+        localStorage.setItem('currentUser', JSON.stringify(fullUserData));
+    };
+
     const signup = async (email, password, otherData) => {
         try {
             await auth.createUserWithEmailAndPassword(email, password);
-            createUserDocument(auth.currentUser, otherData);
-            const userData = await getUserDocument(auth.currentUser.uid);
-            setCurrentUser(userData);
+            const user = auth.currentUser;
+            createUserDocument(user, otherData);
+            const userData = await getUserDocument(user.uid);
+
+            setCurrentUserInStateAndLocalStorage({
+                uid: user.uid,
+                ...userData,
+            });
         } catch (error) {
             switch (error.code) {
                 case 'auth/weak-password':
@@ -33,8 +49,10 @@ export const AuthProvider = ({ children }) => {
     const signin = async (email, password) => {
         try {
             await auth.signInWithEmailAndPassword(email, password);
-            const userData = await getUserDocument(auth.currentUser.uid);
-            setCurrentUser(userData);
+            const { uid } = auth.currentUser;
+            const userData = await getUserDocument(uid);
+
+            setCurrentUserInStateAndLocalStorage({ uid, ...userData });
         } catch (error) {
             switch (error.code) {
                 case 'auth/wrong-password':
@@ -46,10 +64,11 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const logout = async () => {
+    const logout = () => {
         try {
             auth.signOut();
             setCurrentUser(null);
+            localStorage.removeItem('currentUser');
         } catch (error) {
             console.log(error);
         }
@@ -76,48 +95,16 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        const getUserData = async () => {
-            if (auth.currentUser && auth.currentUser.uid) {
-                const userData = await getUserDocument(auth.currentUser.uid);
-                return userData;
-            }
-        };
-
-        try {
-            setCurrentUser(getUserData());
-        } catch (error) {
-            console.log('error');
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user) {
+            console.log('signed in');
+            setCurrentUser(user);
+        } else {
+            console.log('signed out');
+            setCurrentUser(null);
         }
         setLoading(false);
     }, []);
-
-    // useEffect(() => {
-    //     const moreUserData = currentUser
-    //         ? getUserDocument(currentUser.uid)
-    //         : null;
-
-    //     const unsubscribe = auth.onAuthStateChanged((user) => {
-    //         if (user) {
-    //             // User is signed in, see docs for a list of available properties
-    //             // https://firebase.google.com/docs/reference/js/firebase.User
-    //             // const moreUserData = getUserDocument(user.uid);
-    //             user = { uid: user.uid, ...moreUserData };
-    //             console.log('logged in');
-    //             console.log(user);
-    //             setCurrentUser(user);
-    //             // ...
-    //         } else {
-    //             // User is signed out
-    //             // ...
-    //             console.log('logged out');
-    //             console.log(user);
-    //             setCurrentUser(user);
-    //         }
-    //         setLoading(false);
-    //     });
-
-    //     return unsubscribe;
-    // }, []);
 
     const value = {
         currentUser,

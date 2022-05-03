@@ -70,10 +70,16 @@ export default function Dashboard() {
                     className='site-layout-background'
                     style={{
                         display: 'flex',
-                        justifyContent: 'end',
+                        justifyContent: 'space-between',
                         alignItems: 'center',
                     }}
                 >
+                    <div>{currentUser.uid}</div>
+                    {currentUser.instructor ? (
+                        <div>I'm instructor</div>
+                    ) : (
+                        <div> I'm student</div>
+                    )}
                     <Button type='primary' onClick={logout}>
                         Sign Out
                     </Button>

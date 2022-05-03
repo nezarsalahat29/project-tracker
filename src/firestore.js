@@ -1,9 +1,9 @@
 import { firestore } from './firebase';
 
-export const createUserDocument = (user, additionalData) => {
+export const createUserDocument = async (user, additionalData) => {
     if (!user) return;
 
-    firestore
+    await firestore
         .collection('users')
         .doc(user.uid)
         .set({

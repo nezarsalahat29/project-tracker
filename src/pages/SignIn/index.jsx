@@ -10,7 +10,8 @@ export default function SignIn() {
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { signin } = useAuth();
+    const { signin, currentUser } = useAuth();
+    console.log('currentUser: ', currentUser);
 
     const onFinish = async (values) => {
         console.log('Received values of form: ', values);

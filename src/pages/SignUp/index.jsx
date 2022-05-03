@@ -22,6 +22,7 @@ export default function SignUp() {
                 name: values.name,
                 username: values.username,
                 role: null,
+                instructor: false,
             });
             navigate('/');
         } catch (error) {
