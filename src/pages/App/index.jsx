@@ -12,7 +12,7 @@ function App() {
         <Router>
             <AuthProvider>
                 <Routes>
-                    <Route exact path='/' element={<ProtectedRoute />}>
+                    <Route element={<ProtectedRoute />}>
                         <Route exact path='/' element={<Dashboard />} />
                     </Route>
                     <Route path='/signup' element={<SignUp />} />

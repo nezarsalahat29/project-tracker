@@ -8,12 +8,15 @@ const { Title } = Typography;
 export default function SignIn() {
     const [form] = Form.useForm();
     const [error, setError] = useState();
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { signin } = useAuth();
+    const { signin, currentUser } = useAuth();
+    console.log('currentUser: ', currentUser);
 
     const onFinish = async (values) => {
         console.log('Received values of form: ', values);
 
+        setLoading(true);
         try {
             setError(null);
             await signin(values.email, values.password);
@@ -21,6 +24,7 @@ export default function SignIn() {
         } catch (error) {
             setError(error.message);
         }
+        setLoading(false);
     };
 
     return (
@@ -74,7 +78,12 @@ export default function SignIn() {
                         </div>
                     </div>
                     <Form.Item>
-                        <Button type='primary' htmlType='submit'>
+                        <Button
+                            loading={loading}
+                            disabled={loading}
+                            type='primary'
+                            htmlType='submit'
+                        >
                             Sign In
                         </Button>
                     </Form.Item>

@@ -8,19 +8,27 @@ const { Title } = Typography;
 export default function SignUp() {
     const [form] = Form.useForm();
     const [error, setError] = useState();
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { signup } = useAuth();
 
     const onFinish = async (values) => {
         console.log('Received values of form: ', values);
 
+        setLoading(true);
         try {
             setError(null);
-            await signup(values.email, values.password);
+            await signup(values.email, values.password, {
+                name: values.name,
+                username: values.username,
+                role: null,
+                instructor: false,
+            });
             navigate('/');
         } catch (error) {
             setError(error.message);
         }
+        setLoading(false);
     };
 
     return (
@@ -99,6 +107,21 @@ export default function SignUp() {
                     </Form.Item>
 
                     <Form.Item
+                        name='name'
+                        label='name'
+                        tooltip='What is your name?'
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your name!',
+                                whitespace: true,
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
                         name='username'
                         label='Username'
                         tooltip='What do you want others to call you?'
@@ -120,7 +143,12 @@ export default function SignUp() {
                     </div>
 
                     <Form.Item>
-                        <Button type='primary' htmlType='submit'>
+                        <Button
+                            loading={loading}
+                            disabled={loading}
+                            type='primary'
+                            htmlType='submit'
+                        >
                             Sign Up
                         </Button>
                     </Form.Item>

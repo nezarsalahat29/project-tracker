@@ -1,5 +1,12 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+    useRef,
+} from 'react';
 import { auth } from '../firebase';
+import { createUserDocument, getUserDocument } from '../firestore';
 
 const AuthContext = createContext();
 
@@ -11,9 +18,22 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
 
-    const signup = async (email, password) => {
+    const setCurrentUserInStateAndLocalStorage = (fullUserData) => {
+        setCurrentUser(fullUserData);
+        localStorage.setItem('currentUser', JSON.stringify(fullUserData));
+    };
+
+    const signup = async (email, password, otherData) => {
         try {
             await auth.createUserWithEmailAndPassword(email, password);
+            const user = auth.currentUser;
+            createUserDocument(user, otherData);
+            const userData = await getUserDocument(user.uid);
+
+            setCurrentUserInStateAndLocalStorage({
+                uid: user.uid,
+                ...userData,
+            });
         } catch (error) {
             switch (error.code) {
                 case 'auth/weak-password':
@@ -21,6 +41,7 @@ export const AuthProvider = ({ children }) => {
                 case 'auth/email-already-in-use':
                     throw Error('Email already in use');
                 default:
+                // throw Error('Weird error');
             }
         }
     };
@@ -28,6 +49,10 @@ export const AuthProvider = ({ children }) => {
     const signin = async (email, password) => {
         try {
             await auth.signInWithEmailAndPassword(email, password);
+            const { uid } = auth.currentUser;
+            const userData = await getUserDocument(uid);
+
+            setCurrentUserInStateAndLocalStorage({ uid, ...userData });
         } catch (error) {
             switch (error.code) {
                 case 'auth/wrong-password':
@@ -40,7 +65,13 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        auth.signOut();
+        try {
+            auth.signOut();
+            setCurrentUser(null);
+            localStorage.removeItem('currentUser');
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const resetPassword = async (email) => {
@@ -64,12 +95,15 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user) {
+            console.log('signed in');
             setCurrentUser(user);
-            setLoading(false);
-        });
-
-        return unsubscribe;
+        } else {
+            console.log('signed out');
+            setCurrentUser(null);
+        }
+        setLoading(false);
     }, []);
 
     const value = {
