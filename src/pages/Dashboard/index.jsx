@@ -12,6 +12,7 @@ import {
 import { Routes, Route, Link } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Class from "../Class/Class.jsx";
+import FaultPage from "../faultPage";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Title } = Typography;
@@ -45,7 +46,7 @@ export default function Navbar() {
   const [collapsed, setCollapsed] = useState(false);
   const { logout, currentUser } = useAuth();
   console.log(currentUser);
-  const items = currentUser.instructor ? instructorItems : studentItems;
+  const items = currentUser.instructor ? instructorItems : instructorItems;
   return (
     <Layout
       style={{
@@ -103,6 +104,7 @@ export default function Navbar() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/Class" element={<Class />} />
+              <Route path="*" element={<FaultPage />} />
             </Routes>
           </div>
         </Content>
@@ -111,7 +113,7 @@ export default function Navbar() {
             textAlign: "center",
           }}
         >
-          Project Tracker ©2022 Created by Ultra8Bits
+          Project Tracker ©2022 Created by <a href="https://github.com/Ultra8Bits" >Ultra8Bits </a>
         </Footer>
       </Layout>
     </Layout>

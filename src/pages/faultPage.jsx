@@ -16,13 +16,6 @@ export default function FaultPage() {
           </Button>
         }
       />
-      <Footer
-        style={{
-          textAlign: "center",
-        }}
-      >
-        Project Tracker ©2022 Created by Ultra8Bits
-      </Footer>
     </div>
   );
 }

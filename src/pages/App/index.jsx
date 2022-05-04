@@ -20,11 +20,12 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="*" element={<FaultPage />} />
+          
           <Route element={<ProtectedRoute />}>
             <Route exact path="/" element={<Navbar />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/Class" element={<Class />} />
+              <Route path="*" element={<FaultPage />} />
             </Route>
           </Route>
           <Route path="/signup" element={<SignUp />} />
