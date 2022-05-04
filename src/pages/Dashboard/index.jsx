@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import './index.css';
-import { Typography, Button, Layout, Menu, Breadcrumb, Image } from 'antd';
+import { Typography, Button, Layout, Menu, Image } from 'antd';
 import {
     DesktopOutlined,
     PieChartOutlined,
@@ -9,6 +9,10 @@ import {
     TeamOutlined,
     UserOutlined,
 } from '@ant-design/icons';
+import { Routes, Route, Link} from "react-router-dom";
+import Dashboard from "./Dashboard";
+import Class from "../Class/Class.jsx";
+
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Title } = Typography;
@@ -22,27 +26,30 @@ function getItem(label, key, icon, children) {
     };
 }
 
-const items = [
-    getItem('Option 1', '1', <PieChartOutlined />),
-    getItem('Option 2', '2', <DesktopOutlined />),
-    getItem('User', 'sub1', <UserOutlined />, [
-        getItem('Tom', '3'),
-        getItem('Bill', '4'),
-        getItem('Alex', '5'),
-    ]),
-    getItem('Team', 'sub2', <TeamOutlined />, [
-        getItem('Team 1', '6'),
-        getItem('Team 2', '8'),
-    ]),
-    getItem('Files', '9', <FileOutlined />),
+const instructorItems = [
+    getItem(<Link to="/" >Dashboard</Link>, '1', <PieChartOutlined />),
+    getItem(<Link to="/Class" >Class</Link>, '2', <DesktopOutlined />),
+    getItem(<Link to="/Groups" >Groups</Link>, '3', <UserOutlined />),
+    getItem(<Link to="/Projects" >Projects</Link>, '4', <TeamOutlined />),
+    getItem(<Link to="/Tasks" >Tasks</Link>, '5', <FileOutlined />),
+    getItem(<Link to="/Chat" >Chat</Link>, '6', <FileOutlined />)
 ];
 
-export default function Dashboard() {
+const studentItems = [
+    getItem(<Link to="/" >Dashboard</Link>, '1', <PieChartOutlined />),
+    getItem(<Link to="/Project" >Project</Link>, '4', <TeamOutlined />),
+    getItem(<Link to="/Tasks" >Tasks</Link>, '5', <FileOutlined />),
+    getItem(<Link to="/Chat" >Chat</Link>, '6', <FileOutlined />)
+];
+
+
+export default function Navbar() {
     const [collapsed, setCollapsed] = useState(false);
     const { logout, currentUser } = useAuth();
     console.log(currentUser);
-
+    const items = (currentUser.instructor)? instructorItems : studentItems;
     return (
+
         <Layout
             style={{
                 minHeight: '100vh',
@@ -74,7 +81,7 @@ export default function Dashboard() {
                         alignItems: 'center',
                     }}
                 >
-                    <div>{currentUser.uid}</div>
+                    <div>{currentUser.username}</div>
                     {currentUser.instructor ? (
                         <div>I'm instructor</div>
                     ) : (
@@ -89,22 +96,19 @@ export default function Dashboard() {
                         margin: '0 16px',
                     }}
                 >
-                    <Breadcrumb
-                        style={{
-                            margin: '16px 0',
-                        }}
-                    >
-                        <Breadcrumb.Item>User</Breadcrumb.Item>
-                        <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                    </Breadcrumb>
                     <div
                         className='site-layout-background'
                         style={{
                             padding: 24,
                             minHeight: 360,
                         }}
-                    >
-                        Bill is a cat.
+                    >  
+
+                       <Routes>
+                            <Route path="/" element={<Dashboard />} />
+                            <Route path="/Class" element={<Class />} />
+                        </Routes>
+
                     </div>
                 </Content>
                 <Footer
@@ -112,9 +116,10 @@ export default function Dashboard() {
                         textAlign: 'center',
                     }}
                 >
-                    Ant Design ©2018 Created by Ant UED
+                    Project Tracker ©2022 Created by Ultra8Bits
                 </Footer>
             </Layout>
         </Layout>
+
     );
 }
