@@ -1,30 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Skeleton } from 'antd';
+import React from 'react';
+import { Card } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import { getGroupsFromDb } from '../firestore';
-import Loader from './Loader';
 
-export default function Group({ groupId, deleteGroup }) {
-    const [group, setGroup] = useState();
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const getGroup = async () => {
-            setGroup(await getGroupsFromDb(groupId));
-            setLoading(false);
-        };
-
-        getGroup();
-    }, []);
-
-    return loading ? (
-        <Loader />
-    ) : (
+export default function Group({ group, deleteGroup }) {
+    return (
         <Card
-            title={`Group ${groupId}`}
+            title={`Group ${group.id}`}
             extra={
                 // eslint-disable-next-line
-                <a onClick={() => deleteGroup(groupId)}>
+                <a onClick={() => deleteGroup(group.id)}>
                     <DeleteOutlined />
                 </a>
             }

@@ -12,37 +12,23 @@ import {
 
 const { Title } = Typography;
 export default function Class() {
-    const [studentIds, setStudentIds] = useState([]);
+    const [students, setStudents] = useState([]);
     const [studentLoading, setStudentLoading] = useState(true);
-    const [groupIds, setGroupIds] = useState([]);
+    const [groups, setGroups] = useState([]);
     const [groupLoading, setGroupLoading] = useState(true);
 
     useEffect(() => {
-        const getData = () => {
-            // await Promise.all([
-            //     (async () => {
-            //         const ids = await getStudentsFromDb();
-            //         setStudentIds(ids);
-            //         setStudentLoading(false);
-            //         console.log('students: ', studentIds);
-            //     })(),
-            //     (async () => {
-            //         setGroupIds(await getGroupsFromDb());
-            //         setGroupLoading(false);
-            //         console.log('groups: ', groupIds);
-            //     })(),
-            // ]);
-
-            return Promise.all([getStudentsFromDb(), getGroupsFromDb()]).then(
-                (result) => {
-                    setStudentIds(result[0]);
+        const getData = async () => {
+            await Promise.all([
+                (async () => {
+                    setStudents(await getStudentsFromDb());
                     setStudentLoading(false);
-                    setGroupIds(result[1]);
+                })(),
+                (async () => {
+                    setGroups(await getGroupsFromDb());
                     setGroupLoading(false);
-                    console.log('students: ', studentIds);
-                    console.log('groups: ', groupIds);
-                }
-            );
+                })(),
+            ]);
         };
 
         getData();
@@ -51,15 +37,15 @@ export default function Class() {
     const createNewGroup = async () => {
         setGroupLoading(true);
         createGroup({});
-        setGroupIds(await getGroupsFromDb());
+        setGroups(await getGroupsFromDb());
         setGroupLoading(false);
     };
 
     const deleteThisGroup = (groupId) => {
         setGroupLoading(true);
         deleteGroup(groupId);
-        const newGroups = groupIds.filter((gId) => gId !== groupId);
-        setGroupIds(newGroups);
+        const newGroups = groups.filter((group) => group.id !== groupId);
+        setGroups(newGroups);
         setGroupLoading(false);
     };
 
@@ -92,8 +78,8 @@ export default function Class() {
                 {studentLoading ? (
                     <Loader />
                 ) : (
-                    studentIds.map((studentId) => (
-                        <Student key={studentId} studentId={studentId} />
+                    students.map((student) => (
+                        <Student key={student.id} student={student} />
                     ))
                 )}
             </Col>
@@ -117,10 +103,10 @@ export default function Class() {
                 {groupLoading ? (
                     <Loader />
                 ) : (
-                    groupIds.map((groupId) => (
+                    groups.map((group) => (
                         <Group
-                            key={groupId}
-                            groupId={groupId}
+                            key={group.id}
+                            group={group}
                             deleteGroup={deleteThisGroup}
                         />
                     ))

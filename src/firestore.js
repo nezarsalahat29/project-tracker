@@ -38,7 +38,7 @@ export const getStudentsFromDb = async () => {
         const students = [];
         querySnapshot.forEach((doc) => {
             if (!doc.data().instructor && !doc.groupId) {
-                students.push(doc.id /*, ...doc.data()*/);
+                students.push({ id: doc.id, ...doc.data() });
             }
         });
         return students;
@@ -77,7 +77,7 @@ export const getGroupsFromDb = async () => {
         const querySnapshot = await firestore.collection('groups').get();
         const groups = [];
         querySnapshot.forEach((doc) => {
-            groups.push(doc.id /*, ...doc.data()*/);
+            groups.push({ id: doc.id, ...doc.data() });
         });
         return groups;
     } catch (error) {
@@ -96,8 +96,6 @@ export const getGroupFromDb = async (groupId) => {
 
 export const updateGroup = async (groupId, group) => {
     const groupRef = firestore.collection('groups').doc(groupId);
-
-    // Set the 'capital' field of the city
     return await groupRef.update(group);
 };
 
