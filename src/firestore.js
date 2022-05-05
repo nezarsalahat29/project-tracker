@@ -38,7 +38,7 @@ export const getStudentsFromDb = async () => {
         const students = [];
         querySnapshot.forEach((doc) => {
             if (!doc.data().instructor && !doc.groupId) {
-                students.push({ id: doc.id, ...doc.data() });
+                students.push(doc.id /*, ...doc.data()*/);
             }
         });
         return students;
@@ -47,11 +47,19 @@ export const getStudentsFromDb = async () => {
     }
 };
 
-export const createGroup = (groupId, students) => {
+export const getStudentFromDb = async (userId) => {
+    try {
+        const doc = await firestore.collection('users').doc(userId).get();
+        return { id: userId, ...doc.data() };
+    } catch (error) {
+        console.log('error fetching user documents', error);
+    }
+};
+
+export const createGroup = (students) => {
     firestore
         .collection('groups')
-        .doc(groupId)
-        .set({
+        .add({
             createdAt: new Date(),
             lastModified: new Date(),
             students,
@@ -69,9 +77,18 @@ export const getGroupsFromDb = async () => {
         const querySnapshot = await firestore.collection('groups').get();
         const groups = [];
         querySnapshot.forEach((doc) => {
-            groups.push({ id: doc.id, ...doc.data() });
+            groups.push(doc.id /*, ...doc.data()*/);
         });
         return groups;
+    } catch (error) {
+        console.log('error fetching group documents', error);
+    }
+};
+
+export const getGroupFromDb = async (groupId) => {
+    try {
+        const doc = await firestore.collection('groups').doc(groupId).get();
+        return { id: groupId, ...doc.data() };
     } catch (error) {
         console.log('error fetching group documents', error);
     }
@@ -82,4 +99,13 @@ export const updateGroup = async (groupId, group) => {
 
     // Set the 'capital' field of the city
     return await groupRef.update(group);
+};
+
+export const deleteGroup = async (groupId) => {
+    try {
+        await firestore.collection('groups').doc(groupId).delete();
+        console.log('Group document successfully deleted!');
+    } catch (error) {
+        console.error('Error removing group document: ', error);
+    }
 };

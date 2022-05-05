@@ -1,22 +1,67 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Spin, Space, Typography, Divider, Button } from 'antd';
+import { Row, Col, Space, Typography, Divider, Button } from 'antd';
 import Student from '../../components/Student';
-import { getStudentsFromDb } from '../../firestore';
+import Group from '../../components/Group';
+import Loader from '../../components/Loader';
+import {
+    getGroupsFromDb,
+    getStudentsFromDb,
+    createGroup,
+    deleteGroup,
+} from '../../firestore';
 
 const { Title } = Typography;
 export default function Class() {
-    const [students, setStudents] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [studentIds, setStudentIds] = useState([]);
+    const [studentLoading, setStudentLoading] = useState(true);
+    const [groupIds, setGroupIds] = useState([]);
+    const [groupLoading, setGroupLoading] = useState(true);
 
     useEffect(() => {
-        const getStudents = async () => {
-            const students = await getStudentsFromDb();
-            setStudents(students);
-            setLoading(false);
+        const getData = () => {
+            // await Promise.all([
+            //     (async () => {
+            //         const ids = await getStudentsFromDb();
+            //         setStudentIds(ids);
+            //         setStudentLoading(false);
+            //         console.log('students: ', studentIds);
+            //     })(),
+            //     (async () => {
+            //         setGroupIds(await getGroupsFromDb());
+            //         setGroupLoading(false);
+            //         console.log('groups: ', groupIds);
+            //     })(),
+            // ]);
+
+            return Promise.all([getStudentsFromDb(), getGroupsFromDb()]).then(
+                (result) => {
+                    setStudentIds(result[0]);
+                    setStudentLoading(false);
+                    setGroupIds(result[1]);
+                    setGroupLoading(false);
+                    console.log('students: ', studentIds);
+                    console.log('groups: ', groupIds);
+                }
+            );
         };
 
-        getStudents();
+        getData();
     }, []);
+
+    const createNewGroup = async () => {
+        setGroupLoading(true);
+        createGroup({});
+        setGroupIds(await getGroupsFromDb());
+        setGroupLoading(false);
+    };
+
+    const deleteThisGroup = (groupId) => {
+        setGroupLoading(true);
+        deleteGroup(groupId);
+        const newGroups = groupIds.filter((gId) => gId !== groupId);
+        setGroupIds(newGroups);
+        setGroupLoading(false);
+    };
 
     return (
         <Row
@@ -44,22 +89,13 @@ export default function Class() {
                     </Title>
                 </Space>
                 <Divider style={{ margin: '12px 0' }} />
-                {loading && (
-                    <Space
-                        size='large'
-                        style={{
-                            height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <Spin size='large' />
-                    </Space>
+                {studentLoading ? (
+                    <Loader />
+                ) : (
+                    studentIds.map((studentId) => (
+                        <Student key={studentId} studentId={studentId} />
+                    ))
                 )}
-                {students.map((student) => (
-                    <Student key={student.id} student={student} />
-                ))}
             </Col>
             <Col span={18} style={{ border: '1px solid rgba(0, 0, 0, 0.05)' }}>
                 <Space
@@ -73,9 +109,22 @@ export default function Class() {
                     <Title level={2} style={{ marginBottom: '0' }}>
                         Groups
                     </Title>
-                    <Button type='primary'>Create Group</Button>
+                    <Button type='primary' onClick={createNewGroup}>
+                        Create Group
+                    </Button>
                 </Space>
                 <Divider style={{ margin: '12px 0' }} />
+                {groupLoading ? (
+                    <Loader />
+                ) : (
+                    groupIds.map((groupId) => (
+                        <Group
+                            key={groupId}
+                            groupId={groupId}
+                            deleteGroup={deleteThisGroup}
+                        />
+                    ))
+                )}
             </Col>
         </Row>
     );

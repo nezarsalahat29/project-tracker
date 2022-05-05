@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography } from 'antd';
+import { getStudentFromDb } from '../firestore';
+import Loader from './Loader';
 
 const { Title } = Typography;
 
-export default function Student({ student }) {
+export default function Student({ studentId }) {
+    const [student, setStudent] = useState();
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const getStudent = async () => {
+            setStudent(await getStudentFromDb(studentId));
+            setLoading(false);
+        };
+
+        getStudent();
+    }, []);
+
     return (
         <Title
             level={5}
@@ -13,7 +27,7 @@ export default function Student({ student }) {
                 border: '1px solid rgba(0, 0, 0, 0.05)',
             }}
         >
-            {student.name}
+            {loading ? <Loader /> : student.name}
         </Title>
     );
 }
