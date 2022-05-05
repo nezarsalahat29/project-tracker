@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import { Bar } from "@ant-design/plots";
+import { Card } from "antd";
 
 export default function StatisticsBar() {
   const data = [
@@ -132,8 +132,10 @@ export default function StatisticsBar() {
   };
   return (
     <div>
-      <h1>Group Statistics</h1> <hr />
-      <Bar {...config} />
+      <Card style={{ backgroundColor: "#F7F7F7" }}>
+        <h1>Group Statistics</h1> <hr />
+        <Bar {...config} />
+      </Card>
     </div>
   );
 }
