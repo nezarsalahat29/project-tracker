@@ -20,16 +20,16 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="*" element={<FaultPage />} />
           <Route element={<ProtectedRoute />}>
-            <Route exact path="/" element={<Navbar />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/Class" element={<Class />} />
+            <Route exact path='/' element={<Navbar />}>
+              <Route path='/' element={<Dashboard />} />
+              <Route path='/Class' element={<Class />} />
+              <Route path='*' element={<FaultPage />} />
             </Route>
           </Route>
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path='/signup' element={<SignUp />} />
+          <Route path='/signin' element={<SignIn />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
         </Routes>
         <Outlet />
       </AuthProvider>
