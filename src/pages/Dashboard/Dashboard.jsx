@@ -1,6 +1,11 @@
 import React from "react";
+import LastModifiedTable from "../../components/LastModifiedTable";
 
 function Dashboard() {
-  return <h1>This is a Dashboard</h1>;
+  return (
+    <div>
+      <LastModifiedTable />
+    </div>
+  );
 }
 export default Dashboard;
