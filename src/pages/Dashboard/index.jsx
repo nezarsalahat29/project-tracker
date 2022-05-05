@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Class from '../Class';
 import { useAuth } from '../../contexts/AuthContext';
 import './index.css';
 import { Typography, Button, Layout, Menu, Breadcrumb, Image } from 'antd';
@@ -86,34 +87,27 @@ export default function Dashboard() {
                 </Header>
                 <Content
                     style={{
-                        margin: '0 16px',
+                        margin: '16px',
                     }}
                 >
-                    <Breadcrumb
-                        style={{
-                            margin: '16px 0',
-                        }}
-                    >
-                        <Breadcrumb.Item>User</Breadcrumb.Item>
-                        <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                    </Breadcrumb>
                     <div
                         className='site-layout-background'
                         style={{
                             padding: 24,
-                            minHeight: 360,
+                            height: '100%',
+                            // minHeight: 360,
                         }}
                     >
-                        Bill is a cat.
+                        <Class />
                     </div>
                 </Content>
-                <Footer
+                {/* <Footer
                     style={{
                         textAlign: 'center',
                     }}
                 >
                     Ant Design ©2018 Created by Ant UED
-                </Footer>
+                </Footer> */}
             </Layout>
         </Layout>
     );
