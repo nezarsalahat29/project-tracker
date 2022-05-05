@@ -10,6 +10,11 @@ import {
     deleteGroup,
 } from '../../firestore';
 
+// Dnd
+import { DndContext } from '@dnd-kit/core';
+import Droppable from '../../components/Droppable';
+import Draggable from '../../components/Draggable';
+
 const { Title } = Typography;
 export default function Class() {
     const [students, setStudents] = useState([]);
@@ -49,69 +54,92 @@ export default function Class() {
         setGroupLoading(false);
     };
 
+    const handleDragEnd = (event) => {
+        if (event.over && /^droppableStudent$/.test(event.over.id)) {
+            console.log('drop');
+        } else if (event.over && /^droppable/.test(event.over.id)) {
+            console.log(event.over.id.substring(9));
+        }
+    };
+
     return (
         <Row
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             style={{ height: '100%' }}
         >
-            <Col span={6} style={{ border: '1px solid rgba(0, 0, 0, 0.05)' }}>
-                <Space
-                    align='baseline'
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
+            <DndContext onDragEnd={handleDragEnd}>
+                <Col
+                    span={6}
+                    style={{ border: '1px solid rgba(0, 0, 0, 0.05)' }}
                 >
-                    <Title
-                        level={2}
+                    <Space
+                        align='baseline'
                         style={{
-                            width: '100%',
-                            textAlign: 'center',
-                            marginBottom: '0',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                         }}
                     >
-                        Students
-                    </Title>
-                </Space>
-                <Divider style={{ margin: '12px 0' }} />
-                {studentLoading ? (
-                    <Loader />
-                ) : (
-                    students.map((student) => (
-                        <Student key={student.id} student={student} />
-                    ))
-                )}
-            </Col>
-            <Col span={18} style={{ border: '1px solid rgba(0, 0, 0, 0.05)' }}>
-                <Space
-                    align='baseline'
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        // alignItems: 'center',
-                    }}
+                        <Title
+                            level={2}
+                            style={{
+                                width: '100%',
+                                textAlign: 'center',
+                                marginBottom: '0',
+                            }}
+                        >
+                            Students
+                        </Title>
+                    </Space>
+                    <Divider style={{ margin: '12px 0' }} />
+                    <Droppable id={`droppableStudent`}>
+                        {studentLoading ? (
+                            <Loader />
+                        ) : (
+                            students.map((student) => (
+                                <Draggable
+                                    id={`draggable${student.id}`}
+                                    key={student.id}
+                                >
+                                    <Student student={student} />
+                                </Draggable>
+                            ))
+                        )}
+                    </Droppable>
+                </Col>
+                <Col
+                    span={18}
+                    style={{ border: '1px solid rgba(0, 0, 0, 0.05)' }}
                 >
-                    <Title level={2} style={{ marginBottom: '0' }}>
-                        Groups
-                    </Title>
-                    <Button type='primary' onClick={createNewGroup}>
-                        Create Group
-                    </Button>
-                </Space>
-                <Divider style={{ margin: '12px 0' }} />
-                {groupLoading ? (
-                    <Loader />
-                ) : (
-                    groups.map((group) => (
-                        <Group
-                            key={group.id}
-                            group={group}
-                            deleteGroup={deleteThisGroup}
-                        />
-                    ))
-                )}
-            </Col>
+                    <Space
+                        align='baseline'
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            // alignItems: 'center',
+                        }}
+                    >
+                        <Title level={2} style={{ marginBottom: '0' }}>
+                            Groups
+                        </Title>
+                        <Button type='primary' onClick={createNewGroup}>
+                            Create Group
+                        </Button>
+                    </Space>
+                    <Divider style={{ margin: '12px 0' }} />
+                    {groupLoading ? (
+                        <Loader />
+                    ) : (
+                        groups.map((group) => (
+                            <Group
+                                key={group.id}
+                                group={group}
+                                deleteGroup={deleteThisGroup}
+                            />
+                        ))
+                    )}
+                </Col>
+            </DndContext>
         </Row>
     );
 }

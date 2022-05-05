@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
+import Droppable from './Droppable';
 
 export default function Group({ group, deleteGroup }) {
     return (
@@ -13,6 +14,8 @@ export default function Group({ group, deleteGroup }) {
                 </a>
             }
             style={{ width: '100%', marginBottom: '0.5rem' }}
-        ></Card>
+        >
+            <Droppable id={`droppable${group.id}`}>Hehe lol</Droppable>
+        </Card>
     );
 }
