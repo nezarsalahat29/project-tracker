@@ -1,10 +1,11 @@
-import React from 'react';
+import React from "react";
+import StatisticsBar from "../../components/Statistics";
 
-function Dashboard(){
-
-
-    return (
-        <h1>This is a Dashboard</h1>
-        )
+function Dashboard() {
+  return (
+    <div>
+      <StatisticsBar></StatisticsBar>
+    </div>
+  );
 }
 export default Dashboard;
