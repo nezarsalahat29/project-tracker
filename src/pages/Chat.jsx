@@ -68,9 +68,7 @@ export default function Chat() {
             />
             <ConversationHeader.Actions></ConversationHeader.Actions>
           </ConversationHeader>
-          <MessageList
-            typingIndicator={<TypingIndicator content='Zoe is typing' />}
-          >
+          <MessageList typingIndicator={<TypingIndicator />}>
             <MessageSeparator content='Saturday, 30 November 2019' />
             <Message
               model={{
@@ -94,7 +92,6 @@ export default function Chat() {
                 direction: "outgoing",
                 position: "single",
               }}
-              avatarSpacer
             />
             <Message
               model={{
@@ -203,6 +200,7 @@ export default function Chat() {
             </Message>
           </MessageList>
           <MessageInput
+            attachButton={false}
             placeholder='Type message here'
             value={messageInputValue}
             onChange={(val) => setMessageInputValue(val)}
