@@ -18,7 +18,8 @@ const Data = [
 ];
 export default function Inbox() {
   return (
-    <Card>
+    <Card style={{ backgroundColor: "#F7F7F7" }}>
+      <h1>Inbox</h1> <hr />
       <ConversationList>
         {Data.map((convers) => {
           return (

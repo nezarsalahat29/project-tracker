@@ -18,6 +18,7 @@ const columns = [
     dataIndex: "LastModified",
     sorter: (a, b) => a.LastModified < b.LastModified,
     sortDirections: ["ascend"],
+    defaultSortOrder: ["ascend"],
   },
 ];
 
