@@ -14,6 +14,7 @@ import ProtectedRoute from "../../components/ProtectedRoute";
 import Dashboard from "../Dashboard/Dashboard";
 import Class from "../Class/Class";
 import FaultPage from "../faultPage";
+import Chat from "../Chat";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route exact path='/' element={<Navbar />}>
               <Route path='/' element={<Dashboard />} />
               <Route path='/Class' element={<Class />} />
+              <Route path='/Chat' element={<Chat />} />
               <Route path='*' element={<FaultPage />} />
             </Route>
           </Route>
