@@ -45,7 +45,7 @@ export default function Navbar() {
   const [collapsed, setCollapsed] = useState(false);
   const { logout, currentUser } = useAuth();
   console.log(currentUser);
-  const items = currentUser.instructor ? instructorItems : studentItems;
+  const items = currentUser.instructor ? instructorItems : instructorItems;
   return (
     <Layout
       style={{
