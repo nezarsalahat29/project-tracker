@@ -1,7 +1,7 @@
 import React from 'react';
-import Timeline from '../../components/Timeline';
+import TimelineComponent from '../../components/Timeline';
 
 function Dashboard() {
-	return <Timeline />;
+	return <TimelineComponent />;
 }
 export default Dashboard;
