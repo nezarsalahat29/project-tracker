@@ -1,4 +1,5 @@
 import { Table } from "antd";
+import { Card } from "antd";
 
 function randomDate(start, end) {
   return new Date(
@@ -12,10 +13,12 @@ const columns = [
     dataIndex: "groupName",
   },
   {
+    rowKey: "Key",
     title: "Last Modified",
     dataIndex: "LastModified",
-    sorter: (a, b) => a.LastModified >= b.LastModified,
-    sortDirections: ["descend"],
+    sorter: (a, b) => a.LastModified < b.LastModified,
+    sortDirections: ["ascend"],
+    defaultSortOrder: ["ascend"],
   },
 ];
 
@@ -37,14 +40,18 @@ function onChange(pagination, filters, sorter, extra) {
 
 export default function LastModifiedTable() {
   return (
-    <Table
-      columns={columns}
-      dataSource={data}
-      bordered
-      title={() => <h1>Last Modified Projects</h1>}
-      pagination={{ pageSize: 100, showSizeChanger: false }}
-      scroll={{ y: 270 }}
-      onChange={onChange}
-    />
+    <div>
+      <Card style={{ backgroundColor: "#F7F7F7" }}>
+        <h1>Last Modified</h1> <hr />
+        <Table
+          columns={columns}
+          dataSource={data}
+          bordered
+          pagination={{ pageSize: 100, showSizeChanger: false }}
+          scroll={{ y: 270 }}
+          onChange={onChange}
+        />
+      </Card>
+    </div>
   );
 }
