@@ -7,21 +7,21 @@ const data = [
     name: "John Brown",
     age: 32,
     address: "New York No. 1 Lake Park",
-    status: ["Assigned"],
+    status: "Assigned",
   },
   {
     key: "2",
     name: "Jim Green",
     age: 42,
     address: "London No. 1 Lake Park",
-    status: ["Working on"],
+    status: "Working on",
   },
   {
     key: "3",
     name: "Joe Black",
     age: 32,
     address: "Sidney No. 1 Lake Park",
-    status: ["Finished"],
+    status: "Finished",
   },
 ];
 
@@ -55,17 +55,17 @@ export default function Tasks() {
       render: function (status) {
         console.log(status);
         let color;
-        if (status[0] === "Assigned") {
+        if (status === "Assigned") {
           color = "volcano";
-        } else if (status[0] === "Finished") {
+        } else if (status === "Finished") {
           color = "green";
         } else {
           color = "geekblue";
         }
 
         return (
-          <Tag color={color} key={status[0]}>
-            {status[0]}
+          <Tag color={color} key={status}>
+            {status}
           </Tag>
         );
       },
@@ -102,8 +102,8 @@ export default function Tasks() {
     console.log(state);
     var i = dataSource.findIndex((item) => item.key === key);
     console.log(dataSource[i]);
-    dataSource[i].status[0] = state;
-    setDataSource(dataSource);
+    dataSource[i].status = state;
+    setDataSource([...dataSource]);
   }
 
   return (
