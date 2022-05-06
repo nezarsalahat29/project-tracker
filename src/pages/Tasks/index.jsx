@@ -1,27 +1,25 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Table, Tag, Popconfirm } from "antd";
 import React, { useState } from "react";
+import "./style.css";
 
+const states = ["Assigned", "Working on", "Finished"];
 const data = [
   {
     key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    status: "Assigned",
+    taskName: "Create A Dashboard Component",
+
+    status: "Finished",
   },
   {
     key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
+    taskName: "Create A Chat Component",
     status: "Working on",
   },
   {
     key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    status: "Finished",
+    taskName: "Create A Tasks Component",
+    status: "Assigned",
   },
 ];
 
@@ -30,19 +28,9 @@ export default function Tasks() {
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Task Name",
+      dataIndex: "taskName",
+      key: "taskName",
     },
     {
       title: "Status",
@@ -75,30 +63,25 @@ export default function Tasks() {
       key: "action",
       render: (text, record) => (
         <div>
-          <Popconfirm
-            title='Set to Assign?'
-            onConfirm={() => handleAssign(record.key, "Assigned")}
-          >
-            <a>Assign </a>
-          </Popconfirm>
-          <Popconfirm
-            title='Set to Working on?'
-            onConfirm={() => handleAssign(record.key, "Working on")}
-          >
-            <a>Work on </a>
-          </Popconfirm>
-          <Popconfirm
-            title='Set to Finished?'
-            onConfirm={() => handleAssign(record.key, "Finished")}
-          >
-            <a>Finished </a>
-          </Popconfirm>
+          {states.map(function (state) {
+            return (
+              <Popconfirm
+                className='link'
+                title={"Set to " + state + "?"}
+                onConfirm={() => handle(record.key, state)}
+              >
+                <a class='link' href=''>
+                  {state}
+                </a>
+              </Popconfirm>
+            );
+          })}
         </div>
       ),
     },
   ];
 
-  function handleAssign(key, state) {
+  function handle(key, state) {
     console.log(state);
     var i = dataSource.findIndex((item) => item.key === key);
     console.log(dataSource[i]);
