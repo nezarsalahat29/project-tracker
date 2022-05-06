@@ -15,6 +15,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import Class from "../Class/Class";
 import FaultPage from "../faultPage";
 import Chat from "../Chat";
+import Tasks from "../Tasks";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path='/' element={<Dashboard />} />
               <Route path='/Class' element={<Class />} />
               <Route path='/Chat' element={<Chat />} />
+              <Route path='/Tasks' element={<Tasks />} />
               <Route path='*' element={<FaultPage />} />
             </Route>
           </Route>

@@ -14,6 +14,7 @@ import Dashboard from "./Dashboard";
 import Class from "../Class/Class.jsx";
 import FaultPage from "../faultPage";
 import Chat from "../Chat";
+import Tasks from "../Tasks";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -105,6 +106,7 @@ export default function Navbar() {
               <Route path='/' element={<Dashboard />} />
               <Route path='/Class' element={<Class />} />
               <Route path='/Chat' element={<Chat />} />
+              <Route path='/Tasks' element={<Tasks />} />
               <Route path='*' element={<FaultPage />} />
             </Routes>
           </div>
