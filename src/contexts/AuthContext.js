@@ -3,7 +3,7 @@ import React, {
     useContext,
     useEffect,
     useState,
-    useRef,
+
 } from 'react';
 import { auth } from '../firebase';
 import { createUserDocument, getUserDocument } from '../firestore';
