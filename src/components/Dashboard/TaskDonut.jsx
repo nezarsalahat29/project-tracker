@@ -57,7 +57,7 @@ export default function TaskDonut() {
 
 	return (
 		<Card style={{ backgroundColor: '#F7F7F7' }}>
-			<h1>Donut Tasks</h1>
+			<h1>Tasks summary</h1>
 			<hr />
 			<Pie {...config} />
 		</Card>
