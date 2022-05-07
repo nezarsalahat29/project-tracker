@@ -9,6 +9,7 @@ export const createUserDocument = (user, additionalData) => {
         .set({
             email: user.email,
             ...additionalData,
+            groupId: null,
             createdAt: new Date(),
             lastModified: new Date(),
         })
@@ -21,8 +22,6 @@ export const createUserDocument = (user, additionalData) => {
 };
 
 export const getUserDocument = async (userId) => {
-    console.log(userId);
-
     try {
         const user = await firestore.collection('users').doc(userId).get();
         if (user.exists) return user.data();
@@ -32,12 +31,18 @@ export const getUserDocument = async (userId) => {
     }
 };
 
+export const updateUser = async (userId, user) => {
+    const groupRef = firestore.collection('users').doc(userId);
+    await groupRef.update(user);
+    console.log('User updated successfully');
+};
+
 export const getStudentsFromDb = async () => {
     try {
         const querySnapshot = await firestore.collection('users').get();
         const students = [];
         querySnapshot.forEach((doc) => {
-            if (!doc.data().instructor && !doc.groupId) {
+            if (!doc.data().instructor) {
                 students.push({ id: doc.id, ...doc.data() });
             }
         });
@@ -56,13 +61,13 @@ export const getStudentFromDb = async (userId) => {
     }
 };
 
-export const createGroup = (students) => {
+export const createGroup = () => {
     firestore
         .collection('groups')
         .add({
             createdAt: new Date(),
             lastModified: new Date(),
-            students,
+            studentIds: [],
         })
         .then(() => {
             console.log('Group document successfully written!');
@@ -96,7 +101,8 @@ export const getGroupFromDb = async (groupId) => {
 
 export const updateGroup = async (groupId, group) => {
     const groupRef = firestore.collection('groups').doc(groupId);
-    return await groupRef.update(group);
+    await groupRef.update(group);
+    console.log('Group updated successfully');
 };
 
 export const deleteGroup = async (groupId) => {

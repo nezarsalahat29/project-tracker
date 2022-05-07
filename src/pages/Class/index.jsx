@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Space, Typography, Divider, Button } from 'antd';
 import Student from '../../components/Student';
+import StudentPresentational from '../../components/StudentPresentational';
 import Group from '../../components/Group';
 import Loader from '../../components/Loader';
 import {
@@ -8,10 +9,14 @@ import {
     getStudentsFromDb,
     createGroup,
     deleteGroup,
+    getUserDocument,
+    getGroupFromDb,
+    updateUser,
+    updateGroup,
 } from '../../firestore';
 
 // Dnd
-import { DndContext } from '@dnd-kit/core';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
 import Droppable from '../../components/Droppable';
 import Draggable from '../../components/Draggable';
 
@@ -21,21 +26,25 @@ export default function Class() {
     const [studentLoading, setStudentLoading] = useState(true);
     const [groups, setGroups] = useState([]);
     const [groupLoading, setGroupLoading] = useState(true);
+    const [isDragging, setIsDragging] = useState(false);
+    const [draggingStudent, setDraggingStudent] = useState();
+
+    const getData = async () => {
+        await Promise.all([
+            (async () => {
+                let students = await getStudentsFromDb();
+                students = students.filter((student) => !student.groupId);
+                setStudents(students);
+                setStudentLoading(false);
+            })(),
+            (async () => {
+                setGroups(await getGroupsFromDb());
+                setGroupLoading(false);
+            })(),
+        ]);
+    };
 
     useEffect(() => {
-        const getData = async () => {
-            await Promise.all([
-                (async () => {
-                    setStudents(await getStudentsFromDb());
-                    setStudentLoading(false);
-                })(),
-                (async () => {
-                    setGroups(await getGroupsFromDb());
-                    setGroupLoading(false);
-                })(),
-            ]);
-        };
-
         getData();
     }, []);
 
@@ -46,19 +55,85 @@ export default function Class() {
         setGroupLoading(false);
     };
 
-    const deleteThisGroup = (groupId) => {
+    const deleteThisGroup = (group) => {
         setGroupLoading(true);
-        deleteGroup(groupId);
-        const newGroups = groups.filter((group) => group.id !== groupId);
-        setGroups(newGroups);
-        setGroupLoading(false);
+        group.studentIds.forEach(async (studentId) => {
+            await updateUser(studentId, { groupId: null });
+        });
+        deleteGroup(group.id);
+        getData();
     };
 
-    const handleDragEnd = (event) => {
+    const handleDragStart = async (event) => {
+        console.log('starting drag');
+        const studentId = event.active.id.substring(9);
+        const student = await getUserDocument(studentId);
+        console.log('draggingStudent: ', student);
+        setDraggingStudent(student);
+        setIsDragging(true);
+    };
+
+    const handleDragEnd = async (event) => {
+        setIsDragging(false);
+
         if (event.over && /^droppableStudent$/.test(event.over.id)) {
-            console.log('drop');
+            const studentId = event.active.id.substring(9);
+            console.log('student:', studentId);
+            const student = await getUserDocument(studentId);
+            if (student.groupId) {
+                setStudentLoading(true);
+                setGroupLoading(true);
+                const studentGroup = await getGroupFromDb(student.groupId);
+                updateUser(studentId, {
+                    ...student,
+                    groupId: null,
+                    lastModified: new Date(),
+                });
+                updateGroup(studentGroup.id, {
+                    ...studentGroup,
+                    studentIds: studentGroup.studentIds.filter(
+                        (id) => id !== studentId
+                    ),
+                });
+                getData();
+            }
         } else if (event.over && /^droppable/.test(event.over.id)) {
-            console.log(event.over.id.substring(9));
+            setStudentLoading(true);
+            setGroupLoading(true);
+
+            const groupId = event.over.id.substring(9);
+            const studentId = event.active.id.substring(9);
+            console.log('group: ', groupId);
+            console.log('student: ', studentId);
+
+            const student = await getUserDocument(studentId);
+            console.log(student);
+            if (student.groupId !== groupId) {
+                if (student.groupId) {
+                    const oldStudentGroup = await getGroupFromDb(
+                        student.groupId
+                    );
+                    updateGroup(student.groupId, {
+                        studentIds: oldStudentGroup.studentIds.filter(
+                            (sId) => sId !== studentId
+                        ),
+                        lastModified: new Date(),
+                    });
+                }
+
+                updateUser(studentId, {
+                    groupId: groupId,
+                    lastModified: new Date(),
+                });
+
+                const newStudentGroup = await getGroupFromDb(groupId);
+                updateGroup(groupId, {
+                    studentIds: [...newStudentGroup.studentIds, studentId],
+                    lastModified: new Date(),
+                });
+            }
+
+            getData();
         }
     };
 
@@ -67,7 +142,7 @@ export default function Class() {
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             style={{ height: '100%' }}
         >
-            <DndContext onDragEnd={handleDragEnd}>
+            <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
                 <Col
                     span={6}
                     style={{ border: '1px solid rgba(0, 0, 0, 0.05)' }}
@@ -92,6 +167,11 @@ export default function Class() {
                         </Title>
                     </Space>
                     <Divider style={{ margin: '12px 0' }} />
+                    <DragOverlay>
+                        {isDragging ? (
+                            <StudentPresentational student={draggingStudent} />
+                        ) : null}
+                    </DragOverlay>
                     <Droppable id={`droppableStudent`}>
                         {studentLoading ? (
                             <Loader />
@@ -101,7 +181,7 @@ export default function Class() {
                                     id={`draggable${student.id}`}
                                     key={student.id}
                                 >
-                                    <Student student={student} />
+                                    <Student studentId={student.id} />
                                 </Draggable>
                             ))
                         )}
@@ -127,6 +207,7 @@ export default function Class() {
                         </Button>
                     </Space>
                     <Divider style={{ margin: '12px 0' }} />
+
                     {groupLoading ? (
                         <Loader />
                     ) : (

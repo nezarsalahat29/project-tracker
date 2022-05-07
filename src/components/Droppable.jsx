@@ -3,11 +3,10 @@ import { useDroppable } from '@dnd-kit/core';
 
 export default function Droppable({ id, children }) {
     const { isOver, setNodeRef } = useDroppable({
-        id: id,
+        id,
     });
     const style = {
-        color: isOver ? 'green' : undefined,
-        width: '100%',
+        backgroundColor: isOver ? 'rgb(250, 250, 250)' : undefined,
         height: '100%',
     };
 

@@ -4,12 +4,12 @@ import { CSS } from '@dnd-kit/utilities';
 
 export default function Draggable({ id, children }) {
     const { attributes, listeners, setNodeRef, transform } = useDraggable({
-        id: id,
+        id,
     });
     const style = { transform: CSS.Translate.toString(transform) };
 
     return (
-        <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+        <div ref={setNodeRef} {...listeners} {...attributes}>
             {children}
         </div>
     );
