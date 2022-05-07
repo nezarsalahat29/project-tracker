@@ -5,6 +5,9 @@ import {
   Avatar,
 } from "@chatscope/chat-ui-kit-react";
 import { Card } from "antd";
+import { Divider } from "antd";
+import { Typography } from "antd";
+const { Title } = Typography;
 
 const Data = [
   { name: "Lilly", lastSenderName: "Lilly", info: "Yes i can do it for you" },
@@ -19,7 +22,7 @@ const Data = [
 export default function Inbox() {
   return (
     <Card style={{ backgroundColor: "#F7F7F7" }}>
-      <h1>Inbox</h1> <hr />
+      <Title level={2}>Inbox</Title> <Divider />
       <ConversationList>
         {Data.map((convers) => {
           return (

@@ -1,5 +1,9 @@
 import { Table } from "antd";
 import { Card } from "antd";
+import { Divider } from "antd";
+import { Typography } from "antd";
+
+const { Title } = Typography;
 
 function randomDate(start, end) {
   return new Date(
@@ -42,7 +46,7 @@ export default function LastModifiedTable() {
   return (
     <div>
       <Card style={{ backgroundColor: "#F7F7F7" }}>
-        <h1>Last Modified</h1> <hr />
+        <Title level={2}>Last Modified</Title> <Divider />
         <Table
           columns={columns}
           dataSource={data}
