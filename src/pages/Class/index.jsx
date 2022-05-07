@@ -29,19 +29,20 @@ export default function Class() {
     const [isDragging, setIsDragging] = useState(false);
     const [draggingStudent, setDraggingStudent] = useState();
 
+    const getStudentsData = async () => {
+        let students = await getStudentsFromDb();
+        students = students.filter((student) => !student.groupId);
+        setStudents(students);
+        setStudentLoading(false);
+    };
+
+    const getGroupData = async () => {
+        setGroups(await getGroupsFromDb());
+        setGroupLoading(false);
+    };
+
     const getData = async () => {
-        await Promise.all([
-            (async () => {
-                let students = await getStudentsFromDb();
-                students = students.filter((student) => !student.groupId);
-                setStudents(students);
-                setStudentLoading(false);
-            })(),
-            (async () => {
-                setGroups(await getGroupsFromDb());
-                setGroupLoading(false);
-            })(),
-        ]);
+        await Promise.all([getStudentsData(), getGroupData()]);
     };
 
     useEffect(() => {
@@ -49,14 +50,11 @@ export default function Class() {
     }, []);
 
     const createNewGroup = async () => {
-        setGroupLoading(true);
         createGroup({});
-        setGroups(await getGroupsFromDb());
-        setGroupLoading(false);
+        getGroupData();
     };
 
     const deleteThisGroup = (group) => {
-        setGroupLoading(true);
         group.studentIds.forEach(async (studentId) => {
             await updateUser(studentId, { groupId: null });
         });
@@ -69,20 +67,22 @@ export default function Class() {
         const studentId = event.active.id.substring(9);
         const student = await getUserDocument(studentId);
         console.log('draggingStudent: ', student);
-        setDraggingStudent(student);
+        setDraggingStudent(<StudentPresentational student={student} />);
+        event.active.data.current = student;
+        console.log('dragging event on start: ', event);
         setIsDragging(true);
     };
 
     const handleDragEnd = async (event) => {
         setIsDragging(false);
-
         if (event.over && /^droppableStudent$/.test(event.over.id)) {
             const studentId = event.active.id.substring(9);
             console.log('student:', studentId);
-            const student = await getUserDocument(studentId);
+            const student = event.active.data.current;
             if (student.groupId) {
-                setStudentLoading(true);
-                setGroupLoading(true);
+                // setStudentLoading(true);
+                // setGroupLoading(true);
+                setStudents((students) => [...students, student]);
                 const studentGroup = await getGroupFromDb(student.groupId);
                 updateUser(studentId, {
                     ...student,
@@ -98,8 +98,8 @@ export default function Class() {
                 getData();
             }
         } else if (event.over && /^droppable/.test(event.over.id)) {
-            setStudentLoading(true);
-            setGroupLoading(true);
+            // setStudentLoading(true);
+            // setGroupLoading(true);
 
             const groupId = event.over.id.substring(9);
             const studentId = event.active.id.substring(9);
@@ -141,11 +141,17 @@ export default function Class() {
         <Row
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             style={{ height: '100%' }}
+            wrap={false}
         >
             <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
                 <Col
-                    span={6}
-                    style={{ border: '1px solid rgba(0, 0, 0, 0.05)' }}
+                    flex='250px'
+                    style={{
+                        border: '1px solid rgba(0, 0, 0, 0.05)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
                 >
                     <Space
                         align='baseline'
@@ -168,9 +174,7 @@ export default function Class() {
                     </Space>
                     <Divider style={{ margin: '12px 0' }} />
                     <DragOverlay>
-                        {isDragging ? (
-                            <StudentPresentational student={draggingStudent} />
-                        ) : null}
+                        {isDragging ? draggingStudent : null}
                     </DragOverlay>
                     <Droppable id={`droppableStudent`}>
                         {studentLoading ? (
@@ -181,14 +185,14 @@ export default function Class() {
                                     id={`draggable${student.id}`}
                                     key={student.id}
                                 >
-                                    <Student studentId={student.id} />
+                                    <StudentPresentational student={student} />
                                 </Draggable>
                             ))
                         )}
                     </Droppable>
                 </Col>
                 <Col
-                    span={18}
+                    flex='auto'
                     style={{ border: '1px solid rgba(0, 0, 0, 0.05)' }}
                 >
                     <Space

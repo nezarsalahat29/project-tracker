@@ -7,6 +7,7 @@ export default function Droppable({ id, children }) {
     });
     const style = {
         backgroundColor: isOver ? 'rgb(250, 250, 250)' : undefined,
+        borderRadius: '1rem',
         height: '100%',
     };
 

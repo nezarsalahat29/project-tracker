@@ -13,6 +13,9 @@ export default function StudentPresentational({ student }) {
                 border: '1px solid rgba(0, 0, 0, 0.05)',
                 cursor: 'grab',
                 backgroundColor: 'rgba(240, 240, 240)',
+                textAlign: 'center',
+                display: 'inline-block',
+                width: '160px',
             }}
         >
             {student.name}

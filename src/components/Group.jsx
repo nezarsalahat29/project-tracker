@@ -6,10 +6,25 @@ import { getUserDocument } from '../firestore';
 import Loader from './Loader';
 import Student from './Student';
 import Draggable from './Draggable';
-import { DragOverlay } from '@dnd-kit/core';
+import StudentPresentational from './StudentPresentational';
 
-export default function Group({ group, deleteGroup, children }) {
-    console.log(children);
+export default function Group({ group, deleteGroup }) {
+    const [students, setStudents] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const getStudents = async () => {
+            group.studentIds.forEach(async (studentId) => {
+                const student = await getUserDocument(studentId);
+                setStudents((students) => [...students, student]);
+            });
+
+            setLoading(false);
+        };
+
+        getStudents();
+    }, []);
+
     return (
         <Card
             title={`Group ${group.id}`}
@@ -22,7 +37,8 @@ export default function Group({ group, deleteGroup, children }) {
             style={{ width: '100%', marginBottom: '0.5rem' }}
         >
             <Droppable id={`droppable${group.id}`}>
-                <div
+                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    {/* <div
                     style={{
                         color: 'rgba(0, 0, 0, 0.4)',
                         textAlign: 'center',
@@ -30,12 +46,19 @@ export default function Group({ group, deleteGroup, children }) {
                 >
                     {' '}
                     drop here{' '}
+                </div> */}
+                    {students.map((student) => (
+                        <Draggable
+                            id={`draggable${student.id}`}
+                            key={student.id}
+                        >
+                            <StudentPresentational
+                                key={student.id}
+                                student={student}
+                            />
+                        </Draggable>
+                    ))}
                 </div>
-                {group.studentIds.map((studentId) => (
-                    <Draggable id={`draggable${studentId}`} key={studentId}>
-                        <Student key={studentId} studentId={studentId} />
-                    </Draggable>
-                ))}
             </Droppable>
         </Card>
     );

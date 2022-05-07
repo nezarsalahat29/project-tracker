@@ -24,7 +24,7 @@ export const createUserDocument = (user, additionalData) => {
 export const getUserDocument = async (userId) => {
     try {
         const user = await firestore.collection('users').doc(userId).get();
-        if (user.exists) return user.data();
+        if (user.exists) return { id: userId, ...user.data() };
         else console.log('No such document!');
     } catch (error) {
         console.log('error getting user document', error);
