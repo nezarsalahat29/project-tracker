@@ -1,6 +1,7 @@
-import React from 'react';
+import React from "react";
+import Deliverables from "../../components/Projcet/Delivrables";
 
 function Project() {
-	return <h1>This is a Project</h1>;
+  return <Deliverables></Deliverables>;
 }
 export default Project;
