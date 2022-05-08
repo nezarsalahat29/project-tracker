@@ -4,6 +4,7 @@ import { Divider } from 'antd';
 import { Typography, Space } from 'antd';
 import { Progress, Button } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import Deliverables from '../../components/Projcet/Delivrables';
 
 const { Text, Link } = Typography;
 
@@ -49,6 +50,7 @@ function Project() {
 					percent={59.5}
 				/>
 			</Card>
+			<Deliverables></Deliverables>
 		</div>
 	);
 }
