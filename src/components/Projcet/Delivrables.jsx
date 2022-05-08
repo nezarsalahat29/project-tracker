@@ -5,7 +5,7 @@ import { Upload, message, Button } from "antd";
 
 const { Panel } = Collapse;
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 function callback(key) {
   console.log(key);
@@ -42,21 +42,27 @@ function Deliverables() {
         <Collapse defaultActiveKey={["1"]} onChange={callback}>
           <Panel header={titles[0]} key='1'>
             <p>{text1}</p>
-            <p>Due date : 5/12/2022</p>
+            <p>
+              <Text strong>Due Date:</Text> 5/12/2022
+            </p>
             <Upload maxCount={1}>
               <Button icon={<UploadOutlined />}>Upload (Max: 1)</Button>
             </Upload>
           </Panel>
           <Panel header={titles[1]} key='2'>
             <p>{text2}</p>
-            <p>Due date : 5/12/2022</p>
+            <p>
+              <Text strong>Due Date:</Text> 5/12/2022
+            </p>
             <Upload maxCount={1}>
               <Button icon={<UploadOutlined />}>Upload (Max: 1)</Button>
             </Upload>
           </Panel>
           <Panel header={titles[2]} key='3'>
             <p>{text3}</p>
-            <p>Due date : 5/12/2022</p>
+            <p>
+              <Text strong>Due Date:</Text> 5/12/2022
+            </p>
             <Upload maxCount={1}>
               <Button icon={<UploadOutlined />}>Upload (Max: 1)</Button>
             </Upload>

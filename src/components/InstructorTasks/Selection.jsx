@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Select, Card } from "antd";
+import EditableTable from "./table2";
 const { Option } = Select;
 
 var firstChoice = ["None"];
@@ -22,6 +23,17 @@ const Data = [
   },
 ];
 
+var group1 = {
+  groupName: "Group 1",
+  Tasks: [
+    {
+      key: 1,
+      TaskTitle: "Something",
+      TaskDesc: "Something extraaaaa",
+      TaskRate: "TaskRatehahaha",
+    },
+  ],
+};
 var secondChoice = [];
 
 function Selection() {
@@ -62,6 +74,7 @@ function Selection() {
           ))}
         </Select>
       </Card>
+      <EditableTable SelectedGroup={[...group1.Tasks]}></EditableTable>
     </div>
   );
 }
