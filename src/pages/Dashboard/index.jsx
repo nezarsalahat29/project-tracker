@@ -119,12 +119,13 @@ export default function Dashboard() {
                 <p>Start Date - Due date</p>
               </Card>
             </div>
-            <Button type="primary" onClick="">
+            <Button className="btnn" type="primary" onClick="">
               Assign To Group
             </Button>
-            <Button type="primary" shape="circle">
+            <div className="btnk">
+            <Button  type="primary" shape="circle">
               +
-            </Button>
+            </Button></div>
             <hr />
             <Divider orientation="left">
               <strong>Tasks Lists</strong>
