@@ -119,7 +119,7 @@ const data = [
     ),
     RATE: <Rate allowHalf defaultValue={0} />,
     Status: (
-      <Steps size='small' current={0}>
+      <Steps size='small' current={1}>
         <Step title='To Start' />
         <Step title='Working On' />
         <Step title='Finished' />
@@ -136,7 +136,7 @@ const data = [
     ),
     RATE: <Rate allowHalf defaultValue={0} />,
     Status: (
-      <Steps size='small' current={0}>
+      <Steps size='small' current={2}>
         <Step title='To Start' />
         <Step title='Working On' />
         <Step title='Finished' />
