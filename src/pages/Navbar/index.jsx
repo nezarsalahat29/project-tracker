@@ -80,6 +80,11 @@ export default function Navbar() {
                 </Menu>
             </Sider>
             <Layout className='site-layout'>
+                <Header>
+                    <Button type='primary' onClick={logout}>
+                        Sign Out
+                    </Button>
+                </Header>
                 <Content
                     style={{
                         margin: '0 16px',

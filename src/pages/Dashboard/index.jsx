@@ -9,16 +9,25 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Row, Col } from 'antd';
 
 const instructorDashboard = [
-    <StatisticsBar />,
-    <TimelineComponent />,
-    <LastModifiedTable />,
-    <Inbox />,
-    <LiquidPlot />,
+    <Row gutter={[16, 24]}>
+        <Col xs={24}>
+            <StatisticsBar />
+        </Col>
+        <Col xs={24} sm={12} xl={12}>
+            <Inbox />
+        </Col>
+        <Col xs={24} sm={12} xl={12}>
+            <TimelineComponent />
+        </Col>
+        <Col xs={24}>
+            <LastModifiedTable />
+        </Col>
+    </Row>,
 ];
 const studentDashboard = [
     <TimelineComponent />,
-    <TaskDonut />,
     <Inbox />,
+    <TaskDonut />,
     <LiquidPlot />,
 ];
 
@@ -28,22 +37,5 @@ export default function Dashboard() {
         ? instructorDashboard
         : studentDashboard;
 
-    return (
-        <>
-            <Row gutter={[16, 24]}>
-                <Col xs={24}>
-                    <StatisticsBar />
-                </Col>
-                <Col xs={24} sm={12} xl={12}>
-                    <Inbox />
-                </Col>
-                <Col xs={24} sm={12} xl={12}>
-                    <TimelineComponent />
-                </Col>
-                <Col xs={24}>
-                    <LastModifiedTable />
-                </Col>
-            </Row>
-        </>
-    );
+    return items;
 }
