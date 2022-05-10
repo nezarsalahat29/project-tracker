@@ -84,7 +84,7 @@ const columns = [
     key: "SetStatus",
     render: (text, record) => (
       <Space size='middle'>
-        <a>To Start {record.Status}</a>
+        <a>To Start {record.Rate}</a>
         <a>Working On </a>
         <a>Finish</a>
       </Space>
