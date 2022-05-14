@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Inbox from '../../components/Dashboard/Inbox';
 import LastModifiedTable from '../../components/Dashboard/LastModifiedTable';
 import StatisticsBar from '../../components/Dashboard/Statistics';
@@ -33,6 +33,11 @@ const studentDashboard = [
 
 export default function Dashboard() {
     const { currentUser } = useAuth();
+
+    useEffect(() => {
+        window.scroll(0, 0);
+    }, []);
+
     const items = currentUser.instructor
         ? instructorDashboard
         : studentDashboard;

@@ -1,5 +1,5 @@
 //https://chatscope.io/storybook/react/?path=/docs/components-maincontainer--without-right-sidebar
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     MainContainer,
     Sidebar,
@@ -33,6 +33,11 @@ const ChatRoomsList = [
 
 export default function Chat() {
     const [messageInputValue, setMessageInputValue] = useState('');
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <div>
             <MainContainer responsive>

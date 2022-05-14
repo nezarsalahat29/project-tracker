@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import './index.css';
-import { Button, Layout, Menu, Image } from 'antd';
+import { Button, Layout, Menu, Image, Affix } from 'antd';
 import {
     DesktopOutlined,
     PieChartOutlined,
@@ -56,31 +56,36 @@ export default function Navbar() {
                 minHeight: '100vh',
             }}
         >
-            <Sider
-                collapsible
-                collapsed={collapsed}
-                onCollapse={() => setCollapsed(!collapsed)}
-            >
-                <Image
-                    className='logo'
-                    src={process.env.PUBLIC_URL + '/logo_transparent.png'}
-                    preview={false}
-                />
-                <Menu
-                    theme='dark'
-                    defaultSelectedKeys={['1']}
-                    mode='inline'
-                    items={items}
+            <Affix offsetTop={0}>
+                <Sider
+                    style={{ height: '100vh' }}
+                    collapsible
+                    collapsed={collapsed}
+                    onCollapse={() => setCollapsed(!collapsed)}
                 >
-                    <Menu.Item>
-                        <Button type='primary' onClick={logout}>
-                            Sign Out
-                        </Button>
-                    </Menu.Item>
-                </Menu>
-            </Sider>
+                    <Image
+                        className='logo'
+                        src={process.env.PUBLIC_URL + '/logo_transparent.png'}
+                        preview={false}
+                    />
+                    <Menu
+                        theme='dark'
+                        defaultSelectedKeys={['1']}
+                        mode='inline'
+                        items={items}
+                    />
+                </Sider>
+            </Affix>
             <Layout className='site-layout'>
-                <Header>
+                <Header
+                    className='site-layout-background'
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'end',
+                        alignItems: 'center',
+                        borderBottom: '1px solid rgba(240, 240, 240)',
+                    }}
+                >
                     <Button type='primary' onClick={logout}>
                         Sign Out
                     </Button>
