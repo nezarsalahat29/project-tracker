@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import './index.css';
-import { Button, Layout, Menu, Image, Affix } from 'antd';
+import { Button, Layout, Menu, Image, Affix, Avatar } from 'antd';
 import {
     DesktopOutlined,
     PieChartOutlined,
@@ -48,7 +48,7 @@ const studentItems = [
 export default function Navbar() {
     const [collapsed, setCollapsed] = useState(false);
     const { logout, currentUser } = useAuth();
-    console.log(currentUser);
+
     const items = currentUser.instructor ? instructorItems : studentItems;
     return (
         <Layout
@@ -81,11 +81,21 @@ export default function Navbar() {
                     className='site-layout-background'
                     style={{
                         display: 'flex',
-                        justifyContent: 'end',
+                        justifyContent: 'space-between',
                         alignItems: 'center',
                         borderBottom: '1px solid rgba(240, 240, 240)',
                     }}
                 >
+                    <Avatar
+                        style={{
+                            backgroundColor: '#1890ff',
+                            verticalAlign: 'middle',
+                        }}
+                        size='large'
+                        gap={4}
+                    >
+                        {currentUser.name[0].toUpperCase()}
+                    </Avatar>
                     <Button type='primary' onClick={logout}>
                         Sign Out
                     </Button>

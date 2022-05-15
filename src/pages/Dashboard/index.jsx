@@ -8,28 +8,38 @@ import LiquidPlot from '../../components/Dashboard/Liquid';
 import { useAuth } from '../../contexts/AuthContext';
 import { Row, Col } from 'antd';
 
-const instructorDashboard = [
+const instructorDashboard = (
     <Row gutter={[16, 24]}>
         <Col xs={24}>
             <StatisticsBar />
         </Col>
-        <Col xs={24} sm={12} xl={12}>
+        <Col xs={24} sm={12}>
             <Inbox />
         </Col>
-        <Col xs={24} sm={12} xl={12}>
+        <Col xs={24} sm={12}>
             <TimelineComponent />
         </Col>
         <Col xs={24}>
             <LastModifiedTable />
         </Col>
-    </Row>,
-];
-const studentDashboard = [
-    <TimelineComponent />,
-    <Inbox />,
-    <TaskDonut />,
-    <LiquidPlot />,
-];
+    </Row>
+);
+const studentDashboard = (
+    <Row gutter={[16, 24]}>
+        <Col xs={24} sm={12}>
+            <TimelineComponent />
+        </Col>
+        <Col xs={24} sm={12}>
+            <Inbox />
+        </Col>
+        <Col xs={24} sm={12}>
+            <TaskDonut />
+        </Col>
+        <Col xs={24} sm={12}>
+            <LiquidPlot />
+        </Col>
+    </Row>
+);
 
 export default function Dashboard() {
     const { currentUser } = useAuth();
@@ -38,9 +48,5 @@ export default function Dashboard() {
         window.scroll(0, 0);
     }, []);
 
-    const items = currentUser.instructor
-        ? instructorDashboard
-        : studentDashboard;
-
-    return items;
+    return currentUser.instructor ? instructorDashboard : studentDashboard;
 }
