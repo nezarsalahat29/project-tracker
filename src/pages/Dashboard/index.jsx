@@ -12,9 +12,13 @@ import {
 import { Card } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { Row, Col, Divider } from "antd";
+import { Progress } from 'antd';
+import { Descriptions } from 'antd';
+const { Meta } = Card;
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Title } = Typography;
+
 
 function getItem(label, key, icon, children) {
   return {
@@ -24,6 +28,43 @@ function getItem(label, key, icon, children) {
     label,
   };
 }
+export const Projects = [{
+  id:1,
+  description: "You will find here the description of this project and other details",
+  startDate: "12-7-2022",
+  endDAte: "7-8-2022",
+  Title: "Project 1",
+  tasks: ["task1","task2","task3"],
+  Progress: 0.6,
+  deliverables : ["dev1","dev2","dev3"]
+
+},
+{
+  id:2,
+  description: "You will find here the description of this project and other details",
+  startDate: 9-7-2022,
+  endDAte: 22-8-2022,
+  Title: "Project 2",
+  tasks: ["task1","task2","task3"],
+  Progress: 0.6,
+  deliverables : ["dev1","dev2","dev3"]
+
+},
+{
+  id:3,
+  description: "You will find here the description of this project and other details",
+  startDate: 1-7-2022,
+  endDAte: 7-8-2022,
+  Title: "Project 3",
+  tasks: ["task1","task2","task3"],
+  Progress: 0.6,
+  deliverables : ["dev1","dev2","dev3"]
+
+},
+];
+
+
+
 
 const items = [
   getItem("Option 1", "1", <PieChartOutlined />),
@@ -108,86 +149,42 @@ export default function Dashboard() {
             }}
           >
             Bill is not a cat.
-            <div className="site-card-border-less-wrapper">
-              <Card
-                title="Project Name + ID"
-                bordered={false}
-                style={{ width: 300 }}
-              >
-                <p>Description</p>
-                <p>Progress</p>
-                <p>Start Date - Due date</p>
-              </Card>
-            </div>
-            <Button className="btnn" type="primary" onClick="">
-              Assign To Group
-            </Button>
-            <div className="btnk">
-            <Button  type="primary" shape="circle">
-              +
-            </Button></div>
-            <hr />
-            <Divider orientation="left">
-              <strong>Tasks Lists</strong>
-            </Divider>
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-              <Col className="gutter-box" span={6}>
-                <div className="gutter-row">
-                  To-Do
-                  <Card title="Task-Title">
-                    <p>Description</p>
-                    <p>StartDate-EndDate</p>
-                  </Card>
-                  <hr />
-                  <Card title="Task-Title">
-                    <p>Description</p>
-                    <p>StartDate-EndDate</p>
-                  </Card>
-                </div>
-              </Col>
-              <Col className="gutter-box" span={6}>
-                <div className="gutter-row">
-                  In Progress
-                  <Card title="Task-Title">
-                    <p>Description</p>
-                    <p>StartDate-EndDate</p>
-                  </Card>
-                  <hr />
-                  <Card title="Task-Title">
-                    <p>Description</p>
-                    <p>StartDate-EndDate</p>
-                  </Card>
-                </div>
-              </Col>
-              <Col className="gutter-box" span={6}>
-                <div className="gutter-row">
-                  Done
-                  <Card title="Task-Title">
-                    <p>Description</p>
-                    <p>StartDate-EndDate</p>
-                  </Card>
-                  <hr />
-                  <Card title="Task-Title">
-                    <p>Description</p>
-                    <p>StartDate-EndDate</p>
-                  </Card>
-                </div>
-              </Col>
-              <Col className="gutter-box" span={6}>
-                <div className="gutter-row">
-                  Late Tasks
-                  <Card title="Task-Title">
-                    <p>Description</p>
-                    <p>StartDate-EndDate</p>
-                  </Card>
-                  <hr />
-                  <Card title="Task-Title">
-                    <p>Description</p>
-                    <p>StartDate-EndDate</p>
-                  </Card>
-                </div>
-              </Col>
-            </Row>
+            
+
+
+
+            
+
+           
+      
+            <Divider orientation="center">Projects</Divider>
+    <Row gutter={16}>
+            {Projects.map((e)=>{
+       return (
+        <Col  span={6}>
+        <Card
+        hoverable
+        style={{ width: 200 }}
+        
+      >
+        <Meta title={e.Title} description={e.description}  onClick="" >
+          <h1>{"\n"+e.startDate+"To"+e.endDAte}</h1>
+          </Meta>
+      </Card>
+      </Col>
+     );})}
+     </Row>
+      
+      
+      
+
+    
+    
+    
+  
+
+
+             
           </div>
         </Content>
         <Footer
