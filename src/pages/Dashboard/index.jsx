@@ -8,6 +8,7 @@ import {
   FileOutlined,
   TeamOutlined,
   UserOutlined,
+  AppstoreAddOutlined,
 } from "@ant-design/icons";
 import { Card } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
@@ -15,7 +16,6 @@ import { Row, Col, Divider } from "antd";
 import { Progress } from 'antd';
 import { Descriptions } from 'antd';
 const { Meta } = Card;
-
 const { Header, Content, Footer, Sider } = Layout;
 const { Title } = Typography;
 
@@ -58,6 +58,16 @@ export const Projects = [{
   Title: "Project 3",
   tasks: ["task1","task2","task3"],
   Progress: 0,
+  deliverables : ["dev1","dev2","dev3"]
+
+},
+{  id:4,
+  description: "You will find here the description of this project and other details",
+  startDate: "18-7-2022",
+  endDAte: "26-8-2022",
+  Title: "Project 4",
+  tasks: ["task1","task2","task3"],
+  Progress: 0.43,
   deliverables : ["dev1","dev2","dev3"]
 
 },
@@ -149,16 +159,10 @@ export default function Dashboard() {
               minHeight: 360,
             }}
           >
-            
 
-
-
-            
-
-           
       
             <Divider orientation="center">Projects</Divider>
-    <Row gutter={16}>
+    <Row gutter={26}>
             {Projects.map((e)=>{
        return (
         <Col  span={6}>
@@ -178,10 +182,18 @@ export default function Dashboard() {
       </Card>
       </Col>
      );})}
+    
+     
      </Row>
-      
-      
-      
+     <Divider orientation="right">
+     <Row>
+     <Button icon={
+      <AppstoreAddOutlined style={{color : '#0092ff',fontSize:20}}/> 
+     }>
+Add Project
+     </Button>
+     </Row>
+     </Divider>
 
     
     
