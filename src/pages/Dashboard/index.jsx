@@ -42,22 +42,22 @@ export const Projects = [{
 {
   id:2,
   description: "You will find here the description of this project and other details",
-  startDate: 9-7-2022,
-  endDAte: 22-8-2022,
+  startDate: "9-7-2022",
+  endDAte: "22-8-2022",
   Title: "Project 2",
   tasks: ["task1","task2","task3"],
-  Progress: 0.6,
+  Progress: 0.9,
   deliverables : ["dev1","dev2","dev3"]
 
 },
 {
   id:3,
   description: "You will find here the description of this project and other details",
-  startDate: 1-7-2022,
-  endDAte: 7-8-2022,
+  startDate: "1-7-2022",
+  endDAte: "7-8-2022",
   Title: "Project 3",
   tasks: ["task1","task2","task3"],
-  Progress: 0.6,
+  Progress: 0,
   deliverables : ["dev1","dev2","dev3"]
 
 },
@@ -80,6 +80,7 @@ const items = [
   ]),
   getItem("Files", "9", <FileOutlined />),
 ];
+
 
 export default function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
@@ -148,7 +149,6 @@ export default function Dashboard() {
               minHeight: 360,
             }}
           >
-            Bill is not a cat.
             
 
 
@@ -166,10 +166,15 @@ export default function Dashboard() {
         hoverable
         style={{ width: 200 }}
         
+        
       >
-        <Meta title={e.Title} description={e.description}  onClick="" >
-          <h1>{"\n"+e.startDate+"To"+e.endDAte}</h1>
-          </Meta>
+        <Meta title={e.Title} description={e.description}  onClick="" />
+        <p>From: {e.startDate}</p>
+        <p className="btnk">To: {e.endDAte}</p>
+        <Progress percent={e.Progress*100} />
+
+          
+          
       </Card>
       </Col>
      );})}
