@@ -7,3 +7,21 @@
 .site-layout .site-layout-background {
     background: #fff;
 }
+.gutter-row { background: #0092ff; padding: 8px 0; text-align: center;}
+.gutter-box {
+    padding: 8px 0;
+    background: #FFFF;
+  }
+  .card{
+      background-color: #808080;
+      width:300;
+  }
+  .btnk {
+
+    color: rgb(212, 10, 10);
+
+
+  }
+  .PPB{
+      opacity: 10;
+  }
