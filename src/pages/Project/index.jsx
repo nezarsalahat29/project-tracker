@@ -28,7 +28,7 @@ function getItem(label, key, icon, children) {
     label,
   };
 }
-export const Projects = [{
+export const Project = [{
   id:1,
   description: "You will find here the description of this project and other details",
   startDate: "12-7-2022",
@@ -163,7 +163,7 @@ export default function Dashboard() {
       
             <Divider orientation="center">Projects</Divider>
     <Row gutter={26}>
-            {Projects.map((e)=>{
+            {Project.map((e)=>{
        return (
         <Col  span={6}>
         <Card
