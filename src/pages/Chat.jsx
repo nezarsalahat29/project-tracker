@@ -1,222 +1,203 @@
 //https://chatscope.io/storybook/react/?path=/docs/components-maincontainer--without-right-sidebar
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
-    MainContainer,
-    Sidebar,
-    Search,
-    ChatContainer,
-    ConversationHeader,
-    MessageList,
-    MessageSeparator,
-    Message,
-    TypingIndicator,
-    MessageInput,
-    ConversationList,
-    Conversation,
-    Avatar,
-} from '@chatscope/chat-ui-kit-react';
+  MainContainer,
+  Sidebar,
+  Search,
+  ChatContainer,
+  ConversationHeader,
+  MessageList,
+  MessageSeparator,
+  Message,
+  TypingIndicator,
+  MessageInput,
+  ConversationList,
+  Conversation,
+  Avatar,
+} from "@chatscope/chat-ui-kit-react";
+import { useAuth } from "../contexts/AuthContext";
 
 const ChatRoomsList = [
-    { name: 'Lilly', lastSenderName: 'Lilly', info: 'Yes i can do it for you' },
-    { name: 'Joe', lastSenderName: 'Joe', info: 'Yes i can do it for you' },
-    { name: 'Emily', lastSenderName: 'Emily', info: 'Yes i can do it for you' },
-    { name: 'Kai', lastSenderName: 'Kai', info: 'Yes i can do it for you' },
-    { name: 'Akane', lastSenderName: 'Akane', info: 'Yes i can do it for you' },
-    { name: 'Eliot', lastSenderName: 'Eliot', info: 'Yes i can do it for you' },
-    { name: 'Zoe', lastSenderName: 'Zoe', info: 'Yes i can do it for you' },
-    {
-        name: 'Patrik',
-        lastSenderName: 'Patrik',
-        info: 'Yes i can do it for you',
-    },
+  { name: "Lilly", lastSenderName: "Lilly", info: "Yes i can do it for you" },
+  { name: "Joe", lastSenderName: "Joe", info: "Yes i can do it for you" },
+  { name: "Emily", lastSenderName: "Emily", info: "Yes i can do it for you" },
+  { name: "Kai", lastSenderName: "Kai", info: "Yes i can do it for you" },
+  { name: "Akane", lastSenderName: "Akane", info: "Yes i can do it for you" },
+  { name: "Eliot", lastSenderName: "Eliot", info: "Yes i can do it for you" },
+  { name: "Zoe", lastSenderName: "Zoe", info: "Yes i can do it for you" },
+  {
+    name: "Patrik",
+    lastSenderName: "Patrik",
+    info: "Yes i can do it for you",
+  },
 ];
 
 export default function Chat() {
-    const [messageInputValue, setMessageInputValue] = useState('');
+  const [activateChat, setActivateChat] = useState(ChatRooms[0]);
+  const { currentUser } = useAuth();
+  const [messageInputValue, setMessageInputValue] = useState("");
+  console.log(currentUser);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+  return (
+    <div style={{ height: 800 }}>
+      <MainContainer>
+        <Sidebar position='left' scrollable={true}>
+          <Search placeholder='Search...' />
+          <ConversationList>
+            {ChatRooms.map((conversation) => {
+              return (
+                <Conversation
+                  id={conversation.chatroomID}
+                  name={conversation.name}
+                  lastSenderName={
+                    conversation.lastSenderName === currentUser.username
+                      ? "Me"
+                      : conversation.lastSenderName
+                  }
+                  info={conversation.lastMessage}
+                  onClick={function (value) {
+                    console.log(value.target.offsetParent.id);
+                    ChatRooms.forEach(function (element) {
+                      if (element.chatroomID === value.target.offsetParent.id)
+                        setActivateChat(element);
+                      console.log(activateChat);
+                    });
+                  }}
+                >
+                  <Avatar
+                    src={
+                      "https://ui-avatars.com/api/?name=" + conversation.name
+                    }
+                    name={conversation.name}
+                  />
+                </Conversation>
+              );
+            })}
+          </ConversationList>
+        </Sidebar>
 
-    return (
-        <div>
-            <MainContainer responsive>
-                <Sidebar position='left' scrollable={false}>
-                    <Search placeholder='Search...' />
-                    <ConversationList>
-                        {ChatRoomsList.map((conversation) => {
-                            return (
-                                <Conversation
-                                    name={conversation.name}
-                                    lastSenderName={conversation.lastSenderName}
-                                    info={conversation.info}
-                                >
-                                    <Avatar
-                                        src={
-                                            'https://ui-avatars.com/api/?name=' +
-                                            conversation.name
-                                        }
-                                        name={conversation.name}
-                                    />
-                                </Conversation>
-                            );
-                        })}
-                    </ConversationList>
-                </Sidebar>
+        <ChatContainer>
+          <ConversationHeader>
+            <Avatar
+              src={"https://ui-avatars.com/api/?name=" + activateChat.name}
+              name={activateChat.name}
+            />
 
-                <ChatContainer>
-                    <ConversationHeader>
-                        <ConversationHeader.Back />
-                        <Avatar
-                            src={'https://ui-avatars.com/api/?name=zoeIco'}
-                            name='Zoe'
-                        />
-
-                        <ConversationHeader.Content
-                            userName='Zoe'
-                            info='Active 10 mins ago'
-                        />
-                        <ConversationHeader.Actions></ConversationHeader.Actions>
-                    </ConversationHeader>
-                    <MessageList typingIndicator={<TypingIndicator />}>
-                        <MessageSeparator content='Saturday, 30 November 2019' />
-                        <Message
-                            model={{
-                                message: 'Hello my friend',
-                                sentTime: '15 mins ago',
-                                sender: 'Zoe',
-                                direction: 'incoming',
-                                position: 'single',
-                            }}
-                        >
-                            <Avatar
-                                src={'https://ui-avatars.com/api/?name=zoeIco'}
-                                name='Zoe'
-                            />
-                        </Message>
-                        <Message
-                            model={{
-                                message: 'Hello my friend',
-                                sentTime: '15 mins ago',
-                                sender: 'Patrik',
-                                direction: 'outgoing',
-                                position: 'single',
-                            }}
-                        />
-                        <Message
-                            model={{
-                                message: 'Hello my friend firsssst',
-                                sentTime: '15 mins ago',
-                                sender: 'Zoe',
-                                direction: 'incoming',
-                                position: 'first',
-                            }}
-                            avatarSpacer
-                        />
-                        <Message
-                            model={{
-                                message: 'Hello my friend',
-                                sentTime: '15 mins ago',
-                                sender: 'Zoe',
-                                direction: 'incoming',
-                                position: 'normal',
-                            }}
-                            avatarSpacer
-                        />
-                        <Message
-                            model={{
-                                message: 'Hello my friend normaaaaaal',
-                                sentTime: '15 mins ago',
-                                sender: 'Zoe',
-                                direction: 'incoming',
-                                position: 'normal',
-                            }}
-                            avatarSpacer
-                        />
-                        <Message
-                            model={{
-                                message: 'Hello my friend lasssssst',
-                                sentTime: '15 mins ago',
-                                sender: 'Zoe',
-                                direction: 'incoming',
-                                position: 'last',
-                            }}
-                        >
-                            <Avatar
-                                src={'https://ui-avatars.com/api/?name=zoeIco'}
-                                name='Zoe'
-                            />
-                        </Message>
-                        <Message
-                            model={{
-                                message: 'Hello my friend',
-                                sentTime: '15 mins ago',
-                                sender: 'Patrik',
-                                direction: 'outgoing',
-                                position: 'first',
-                            }}
-                        />
-                        <Message
-                            model={{
-                                message: 'Hello my friend',
-                                sentTime: '15 mins ago',
-                                sender: 'Patrik',
-                                direction: 'outgoing',
-                                position: 'normal',
-                            }}
-                        />
-                        <Message
-                            model={{
-                                message: 'Hello my friend',
-                                sentTime: '15 mins ago',
-                                sender: 'Patrik',
-                                direction: 'outgoing',
-                                position: 'normal',
-                            }}
-                        />
-                        <Message
-                            model={{
-                                message: 'Hello my friend',
-                                sentTime: '15 mins ago',
-                                sender: 'Patrik',
-                                direction: 'outgoing',
-                                position: 'last',
-                            }}
-                        />
-
-                        <Message
-                            model={{
-                                message: 'Hello my friend',
-                                sentTime: '15 mins ago',
-                                sender: 'Zoe',
-                                direction: 'incoming',
-                                position: 'first',
-                            }}
-                            avatarSpacer
-                        />
-                        <Message
-                            model={{
-                                message: 'Hello my friend',
-                                sentTime: '15 mins ago',
-                                sender: 'Zoe',
-                                direction: 'incoming',
-                                position: 'last',
-                            }}
-                        >
-                            <Avatar
-                                src={'https://ui-avatars.com/api/?name=zoeIco'}
-                                name='Zoe'
-                            />
-                        </Message>
-                    </MessageList>
-                    <MessageInput
-                        attachButton={false}
-                        placeholder='Type message here'
-                        value={messageInputValue}
-                        onChange={(val) => setMessageInputValue(val)}
-                    />
-                </ChatContainer>
-            </MainContainer>
-        </div>
-    );
+            <ConversationHeader.Content userName={activateChat.name} />
+            <ConversationHeader.Actions></ConversationHeader.Actions>
+          </ConversationHeader>
+          <MessageList autoScrollToBottom={true}>
+            {activateChat.Messages.map(function (message) {
+              return (
+                <Message
+                  model={{
+                    message: message.message,
+                    sentTime: "15 mins ago",
+                    sender: message.sender,
+                    direction:
+                      message.sender === currentUser.username
+                        ? "outgoing"
+                        : "incoming",
+                    position: "single",
+                  }}
+                >
+                  <Avatar
+                    src={"https://ui-avatars.com/api/?name=" + message.sender}
+                    name={message.sender}
+                  ></Avatar>
+                </Message>
+              );
+            })}
+          </MessageList>
+          <MessageInput
+            attachButton={false}
+            placeholder='Type message here'
+            value={messageInputValue}
+            onChange={(val) => setMessageInputValue(val)}
+            onSend={function (val) {
+              activateChat.Messages.push({
+                message: val,
+                sentTime: "15 mins ago",
+                sender: currentUser.username,
+                position: "single",
+              });
+              setMessageInputValue("");
+            }}
+          />
+        </ChatContainer>
+      </MainContainer>
+    </div>
+  );
 }
+
+var ChatRooms = [
+  {
+    name: "Instructor",
+    chatroomID: "123456789",
+    lastSenderName: "Instructor",
+    lastMessage: "Yes i can do it for you",
+    participants: ["Instructor", "Suhaib Atef"],
+    Messages: [
+      {
+        message: "Hello my friend",
+        sentTime: "15 mins ago",
+        sender: "Instructor",
+        position: "single",
+      },
+      {
+        message: "Hello my friend",
+        sentTime: "15 mins ago",
+        sender: "Suhaib Atef",
+        position: "single",
+      },
+      {
+        message: "Hello my friend",
+        sentTime: "15 mins ago",
+        sender: "Suhaib Atef",
+        position: "single",
+      },
+      {
+        message: "Hello my friend",
+        sentTime: "15 mins ago",
+        sender: "Instructor",
+        position: "single",
+      },
+    ],
+  },
+  {
+    name: "Group A",
+    chatroomID: "877951335",
+    lastSenderName: "Suhaib Atef",
+    lastMessage: "Yes i can do it for you",
+    participants: ["Instructor", "Suhaib Atef", "Jafar Al-Juneidi"],
+    Messages: [
+      {
+        message: "Hello my friend",
+        sentTime: "15 mins ago",
+        sender: "Instructor",
+        position: "single",
+      },
+      {
+        message: "Hello my friend",
+        sentTime: "15 mins ago",
+        sender: "Suhaib Atef",
+        position: "single",
+      },
+      {
+        message: "Hello my friend",
+        sentTime: "15 mins ago",
+        sender: "Suhaib Atef",
+        position: "single",
+      },
+      {
+        message: "Hello my friend",
+        sentTime: "15 mins ago",
+        sender: "Jafar Al-Juneidi",
+        position: "single",
+      },
+    ],
+  },
+];
