@@ -1,3 +1,7 @@
+//urgent/necessery edits:
+//anything came from old dashboard needs to be deleted.
+//export and return should be fixed so navbar can navigate to project page & project page renders properly
+
 import React, { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import "./index.css";
