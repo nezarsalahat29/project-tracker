@@ -3853,10 +3853,10 @@
   "resolved" "https://registry.npmjs.org/ansicolors/-/ansicolors-0.2.1.tgz"
   "version" "0.2.1"
 
-"antd@^4.20.2", "antd@^4.6.3", "antd@>=3.0.0", "antd@>=4.4.2":
-  "integrity" "sha512-b+Gq1EY8LmcS/ARei/dGI0bWQlJ/j3f3oJ6XjM+ryyT5YWxvf7X3mGc++bTGuLmjn6+/icRL1zItIgcvplcomg=="
-  "resolved" "https://registry.npmjs.org/antd/-/antd-4.20.2.tgz"
-  "version" "4.20.2"
+"antd@^4.20.3", "antd@^4.6.3", "antd@>=3.0.0", "antd@>=4.4.2":
+  "integrity" "sha512-liZB/OguxPPNnssiR8UH5gjAV3LetsnA8K0G+VBVJkCZsU5QmCDL05d059Nu6iRD7FVg0drSONZQwvWD4pO4nw=="
+  "resolved" "https://registry.npmjs.org/antd/-/antd-4.20.3.tgz"
+  "version" "4.20.3"
   dependencies:
     "@ant-design/colors" "^6.0.0"
     "@ant-design/icons" "^4.7.0"
@@ -11820,6 +11820,11 @@
   "integrity" "sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c="
   "resolved" "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   "version" "0.0.6"
+
+"typescript@^3.2.1 || ^4", "typescript@>= 2.7", "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta":
+  "integrity" "sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg=="
+  "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.6.4.tgz"
+  "version" "4.6.4"
 
 "ua-parser-js@^0.7.20", "ua-parser-js@^0.7.30":
   "integrity" "sha512-qLK/Xe9E2uzmYI3qLeOmI0tEOt+TBBQyUIAh4aAgU05FVYzeZrKUdkAZfBNVGRaHVgV0TDkdEngJSw/SyQchkQ=="

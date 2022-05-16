@@ -33,7 +33,7 @@ const instructorItems = [
     getItem(<Link to='/'>Dashboard</Link>, '1', <PieChartOutlined />),
     getItem(<Link to='/Class'>Class</Link>, '2', <DesktopOutlined />),
     getItem(<Link to='/Groups'>Groups</Link>, '3', <UserOutlined />),
-    getItem(<Link to='/Projects'>Projects</Link>, '4', <TeamOutlined />),
+    getItem(<Link to='/Project'>Projects</Link>, '4', <TeamOutlined />),
     getItem(<Link to='/Tasks'>Tasks</Link>, '5', <FileOutlined />),
     getItem(<Link to='/Chat'>Chat</Link>, '6', <FileOutlined />),
 ];
