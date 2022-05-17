@@ -11,7 +11,6 @@ export default function StudentPresentational({ student }) {
                 margin: '0.5rem',
                 padding: '0.5rem',
                 border: '1px solid rgba(0, 0, 0, 0.05)',
-                cursor: 'grab',
                 backgroundColor: 'rgba(240, 240, 240)',
                 textAlign: 'center',
                 display: 'inline-block',

@@ -1,230 +1,302 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Space, Typography, Divider, Button } from 'antd';
-import Student from '../../components/Student';
+import { Row, Col, Space, Typography, Divider, Button, Card } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import StudentPresentational from '../../components/StudentPresentational';
 import Group from '../../components/Group';
 import Loader from '../../components/Loader';
 import {
-    getGroupsFromDb,
-    getStudentsFromDb,
-    createGroup,
-    deleteGroup,
-    getUserDocument,
-    getGroupFromDb,
-    updateUser,
-    updateGroup,
+  getGroupsFromDb,
+  getStudentsFromDb,
+  createGroup,
+  deleteGroup,
+  getUserDocument,
+  getGroupFromDb,
+  updateUser,
+  updateGroup,
 } from '../../firestore';
-
-// Dnd
-import { DndContext, DragOverlay } from '@dnd-kit/core';
-import Droppable from '../../components/Droppable';
-import Draggable from '../../components/Draggable';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 const { Title } = Typography;
 export default function Class() {
-    const [students, setStudents] = useState([]);
-    const [studentLoading, setStudentLoading] = useState(true);
-    const [groups, setGroups] = useState([]);
-    const [groupLoading, setGroupLoading] = useState(true);
-    const [isDragging, setIsDragging] = useState(false);
-    const [draggingStudent, setDraggingStudent] = useState();
+  const [students, setStudents] = useState([]);
+  const [studentLoading, setStudentLoading] = useState(true);
+  const [groups, setGroups] = useState([]);
+  const [groupLoading, setGroupLoading] = useState(true);
 
-    const getStudentsData = async () => {
-        let students = await getStudentsFromDb();
-        students = students.filter((student) => !student.groupId);
-        setStudents(students);
-        setStudentLoading(false);
-    };
+  const getStudentsData = async () => {
+    let students = await getStudentsFromDb();
+    students = students.filter((student) => !student.groupId);
+    setStudents(students);
+    setStudentLoading(false);
+  };
 
-    const getGroupData = async () => {
-        setGroups(await getGroupsFromDb());
-        setGroupLoading(false);
-    };
+  const getGroupData = async () => {
+    const groups = await getGroupsFromDb();
+    setGroups(groups);
+    setGroupLoading(false);
+  };
 
-    const getData = async () => {
-        await Promise.all([getStudentsData(), getGroupData()]);
-    };
+  const getData = async () => {
+    await Promise.all([getStudentsData(), getGroupData()]);
+  };
 
-    useEffect(() => {
-        getData();
-    }, []);
+  useEffect(() => {
+    getData();
+  }, []);
 
-    const createNewGroup = async () => {
-        createGroup({});
-        getGroupData();
-    };
+  const onDragEnd = (result) => {
+    console.log(result);
+    if (!result.destination) return;
+    const { source, destination } = result;
 
-    const deleteThisGroup = (group) => {
-        group.studentIds.forEach(async (studentId) => {
-            await updateUser(studentId, { groupId: null });
-        });
-        deleteGroup(group.id);
-        getData();
-    };
+    if (source.droppableId === destination.droppableId) {
+      const column =
+        source.droppableId === 'studentsDroppable'
+          ? students
+          : groups.find((g) => g.id === destination.droppableId).students;
 
-    const handleDragStart = async (event) => {
-        console.log('starting drag');
-        const studentId = event.active.id.substring(9);
-        const student = await getUserDocument(studentId);
-        console.log('draggingStudent: ', student);
-        setDraggingStudent(<StudentPresentational student={student} />);
-        event.active.data.current = student;
-        console.log('dragging event on start: ', event);
-        setIsDragging(true);
-    };
-
-    const handleDragEnd = async (event) => {
-        setIsDragging(false);
-        if (event.over && /^droppableStudent$/.test(event.over.id)) {
-            const studentId = event.active.id.substring(9);
-            console.log('student:', studentId);
-            const student = event.active.data.current;
-            if (student.groupId) {
-                // setStudentLoading(true);
-                // setGroupLoading(true);
-                setStudents((students) => [...students, student]);
-                const studentGroup = await getGroupFromDb(student.groupId);
-                updateUser(studentId, {
-                    ...student,
-                    groupId: null,
-                    lastModified: new Date(),
-                });
-                updateGroup(studentGroup.id, {
-                    ...studentGroup,
-                    studentIds: studentGroup.studentIds.filter(
-                        (id) => id !== studentId
-                    ),
-                });
-                getData();
+      const copiedItems = [...column];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      if (source.droppableId === 'studentsDroppable') {
+        setStudents(copiedItems);
+      } else {
+        setGroups(
+          groups.map((group) => {
+            if (group.id === source.droppableId) {
+              return { ...group, students: copiedItems };
             }
-        } else if (event.over && /^droppable/.test(event.over.id)) {
-            // setStudentLoading(true);
-            // setGroupLoading(true);
+            return group;
+          })
+        );
+      }
+    } else {
+      const sourceColumn =
+        source.droppableId === 'studentsDroppable'
+          ? students
+          : groups.find((g) => g.id === source.droppableId).students;
 
-            const groupId = event.over.id.substring(9);
-            const studentId = event.active.id.substring(9);
-            console.log('group: ', groupId);
-            console.log('student: ', studentId);
+      const destinationColumn =
+        destination.droppableId === 'studentsDroppable'
+          ? students
+          : groups.find((g) => g.id === destination.droppableId).students;
 
-            const student = await getUserDocument(studentId);
-            console.log(student);
-            if (student.groupId !== groupId) {
-                if (student.groupId) {
-                    const oldStudentGroup = await getGroupFromDb(
-                        student.groupId
-                    );
-                    updateGroup(student.groupId, {
-                        studentIds: oldStudentGroup.studentIds.filter(
-                            (sId) => sId !== studentId
-                        ),
-                        lastModified: new Date(),
-                    });
-                }
+      const sourceItems = [...sourceColumn];
+      const destinationItems = [...destinationColumn];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destinationItems.splice(destination.index, 0, removed);
 
-                updateUser(studentId, {
-                    groupId: groupId,
-                    lastModified: new Date(),
-                });
+      console.log(destinationItems);
 
-                const newStudentGroup = await getGroupFromDb(groupId);
-                updateGroup(groupId, {
-                    studentIds: [...newStudentGroup.studentIds, studentId],
-                    lastModified: new Date(),
-                });
+      if (source.droppableId === 'studentsDroppable') {
+        setStudents(sourceItems);
+        setGroups(
+          groups.map((group) => {
+            if (group.id === destination.droppableId) {
+              return { ...group, students: destinationItems };
             }
-
-            getData();
+            return group;
+          })
+        );
+      } else {
+        if (destination.droppableId === 'studentsDroppable') {
+          setStudents(destinationItems);
         }
-    };
+        setGroups(
+          groups.map((group) => {
+            if (group.id === source.droppableId) {
+              return { ...group, students: sourceItems };
+            } else if (group.id === destination.droppableId) {
+              return { ...group, students: destinationItems };
+            }
+            return group;
+          })
+        );
+      }
+    }
+  };
 
-    return (
-        <Row
-            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-            style={{ height: '100%' }}
-            wrap={false}
+  return (
+    <Row
+      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+      style={{ height: '100%' }}
+      wrap={false}
+    >
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Col
+          flex='220px'
+          style={{
+            // border: '1px solid rgba(0, 0, 0, 0.05)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
         >
-            <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-                <Col
-                    flex='250px'
-                    style={{
-                        border: '1px solid rgba(0, 0, 0, 0.05)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Space
-                        align='baseline'
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Title
-                            level={2}
-                            style={{
-                                width: '100%',
-                                textAlign: 'center',
-                                marginBottom: '0',
-                            }}
-                        >
-                            Students
-                        </Title>
-                    </Space>
-                    <Divider style={{ margin: '12px 0' }} />
-                    <DragOverlay>
-                        {isDragging ? draggingStudent : null}
-                    </DragOverlay>
-                    <Droppable id={`droppableStudent`}>
-                        {studentLoading ? (
-                            <Loader />
-                        ) : (
-                            students.map((student) => (
-                                <Draggable
-                                    id={`draggable${student.id}`}
-                                    key={student.id}
-                                >
-                                    <StudentPresentational student={student} />
-                                </Draggable>
-                            ))
-                        )}
-                    </Droppable>
-                </Col>
-                <Col
-                    flex='auto'
-                    style={{ border: '1px solid rgba(0, 0, 0, 0.05)' }}
-                >
-                    <Space
-                        align='baseline'
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            // alignItems: 'center',
-                        }}
-                    >
-                        <Title level={2} style={{ marginBottom: '0' }}>
-                            Groups
-                        </Title>
-                        <Button type='primary' onClick={createNewGroup}>
-                            Create Group
-                        </Button>
-                    </Space>
-                    <Divider style={{ margin: '12px 0' }} />
+          <Space
+            align='baseline'
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Title
+              level={2}
+              style={{
+                width: '100%',
+                textAlign: 'center',
+                marginBottom: '0',
+              }}
+            >
+              Students
+            </Title>
+          </Space>
+          <Divider style={{ margin: '12px 0' }} />
 
-                    {groupLoading ? (
-                        <Loader />
-                    ) : (
-                        groups.map((group) => (
-                            <Group
-                                key={group.id}
-                                group={group}
-                                deleteGroup={deleteThisGroup}
-                            />
-                        ))
-                    )}
-                </Col>
-            </DndContext>
-        </Row>
-    );
+          {studentLoading ? (
+            <Loader />
+          ) : (
+            <Droppable droppableId='studentsDroppable' scrollable='true'>
+              {(provided, snapshot) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={{
+                    background: snapshot.isDraggingOver
+                      ? 'lightblue'
+                      : '#f0f2f5',
+                    borderRadius: '10px',
+
+                    padding: 4,
+                    width: '100%',
+                    minHeight: 100,
+                  }}
+                >
+                  {students.map((student, index) => (
+                    <Draggable
+                      key={student.id}
+                      draggableId={student.id}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          {...provided.draggableProps}
+                          ref={provided.innerRef}
+                          {...provided.dragHandleProps}
+                          style={{
+                            userSelect: 'none',
+                            padding: '0.5rem',
+                            margin: '0.5rem',
+                            background: snapshot.isDragging
+                              ? '#3867cb'
+                              : '#4da6d1',
+                            color: 'white',
+                            textAlign: 'center',
+                            width: '160px',
+                            ...provided.draggableProps.style,
+                          }}
+                        >
+                          {student.name}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          )}
+        </Col>
+        <Col flex='auto'>
+          <Space
+            align='baseline'
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              // alignItems: 'center',
+            }}
+          >
+            <Title level={2} style={{ marginBottom: '0' }}>
+              Groups
+            </Title>
+            <Button type='primary' onClick={() => {}}>
+              Create Group
+            </Button>
+          </Space>
+          <Divider style={{ margin: '12px 0' }} />
+
+          {groupLoading ? (
+            <Loader />
+          ) : (
+            groups.map((group) => (
+              <Card
+                key={group.id}
+                title={`Group ${group.id}`}
+                extra={
+                  // eslint-disable-next-line
+                  <a onClick={() => {}}>
+                    <DeleteOutlined />
+                  </a>
+                }
+                style={{
+                  width: '100%',
+                  marginBottom: '0.5rem',
+                }}
+              >
+                <Droppable key={group.id} droppableId={group.id}>
+                  {(provided, snapshot) => (
+                    <div
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      style={{
+                        background: snapshot.isDraggingOver
+                          ? 'lightblue'
+                          : '#f0f2f5',
+                        borderRadius: '10px',
+                        padding: 4,
+                        width: '100%',
+                        minHeight: 100,
+                      }}
+                    >
+                      {group.students.map((student, index) => (
+                        <Draggable
+                          key={student.id}
+                          draggableId={student.id}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              {...provided.draggableProps}
+                              ref={provided.innerRef}
+                              {...provided.dragHandleProps}
+                              style={{
+                                userSelect: 'none',
+                                padding: '0.5rem',
+                                margin: '0.5rem',
+                                background: snapshot.isDragging
+                                  ? '#3867cb'
+                                  : '#4da6d1',
+                                color: 'white',
+                                display: 'inline-block',
+                                width: '160px',
+                                textAlign: 'center',
+                                ...provided.draggableProps.style,
+                              }}
+                            >
+                              {student.name}
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </Card>
+            ))
+          )}
+        </Col>
+      </DragDropContext>
+    </Row>
+  );
 }

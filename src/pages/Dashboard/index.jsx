@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Class from '../Class';
 import { useAuth } from '../../contexts/AuthContext';
 import './index.css';
-import { Typography, Button, Layout, Menu, Breadcrumb, Image } from 'antd';
+import { Button, Layout, Menu, Image } from 'antd';
 import {
     DesktopOutlined,
     PieChartOutlined,
@@ -11,8 +11,7 @@ import {
     UserOutlined,
 } from '@ant-design/icons';
 
-const { Header, Content, Footer, Sider } = Layout;
-const { Title } = Typography;
+const { Header, Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
     return {

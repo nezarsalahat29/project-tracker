@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Typography } from 'antd';
-import Draggable from './Draggable';
 import { getUserDocument } from '../firestore';
 import Loader from './Loader';
 
