@@ -1,0 +1,20 @@
+#components-layout-demo-side .logo {
+    height: 32px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.site-layout .site-layout-background {
+    background: #fff;
+}
+
+.ant-menu {
+    /* display: flex;
+    flex-direction: column;
+    height: 100%; */
+}
+
+.ant-menu .ant-menu-item:last-of-type {
+    /* margin-top: auto;
+    margin-bottom: 60px; */
+}
