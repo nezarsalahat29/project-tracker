@@ -43,38 +43,7 @@ const Projects = [{
   deliverables : ["dev1","dev2","dev3"]
 
 },
-{
-  id:2,
-  description: "You will find here the description of this project and other details",
-  startDate: "9-7-2022",
-  endDAte: "22-8-2022",
-  Title: "Project 2",
-  tasks: ["task1","task2","task3"],
-  Progress: 0.9,
-  deliverables : ["dev1","dev2","dev3"]
 
-},
-{
-  id:3,
-  description: "You will find here the description of this project and other details",
-  startDate: "1-7-2022",
-  endDAte: "7-8-2022",
-  Title: "Project 3",
-  tasks: ["task1","task2","task3"],
-  Progress: 0,
-  deliverables : ["dev1","dev2","dev3"]
-
-},
-{  id:4,
-  description: "You will find here the description of this project and other details",
-  startDate: "18-7-2022",
-  endDAte: "26-8-2022",
-  Title: "Project 4",
-  tasks: ["task1","task2","task3"],
-  Progress: 0.43,
-  deliverables : ["dev1","dev2","dev3"]
-
-},
 ];
 
 
@@ -95,12 +64,12 @@ return(
         
         
       >
-        <Meta title={e.Title} description={e.description}  onClick="" />
-        <p>From: {e.startDate}</p>
-        <p className="btnk">To: {e.endDAte}</p>
+        
+        <p>{e.description}</p>
+        <h className="btnk">Due Date: {e.endDAte}</h>
         <Progress percent={e.Progress*100} />
 
-          
+        
           
       </Card>
       </Col>
@@ -108,15 +77,21 @@ return(
     
      
      </Row>
-     <Divider orientation="right">
+     <Divider orientation="Center">
      <Row>
-     <Button icon={
+TASKS
+</Row>
+</Divider>
+<Row justify="end">
+      <Col span={12}></Col>
+      <Col span={4}>  <Button icon={
       <AppstoreAddOutlined style={{color : '#0092ff',fontSize:20}}/> 
      }>
-Add Project
-     </Button>
-     </Row>
-     </Divider>
+Add Task
+     </Button></Col>
+    </Row>
+     
+     
      </>
 );
 }
