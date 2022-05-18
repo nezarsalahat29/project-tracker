@@ -53,26 +53,25 @@ function Project() {
 return(
 <>
       
-            <Divider orientation="center">Projects</Divider>
+            
     <Row gutter={26}>
             {Projects.map((e)=>{
        return (
-        <Col  span={6}>
-        <Card
-        hoverable
-        style={{ width: 200 }}
-        
-        
-      >
-        
-        <p>{e.description}</p>
-        <h className="btnk">Due Date: {e.endDAte}</h>
-        <Progress percent={e.Progress*100} />
+        <Row>
+  <Divider orientation="center">{e.Title}</Divider>
+  <div className="site-card-border-less-wrapper">
+    <Card title={e.description} bordered={false} style={{ width: 800 }}>
+      <p>Start Date: {e.startDate}</p>
+      <p>End Date: {e.endDAte}</p>
+      <p>ID: {e.id}</p>
+    </Card>
+  </div>
+        <Progress width={20} percent={e.Progress*100} />
 
         
           
-      </Card>
-      </Col>
+      
+      </Row>
      );})}
     
      
