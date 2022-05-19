@@ -16,7 +16,26 @@ import {
   Avatar,
 } from "@chatscope/chat-ui-kit-react";
 import { useAuth } from "../contexts/AuthContext";
+import {
+  createConversation,
+  deleteConversation,
+  setMessagesToConversation,
+  getConversationFromDb,
+} from "../firestore";
+import TimeAgo from "javascript-time-ago";
 
+// English.
+import en from "javascript-time-ago/locale/en.json";
+TimeAgo.addDefaultLocale(en);
+
+// Create formatter (English).
+const timeAgo = new TimeAgo("en-US");
+
+function getName(list, userName) {
+  console.log(list);
+  console.log(userName);
+  return userName === list[0] ? list[1] : list[0];
+}
 const ChatRoomsList = [
   { name: "Lilly", lastSenderName: "Lilly", info: "Yes i can do it for you" },
   { name: "Joe", lastSenderName: "Joe", info: "Yes i can do it for you" },
@@ -33,25 +52,56 @@ const ChatRoomsList = [
 ];
 
 export default function Chat() {
-  const [activateChat, setActivateChat] = useState(ChatRooms[0]);
+  const [conversations, setConversations] = useState([
+    {
+      name: "",
+      isGroup: false,
+      chatroomID: "",
+      lastSenderName: "",
+      lastMessage: "",
+      participants: ["", " "],
+      Messages: [],
+    },
+  ]);
+  const [activateChat, setActivateChat] = useState(conversations[0]);
   const { currentUser } = useAuth();
   const [messageInputValue, setMessageInputValue] = useState("");
   console.log(currentUser);
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    const getData = async () => {
+      await Promise.all([getConversations()]);
+    };
+
+    getData();
   }, []);
 
+  const getConversations = async () => {
+    const conversation = await getConversationFromDb(UserChatRoomID);
+    console.log("return list:");
+    setConversations(conversation);
+  };
+
+  const sendNewMessage = () => {
+    setMessagesToConversation(activateChat.chatroomID, activateChat);
+  };
   return (
     <div style={{ height: 800 }}>
       <MainContainer>
         <Sidebar position='left' scrollable={true}>
           <Search placeholder='Search...' />
           <ConversationList>
-            {ChatRooms.map((conversation) => {
+            {conversations.map((conversation) => {
               return (
                 <Conversation
+                  key={conversation.chatroomID}
                   id={conversation.chatroomID}
-                  name={conversation.name}
+                  name={
+                    conversation.isGroup
+                      ? conversation.name
+                      : getName(conversation.participants, currentUser.username)
+                  }
                   lastSenderName={
                     conversation.lastSenderName === currentUser.username
                       ? "Me"
@@ -60,7 +110,7 @@ export default function Chat() {
                   info={conversation.lastMessage}
                   onClick={function (value) {
                     console.log(value.target.offsetParent.id);
-                    ChatRooms.forEach(function (element) {
+                    conversations.forEach(function (element) {
                       if (element.chatroomID === value.target.offsetParent.id)
                         setActivateChat(element);
                       console.log(activateChat);
@@ -82,11 +132,26 @@ export default function Chat() {
         <ChatContainer>
           <ConversationHeader>
             <Avatar
-              src={"https://ui-avatars.com/api/?name=" + activateChat.name}
-              name={activateChat.name}
+              src={
+                "https://ui-avatars.com/api/?name=" +
+                (activateChat.isGroup
+                  ? activateChat.name
+                  : getName(activateChat.participants, currentUser.username))
+              }
+              name={
+                activateChat.isGroup
+                  ? activateChat.name
+                  : getName(activateChat.participants, currentUser.username)
+              }
             />
 
-            <ConversationHeader.Content userName={activateChat.name} />
+            <ConversationHeader.Content
+              userName={
+                activateChat.isGroup
+                  ? activateChat.name
+                  : getName(activateChat.participants, currentUser.username)
+              }
+            />
             <ConversationHeader.Actions></ConversationHeader.Actions>
           </ConversationHeader>
           <MessageList autoScrollToBottom={true}>
@@ -95,7 +160,7 @@ export default function Chat() {
                 <Message
                   model={{
                     message: message.message,
-                    sentTime: "15 mins ago",
+                    sentTime: message.sentTime,
                     sender: message.sender,
                     direction:
                       message.sender === currentUser.username
@@ -118,13 +183,29 @@ export default function Chat() {
             value={messageInputValue}
             onChange={(val) => setMessageInputValue(val)}
             onSend={function (val) {
-              activateChat.Messages.push({
-                message: val,
-                sentTime: "15 mins ago",
-                sender: currentUser.username,
-                position: "single",
-              });
+              conversations
+                .find(
+                  (element) => element.chatroomID === activateChat.chatroomID
+                )
+                .Messages.push({
+                  message: val,
+                  sentTime: new Date(),
+                  sender: currentUser.username,
+                  position: "single",
+                });
+              conversations.find(
+                (element) => element.chatroomID === activateChat.chatroomID
+              ).lastMessage = val;
+              conversations.find(
+                (element) => element.chatroomID === activateChat.chatroomID
+              ).lastSenderName = currentUser.username;
+              setActivateChat(
+                conversations.find(
+                  (element) => element.chatroomID === activateChat.chatroomID
+                )
+              );
               setMessageInputValue("");
+              sendNewMessage();
             }}
           />
         </ChatContainer>
@@ -133,18 +214,20 @@ export default function Chat() {
   );
 }
 
+var UserChatRoomID = ["123456789", "877951335"];
 var ChatRooms = [
   {
     name: "Instructor",
+    isGroup: false,
     chatroomID: "123456789",
     lastSenderName: "Instructor",
     lastMessage: "Yes i can do it for you",
-    participants: ["Instructor", "Suhaib Atef"],
+    participants: ["AdminX2022", "Suhaib Atef"],
     Messages: [
       {
         message: "Hello my friend",
         sentTime: "15 mins ago",
-        sender: "Instructor",
+        sender: "AdminX2022",
         position: "single",
       },
       {
@@ -162,22 +245,23 @@ var ChatRooms = [
       {
         message: "Hello my friend",
         sentTime: "15 mins ago",
-        sender: "Instructor",
+        sender: "AdminX2022",
         position: "single",
       },
     ],
   },
   {
     name: "Group A",
+    isGroup: true,
     chatroomID: "877951335",
     lastSenderName: "Suhaib Atef",
     lastMessage: "Yes i can do it for you",
-    participants: ["Instructor", "Suhaib Atef", "Jafar Al-Juneidi"],
+    participants: ["AdminX2022", "Suhaib Atef", "Jafar Al-Juneidi"],
     Messages: [
       {
         message: "Hello my friend",
         sentTime: "15 mins ago",
-        sender: "Instructor",
+        sender: "AdminX2022",
         position: "single",
       },
       {

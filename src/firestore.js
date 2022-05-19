@@ -113,3 +113,72 @@ export const deleteGroup = async (groupId) => {
     console.error('Error removing group document: ', error);
   }
 };
+
+export const createConversation = () => {
+  firestore
+    .collection('conversations')
+    .add({
+        name: "",
+        isGroup: true,
+        chatroomID: "",
+        lastSenderName: "",
+        lastMessage: "",
+        participants: [],
+        Messages: [],
+
+  },)
+    .then(() => {
+      console.log('Conversation successfully written!');
+    })
+    .catch((error) => {
+      console.error('Error writing Conversation document: ', error);
+    });
+};
+
+export const deleteConversation = async ( convID) => {
+  try {
+    await firestore.collection('conversations').doc(convID).delete();
+    console.log('conversation document successfully deleted!');
+  } catch (error) {
+    console.error('Error removing conversation document: ', error);
+  }
+};
+
+
+export const getConversationFromDb = async (conversationIds) => {
+  try {
+    const conversations = [];
+    const conversationsRef = firestore.collection('conversations');
+    const snapshot = await conversationsRef.where('chatroomID', 'in', conversationIds).get();
+    if (snapshot.empty) {
+    console.log('No matching documents.');
+    return;
+    }  
+
+    snapshot.forEach(doc => {
+      conversations.push({"id":doc.id,...doc.data()})
+    });
+    
+    return conversations;
+
+    
+  } catch (error) {
+    console.log('error fetching conversation documents', error);
+  }
+};
+
+
+export const setMessagesToConversation = async (conversationID,conversation) =>{
+  
+
+  try {
+    const conversationsRef = firestore.collection('conversations');
+    const snapshot = await conversationsRef.where('chatroomID', '==', conversationID).get();
+    console.log(snapshot.docs[0].id);
+    const conversationRef = conversationsRef.doc(snapshot.docs[0].id);
+    await conversationRef.update(conversation);
+  } catch (error) {
+    console.log('error updating conversation  messages ', error);
+  }
+
+}
