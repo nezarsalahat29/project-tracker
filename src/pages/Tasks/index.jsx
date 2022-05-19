@@ -1,8 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-
-import "./index.css";
 import { Typography, Button, Layout, Menu, Breadcrumb, Image, Space } from "antd";
 import {
     DesktopOutlined,
@@ -37,27 +35,27 @@ const items = [
     { id: "4", content: "Fourth Task" },
     { id: "5", content: "Fifth Task" }
 ]
-const Titles = ["Requested Tasks", "To-Do", "In progress", "Finished"]; 
+const Titles = ["Requested Tasks", "To-Do", "In progress", "Finished"];
 const List = [
     {
         key: "1",
-        title: "Requested Tasks",
+        name: "Requested Tasks",
         items: items,
     },
 
     {
         key: "2",
-        title: "To-Do",
+        name: "To-Do",
         items: [],
     },
     {
         key: "3",
-        title: "In progress",
+        name: "In progress",
         items: [],
     },
     {
         key: "4",
-        title: "Finished",
+        name: "Finished",
         items: [],
     },
 ];
@@ -103,13 +101,13 @@ function TasksLists() {
     const [columns, setColumns] = useState(Titles);
     return (
 
-        <div style={{ marginTop: "50px" }}>
+        <div style={{ marginTop: "50px", justifyContent: "center" }}>
             <hr />
-            <div>
-                <h1 style={{ textAlign: "center" }}>
+            <Title>
+                <h1 style={{ textAlign: "center", width: Header }}>
                     Tasks Lists
                 </h1>
-            </div>
+            </Title>
             <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
                 <DragDropContext
                     onDragEnd={result => onDragEnd(result, columns, setColumns)}
