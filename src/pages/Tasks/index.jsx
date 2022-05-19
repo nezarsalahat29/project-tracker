@@ -104,7 +104,7 @@ function TasksLists() {
         <div style={{ marginTop: "50px", justifyContent: "center" }}>
             <hr />
             <Title>
-                <h1 style={{ textAlign: "center", width: Header }}>
+                <h1 style={{ textAlign: "center", width: Header, fontWeight: 'bold' }}>
                     Tasks Lists
                 </h1>
             </Title>
@@ -118,11 +118,12 @@ function TasksLists() {
                                 style={{
                                     display: "flex",
                                     flexDirection: "column",
-                                    alignItems: "center"
+                                    alignItems: "center",
+                                    fontWeight: 'bold',
                                 }}
                                 key={column.Id}
                             >
-                                <h2>{column.name}</h2>
+                                <h2 style={{ fontWeight: 'bold' }}>{column.name}</h2>
                                 <div style={{ margin: 8 }}>
                                     <Droppable droppableId={column.id} key={column.id}>
                                         {(provided, snapshot) => {
@@ -132,10 +133,11 @@ function TasksLists() {
                                                     ref={provided.innerRef}
                                                     style={{
                                                         background: snapshot.isDraggingOver
-                                                            ? "lightblue"
-                                                            : "lightgrey",
+                                                            ? "#002766"
+                                                            : "#f0f5ff",
+                                                        fontSize: "30px",
                                                         padding: 4,
-                                                        width: 250,
+                                                        width: 260,
                                                         minHeight: 500
                                                     }}
                                                 >
@@ -154,13 +156,20 @@ function TasksLists() {
                                                                             {...provided.dragHandleProps}
                                                                             style={{
                                                                                 userSelect: "none",
-                                                                                padding: 16,
+                                                                                padding: 22,
                                                                                 margin: "0 0 8px 0",
                                                                                 minHeight: "50px",
+                                                                                fontWeight: '450',
+                                                                                textAlign: "center",
+                                                                                fontSize: "20px",
+
+
+
                                                                                 backgroundColor: snapshot.isDragging
-                                                                                    ? "#263B4A"
-                                                                                    : "#456C86",
-                                                                                color: "white",
+                                                                                    ? "#061178"
+                                                                                    : "#40a9ff",
+                                                                                color: "black",
+
                                                                                 ...provided.draggableProps.style
                                                                             }}
                                                                         >
