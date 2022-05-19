@@ -9,44 +9,44 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Row, Col } from 'antd';
 
 const instructorDashboard = (
-    <Row gutter={[16, 24]}>
-        <Col xs={24}>
-            <StatisticsBar />
-        </Col>
-        <Col xs={24} sm={12}>
-            <Inbox />
-        </Col>
-        <Col xs={24} sm={12}>
-            <TimelineComponent />
-        </Col>
-        <Col xs={24}>
-            <LastModifiedTable />
-        </Col>
-    </Row>
+	<Row gutter={[16, 24]}>
+		<Col xs={24}>
+			<StatisticsBar />
+		</Col>
+		<Col xs={24} sm={12}>
+			<Inbox />
+		</Col>
+		<Col xs={24} sm={12}>
+			<TimelineComponent />
+		</Col>
+		<Col xs={24}>
+			<LastModifiedTable />
+		</Col>
+	</Row>
 );
 const studentDashboard = (
-    <Row gutter={[16, 24]}>
-        <Col xs={24} sm={12}>
-            <TimelineComponent />
-        </Col>
-        <Col xs={24} sm={12}>
-            <Inbox />
-        </Col>
-        <Col xs={24} sm={12}>
-            <TaskDonut />
-        </Col>
-        <Col xs={24} sm={12}>
-            <LiquidPlot />
-        </Col>
-    </Row>
+	<Row gutter={[16, 24]}>
+		<Col xs={24} sm={12}>
+			<TimelineComponent />
+		</Col>
+		<Col xs={24} sm={12}>
+			<Inbox />
+		</Col>
+		<Col xs={24} sm={12}>
+			<TaskDonut />
+		</Col>
+		<Col xs={24} sm={12}>
+			<LiquidPlot />
+		</Col>
+	</Row>
 );
 
 export default function Dashboard() {
-    const { currentUser } = useAuth();
+	const { currentUser } = useAuth();
 
-    useEffect(() => {
-        window.scroll(0, 0);
-    }, []);
+	useEffect(() => {
+		window.scroll(0, 0);
+	}, []);
 
-    return currentUser.instructor ? instructorDashboard : studentDashboard;
+	return currentUser.instructor ? instructorDashboard : studentDashboard;
 }
