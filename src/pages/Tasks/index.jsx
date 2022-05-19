@@ -1,8 +1,7 @@
-/*
+
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import InstructorTasks from './InstructorTasks';
-import StudentTasks from './StudentTasks';
+
 import "./index.css";
 import { Typography, Button, Layout, Menu, Breadcrumb, Image, Space } from "antd";
 import {
@@ -37,23 +36,23 @@ const Titles = ["Requested Tasks", "To-Do", "In progress", "Finished"];
 
 const List = [
     {
-        key: "1",
+        id: "1",
         Content: "Requested Tasks",
         items: []
     },
 
     {
-        key: "2",
+        id: "2",
         content: "To-Do",
         items: [],
     },
     {
-        key: "3",
+        id: "3",
         content: "In progress",
         items: [],
     },
     {
-        key: "4",
+        id: "4",
         content: "Finished",
         items: [],
     },
@@ -112,7 +111,7 @@ function TasksLists() {
                 <DragDropContext
                     onDragEnd={result => onDragEnd(result, columns, setColumns)}
                 >
-                    {Object.entries(columns).map(([columnId, column], index) => {
+                    {List.map((column, index) => {
                         return (
                             <div
                                 style={{
@@ -120,11 +119,11 @@ function TasksLists() {
                                     flexDirection: "column",
                                     alignItems: "center"
                                 }}
-                                key={columnId}
+                                key={column.Id}
                             >
                                 <h2>{column.name}</h2>
                                 <div style={{ margin: 8 }}>
-                                    <Droppable droppableId={columnId} key={columnId}>
+                                    <Droppable droppableId={column.id} key={column.id}>
                                         {(provided, snapshot) => {
                                             return (
                                                 <div
@@ -188,4 +187,3 @@ function TasksLists() {
 }
 
 export default TasksLists;
-*/

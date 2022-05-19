@@ -13,6 +13,8 @@ import Dashboard from '../Dashboard';
 import Class from '../Class';
 import FaultPage from '../faultPage';
 import Chat from '../Chat';
+import Project from'../Project';
+
 
 const { Header, Content, Sider } = Layout;
 
@@ -109,6 +111,7 @@ export default function Navbar() {
               <Route path='/Class' element={<Class />} />
               <Route path='/Chat' element={<Chat />} />
               <Route path='*' element={<FaultPage />} />
+              <Route path='/Project' element={<Project/>}/>
             </Routes>
           </div>
         </Content>
