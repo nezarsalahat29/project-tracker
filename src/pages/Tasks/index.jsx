@@ -28,36 +28,39 @@ function getItem(label, key, icon, children) {
         icon,
         children,
         label,
-
     };
 }
-
-const Titles = ["Requested Tasks", "To-Do", "In progress", "Finished"];
-
+const items = [
+    { id: "1", content: "First Task" },
+    { id: "2", content: "Second Task" },
+    { id: "3", content: "Third Task" },
+    { id: "4", content: "Fourth Task" },
+    { id: "5", content: "Fifth Task" }
+]
+const Titles = ["Requested Tasks", "To-Do", "In progress", "Finished"]; 
 const List = [
     {
-        id: "1",
-        Content: "Requested Tasks",
-        items: []
+        key: "1",
+        title: "Requested Tasks",
+        items: items,
     },
 
     {
-        id: "2",
-        content: "To-Do",
+        key: "2",
+        title: "To-Do",
         items: [],
     },
     {
-        id: "3",
-        content: "In progress",
+        key: "3",
+        title: "In progress",
         items: [],
     },
     {
-        id: "4",
-        content: "Finished",
+        key: "4",
+        title: "Finished",
         items: [],
     },
 ];
-
 
 const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
@@ -100,7 +103,7 @@ function TasksLists() {
     const [columns, setColumns] = useState(Titles);
     return (
 
-        <div style={{ marginTop: "500px" }}>
+        <div style={{ marginTop: "50px" }}>
             <hr />
             <div>
                 <h1 style={{ textAlign: "center" }}>
