@@ -1,0 +1,36 @@
+#components-layout-demo-side .logo {
+    height: 32px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.site-layout .site-layout-background {
+    background: #fff;
+}
+
+.gutter-row {
+    background: #0092ff;
+    padding: 8px 0;
+    text-align: center;
+}
+
+.gutter-box {
+    padding: 8px 0;
+    background: #FFFF;
+}
+
+.card {
+    background-color: #808080;
+    width: 300;
+}
+
+.btnk {
+
+    color: rgb(212, 10, 10);
+
+
+}
+
+.PPB {
+    opacity: 10;
+}
