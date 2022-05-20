@@ -20,33 +20,48 @@ import { DownloadOutlined } from "@ant-design/icons";
 import { Row, Col, Divider } from "antd";
 import { Progress } from "antd";
 import { Descriptions } from "antd";
+import { Drawer, Form, Input, Select, DatePicker, Space } from 'antd';
 const { Meta } = Card;
 const { Header, Content, Footer, Sider } = Layout;
 const { Title } = Typography;
+/****************************************************************/
+const { option } = Select;
+export default function Taskk() {
+  const [visible, setVisible] = React.useState(false);
 
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
+  const showDrawer = () => {
+    setVisible(true);
   };
-}
-const Projects = [
-  {
-    id: 1,
-    description:
-      "You will find here the description of this project and other details",
-    startDate: "12-7-2022",
-    endDAte: "7-8-2022",
-    Title: "Project 1",
-    tasks: ["task1", "task2", "task3"],
-    Progress: 0.6,
-    deliverables: ["dev1", "dev2", "dev3"],
-  },
-];
 
-function Project() {
+  const onClose = () => {
+    setVisible(false);
+  };
+
+
+  /************************************************************* */
+  function getItem(label, key, icon, children) {
+    return {
+      key,
+      icon,
+      children,
+      label,
+    };
+  }
+  const Projects = [
+    {
+      id: 1,
+      description:
+        "You will find here the description of this project and other details",
+      startDate: "12-7-2022",
+      endDAte: "7-8-2022",
+      Title: "Project 1",
+      tasks: ["task1", "task2", "task3"],
+      Progress: 0.6,
+      deliverables: ["dev1", "dev2", "dev3"],
+    },
+  ];
+
+
   return (
     <>
       <Row gutter={26}>
@@ -71,21 +86,113 @@ function Project() {
         })}
       </Row>
 
+
       <Row justify="end">
         <Col span={12}></Col>
         <Col span={4}>
           {" "}
-          <Button
+          <Button type="primary" onClick={showDrawer} style={{ backgroundColor: "#002766", borderColor: "#002766", borderRadius: "500" }}
             icon={
-              <AppstoreAddOutlined style={{ color: "#0092ff", fontSize: 20 }} />
+              <AppstoreAddOutlined style={{ fontSize: 20, fontWeight: "bold", color: "white" }} />}
+          >
+            Add New Task
+          </Button>
+          <Drawer
+            title="Add New Task"
+            width={720}
+            onClose={onClose}
+            visible={visible}
+            bodyStyle={{ paddingBottom: 80 }}
+            extra={
+              <Space>
+                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={onClose} type="primary">
+                  Submit
+                </Button>
+              </Space>
             }
           >
-            Add Task
-          </Button>
+            <Form layout="vertical" hideRequiredMark>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item
+                    name="Task Title"
+                    label="Task Title: "
+                    rules={[{ required: true, message: 'Please Enter Task Title: ' }]}
+                  >
+                    <Input placeholder="Please Enter Task Title" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item
+                    name="Project Name"
+                    label="Project Name: "
+                    rules={[{ required: true, message: 'Please Select Project Name: ' }]}
+                  >
+                    <Select placeholder=" Project Name:">
+                      <option value="xiao">Project 1 </option>
+                      <option value="mao">Project 2</option>
+                    </Select>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item
+                    name="Project Leader"
+                    label="Project Leader: "
+                    rules={[{ required: true, message: 'Select Project Leader' }]}
+                  >
+                    <Input placeholder="Please Enter Project Leadr Name" />
+                  </Form.Item>
+                </Col>
+              </Row>
+
+              <Row gutter={16}>
+
+                <Col span={12}>
+                  <Form.Item
+                    name="DateTime"
+                    label="DateTime"
+                    rules={[{ required: true, message: 'Please choose the DateTime' }]}
+                  >
+                    <DatePicker.RangePicker
+                      style={{ width: '100%' }}
+                      getPopupContainer={trigger => trigger.parentElement}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item
+                    name="description"
+                    label="Task Description: "
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please Enter Task Description',
+                      },
+                    ]}
+                  >
+                    <Input.TextArea rows={4} placeholder="Task Description" />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </Drawer>
+
         </Col>
         <TasksLists />
       </Row>
+
+
+
+
     </>
   );
+
 }
-export default Project;
+

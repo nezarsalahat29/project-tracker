@@ -34,6 +34,7 @@ const List = [
         id: 3,
         name: "In progress",
         icon: "⚡️",
+        borderColor: "red",
         items: [],
     },
     {
@@ -168,7 +169,9 @@ function TasksLists() {
                                                                                     }}
                                                                                 >
                                                                                     <h3> Task Description :</h3>
-                                                                                    Lorem ipsum dolor sit amet
+                                                                                    <p style={{
+                                                                                        wordbreak: "keep-all"
+                                                                                    }}>Lorem ipsum dolor sit amet.</p>
 
 
                                                                                     <div style={{ width: 170 }}>
