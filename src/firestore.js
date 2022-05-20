@@ -150,7 +150,8 @@ export const deleteConversation = async (convID) => {
 export const getChatRoomsFromDb = async (conversationIds) => {
   try {
     const conversations = [];
-    const conversationsRef = firestore.collection('conversations');
+    const conversationsRef = firestore.collection('chatRooms');
+
     conversationIds.forEach(async (id) => {
       const doc = await conversationsRef.doc(id).get();
       conversations.push({ id: doc.id, ...doc.data() });
@@ -163,10 +164,25 @@ export const getChatRoomsFromDb = async (conversationIds) => {
     //   conversations.push({ id: doc.id, ...doc.data() });
     // });
 
-    console.log('databse conversations: ', conversations);
+    console.log('database conversations: ', conversations);
     return conversations;
   } catch (error) {
     console.log('error fetching conversation documents', error);
+  }
+};
+
+export const getChatRoomsFromDbNotOptimized = async (conversationIds) => {
+  try {
+    const querySnapshot = await firestore.collection('chatRooms').get();
+    const chatRooms = [];
+    querySnapshot.forEach((doc) => {
+      if (conversationIds.includes(doc.id)) {
+        chatRooms.push({ id: doc.id, ...doc.data() });
+      }
+    });
+    return chatRooms;
+  } catch (error) {
+    console.log('error fetching chatRoom documents', error);
   }
 };
 

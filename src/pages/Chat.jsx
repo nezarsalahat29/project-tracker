@@ -22,6 +22,7 @@ import {
   sendMessage,
   getChatRoomsFromDb,
   useMessagesData,
+  getChatRoomsFromDbNotOptimized,
 } from '../firestore';
 
 // function getName(list, userName) {
@@ -45,28 +46,28 @@ import {
 //   },
 // ];
 
-var UserChatRoomID = ['ELN8CuTpwdv5vIQ4AE4S', 'VI4aYHvIItF0LXnAXhFj'];
-
 export default function Chat() {
-  const [conversations, setConversations] = useState();
+  const [conversations, setConversations] = useState([]);
   const [activateChat, setActivateChat] = useState({});
   const { currentUser } = useAuth();
   const [messageInputValue, setMessageInputValue] = useState('');
   // console.log(currentUser);
 
-  const [messages] = useMessagesData('ELN8CuTpwdv5vIQ4AE4S');
+  const [messages] = useMessagesData(activateChat.id);
   // console.log('activeChat: ', activateChat.id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
     const getData = async () => {
-      // await Promise.all([getConversations()]);
-      const coversationsFromDb = await getChatRoomsFromDb(UserChatRoomID);
-      console.log('frontend chatRooms', coversationsFromDb);
-      setConversations(coversationsFromDb);
-      setActivateChat(coversationsFromDb[0]);
-      console.log('active Chat:', activateChat);
+      const conversationsFromDb = await getChatRoomsFromDbNotOptimized(
+        currentUser.chatRooms
+      );
+      console.log('frontend chatRooms', conversationsFromDb);
+      console.log('first convo: ', conversationsFromDb[0]);
+
+      setConversations(conversationsFromDb);
+      setActivateChat({ ...conversationsFromDb[0] });
     };
 
     getData();
@@ -89,6 +90,7 @@ export default function Chat() {
   };
   return (
     <div style={{ height: 800 }}>
+      {activateChat && console.log('active Chat:', activateChat)}
       <MainContainer>
         <Sidebar position='left' scrollable={true}>
           <Search placeholder='Search...' />
