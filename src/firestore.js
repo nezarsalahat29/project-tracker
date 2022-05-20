@@ -1,4 +1,7 @@
-import { firestore } from './firebase';
+import firebase from 'firebase/compat/app';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+
+const firestore = firebase.firestore();
 
 export const createUserDocument = (user, additionalData) => {
   if (!user) return;
@@ -114,28 +117,28 @@ export const deleteGroup = async (groupId) => {
   }
 };
 
-export const createConversation = () => {
+export const createChatRoom = (docId, name) => {
   firestore
-    .collection('conversations')
-    .add({
-        name: "",
-        isGroup: true,
-        chatroomID: "",
-        lastSenderName: "",
-        lastMessage: "",
-        participants: [],
-        Messages: [],
-
-  },)
-    .then(() => {
-      console.log('Conversation successfully written!');
+    .collection('chatRooms')
+    .doc(docId)
+    .set({
+      name: name,
+    })
+    .then((docRef) => {
+      firestore.collection(`chatRooms/${docId}/messages`).add({
+        text: `Welcome to the ${name} chatRoom!`,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        uid: docId,
+        name,
+      });
+      console.log('ChatRoom successfully written!');
     })
     .catch((error) => {
-      console.error('Error writing Conversation document: ', error);
+      console.error('Error creating ChatRoom document: ', error);
     });
 };
 
-export const deleteConversation = async ( convID) => {
+export const deleteConversation = async (convID) => {
   try {
     await firestore.collection('conversations').doc(convID).delete();
     console.log('conversation document successfully deleted!');
@@ -144,41 +147,64 @@ export const deleteConversation = async ( convID) => {
   }
 };
 
-
-export const getConversationFromDb = async (conversationIds) => {
+export const getChatRoomsFromDb = async (conversationIds) => {
   try {
     const conversations = [];
     const conversationsRef = firestore.collection('conversations');
-    const snapshot = await conversationsRef.where('chatroomID', 'in', conversationIds).get();
-    if (snapshot.empty) {
-    console.log('No matching documents.');
-    return;
-    }  
-
-    snapshot.forEach(doc => {
-      conversations.push({"id":doc.id,...doc.data()})
+    conversationIds.forEach(async (id) => {
+      const doc = await conversationsRef.doc(id).get();
+      conversations.push({ id: doc.id, ...doc.data() });
     });
-    
-    return conversations;
+    // if (snapshot.empty) {
+    //   console.log('No matching documents.');
+    //   return;
+    // }
+    // snapshot.forEach((doc) => {
+    //   conversations.push({ id: doc.id, ...doc.data() });
+    // });
 
-    
+    console.log('databse conversations: ', conversations);
+    return conversations;
   } catch (error) {
     console.log('error fetching conversation documents', error);
   }
 };
 
-
-export const setMessagesToConversation = async (conversationID,conversation) =>{
-  
-
+export const sendMessage = async (chatRoomId, messageText, uid, username) => {
   try {
-    const conversationsRef = firestore.collection('conversations');
-    const snapshot = await conversationsRef.where('chatroomID', '==', conversationID).get();
-    console.log(snapshot.docs[0].id);
-    const conversationRef = conversationsRef.doc(snapshot.docs[0].id);
-    await conversationRef.update(conversation);
-  } catch (error) {
-    console.log('error updating conversation  messages ', error);
-  }
+    const messagesRef = firestore
+      .collection('chatRooms')
+      .doc(chatRoomId)
+      .collection('messages');
 
-}
+    messagesRef.add({
+      text: messageText,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      uid,
+      username,
+    });
+  } catch (error) {
+    console.log('error adding message to chatroom', error);
+  }
+};
+
+export const useMessagesData = (chatRoomId) => {
+  const messagesRef = firestore
+    .collection('chatRooms')
+    .doc(chatRoomId)
+    .collection('messages');
+  const query = messagesRef.orderBy('createdAt').limit(25);
+  return useCollectionData(query, { idField: 'id' });
+};
+
+// const userRef = firestore
+//   .collection('users')
+//   .doc('jttNpOWD2HR3xAdS6WveFcr5fBm2');
+// userRef.update({
+//   chatRooms: [
+//     'ELN8CuTpwdv5vIQ4AE4S',
+//     'QMXUybyTUUerrw91sLEY4wgnc8t1',
+//     'fzw7eFaKbsRPS1NiuPUE3GqCuys2',
+//     'qzTPOKrQC5aqjGPRGB7xAamFjMI2',
+//   ],
+// });
