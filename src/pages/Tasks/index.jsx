@@ -40,7 +40,7 @@ const List = [
     {
         id: 4,
         name: "Finished",
-        icon: "✅",
+        icon: "✔️",
         items: [],
     },
 ];
@@ -87,12 +87,13 @@ function TasksLists() {
     const [columns, setColumns] = useState(Titles);
     return (
         <Divider orientation='center'>
-            <div style={{ marginTop: "50px", justifyContent: "center" }}>
+            <div style={{ justifyContent: "center" }}>
                 <hr />
                 <Title>
-                    <h1 style={{ textAlign: "center", width: Header, fontWeight: 'bold' }}>
-                        Tasks Lists
+                    <h1 style={{ textAlign: "center", width: Header, fontWeight: 'bold', fontFamily: "cursive" }}>
+                        Tasks Lists 🔥
                     </h1>
+                    <br />
                 </Title>
                 <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
                     <DragDropContext

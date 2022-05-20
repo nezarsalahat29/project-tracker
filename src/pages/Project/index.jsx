@@ -3,8 +3,9 @@
 //export and return should be fixed so navbar can navigate to project page & project page renders properly
 
 import React, { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
 import "./index.css";
+import { Liquid } from "@ant-design/plots";
+import LiquidPlot from "../../components/Dashboard/Liquid"
 import TasksLists from "../Tasks";
 import { Typography, Button, Layout, Menu, Breadcrumb, Image } from "antd";
 import {
@@ -68,27 +69,50 @@ export default function Taskk() {
         {Projects.map((e) => {
           return (
             <Row>
-              <Divider orientation="center">{e.Title}</Divider>
+              <Divider orientation="center" style={{ fontWeight: "bolder", fontSize: "40px", fontFamily: "cursive" }}>{e.Title}</Divider>
               <div className="site-card-border-less-wrapper">
                 <Card
+                  headStyle={{ fontFamily: "-moz-initial", fontSize: "25px" }}
                   title={e.description}
                   bordered={false}
                   style={{ width: 800 }}
+                  bodyStyle={{ fontWeight: "bold", fontFamily: "-moz-initial", fontSize: "20px" }}
                 >
-                  <p>Start Date: {e.startDate}</p>
-                  <p>End Date: {e.endDAte}</p>
+                  <Row>
+                    <Col span={12}>
+                      <p>Start Date: {e.startDate}</p>
+                    </Col>
+                    <Col span={12}>
+                      <p>End Date: {e.endDAte}</p>
+                    </Col>
+
+                  </Row>
+
                   <p>ID: {e.id}</p>
+
+                  <Col span={18}>
+                    <LiquidPlot />
+                  </Col>
+
+
+
+
+
+
+
                 </Card>
               </div>
               <Progress width={20} percent={e.Progress * 100} />
             </Row>
+
+
           );
         })}
       </Row>
 
 
       <Row justify="end">
-        <Col span={12}></Col>
+
         <Col span={4}>
           {" "}
           <Button type="primary" onClick={showDrawer} style={{ backgroundColor: "#002766", borderColor: "#002766", borderRadius: "500" }}
