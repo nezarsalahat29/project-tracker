@@ -32,6 +32,7 @@ const instructorItems = [
   getItem(<Link to='/'>Dashboard</Link>, '1', <PieChartOutlined />),
   getItem(<Link to='/Class'>Class</Link>, '2', <DesktopOutlined />),
   getItem(<Link to='/Chat'>Chat</Link>, '6', <FileOutlined />),
+  getItem(<Link to='/Project'>Project</Link>, '4', <TeamOutlined />),
 ];
 
 const studentItems = [
