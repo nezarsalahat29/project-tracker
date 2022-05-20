@@ -38,27 +38,48 @@ const items = [
 const Titles = ["Requested Tasks", "To-Do", "In progress", "Finished"];
 const List = [
     {
-        key: "1",
+        id: "1",
+        icon: " 📂 ",
         name: "Requested Tasks",
         items: items,
     },
 
     {
-        key: "2",
+        id: "2",
         name: "To-Do",
+        icon: "📝",
         items: [],
     },
     {
-        key: "3",
+        id: "3",
         name: "In progress",
+        icon: "⚡️",
         items: [],
     },
     {
-        key: "4",
+        id: "4",
         name: "Finished",
+        icon: "✅",
         items: [],
     },
 ];
+const statuses = [{
+    status: "Requested Tasks",
+
+    color: "#EB5A46"
+}, {
+    status: "In Progress",
+
+    color: "#00C2E0"
+}, {
+    status: "To-Do",
+
+    color: "#C377E0"
+}, {
+    status: "Finished",
+
+    color: "#3981DE"
+}];
 
 const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
@@ -121,9 +142,10 @@ function TasksLists() {
                                     alignItems: "center",
                                     fontWeight: 'bold',
                                 }}
-                                key={column.Id}
+                                key={column.id}
                             >
-                                <h2 style={{ fontWeight: 'bold' }}>{column.name}</h2>
+                                <h2 style={{ fontWeight: 'bold' }}>{column.name}<span>{column.icon}</span></h2>
+
                                 <div style={{ margin: 8 }}>
                                     <Droppable droppableId={column.id} key={column.id}>
                                         {(provided, snapshot) => {
@@ -133,12 +155,12 @@ function TasksLists() {
                                                     ref={provided.innerRef}
                                                     style={{
                                                         background: snapshot.isDraggingOver
-                                                            ? "#002766"
+                                                            ? "#69c0ff"
                                                             : "#f0f5ff",
                                                         fontSize: "30px",
                                                         padding: 4,
                                                         width: 260,
-                                                        minHeight: 500
+                                                        minHeight: 500,
                                                     }}
                                                 >
                                                     {column.items.map((item, index) => {
@@ -168,7 +190,7 @@ function TasksLists() {
                                                                                 backgroundColor: snapshot.isDragging
                                                                                     ? "#061178"
                                                                                     : "#40a9ff",
-                                                                                color: "black",
+                                                                                color: "white",
 
                                                                                 ...provided.draggableProps.style
                                                                             }}

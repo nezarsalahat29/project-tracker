@@ -70,9 +70,7 @@ function Project() {
           );
         })}
       </Row>
-      <Divider orientation="Center">
-        <Row>TASKS</Row>
-      </Divider>
+
       <Row justify="end">
         <Col span={12}></Col>
         <Col span={4}>
@@ -85,7 +83,7 @@ function Project() {
             Add Task
           </Button>
         </Col>
-        <TasksLists/>
+        <TasksLists />
       </Row>
     </>
   );
