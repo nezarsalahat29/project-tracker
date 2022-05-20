@@ -2,31 +2,22 @@
 //anything came from old dashboard needs to be deleted.
 //export and return should be fixed so navbar can navigate to project page & project page renders properly
 
-import React, { useState } from "react";
+import React from "react";
 import "./index.css";
 import { Liquid } from "@ant-design/plots";
-import LiquidPlot from "../../components/Dashboard/Liquid";
 import TasksLists from "../Tasks";
-import { Typography, Button, Layout, Menu, Breadcrumb, Image } from "antd";
+import { Button, } from "antd";
 import {
-  DesktopOutlined,
-  PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
+
   AppstoreAddOutlined,
 } from "@ant-design/icons";
 import { Card } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
+
 import { Row, Col, Divider } from "antd";
-import { Progress } from "antd";
-import { Descriptions } from "antd";
+
 import { Drawer, Form, Input, Select, DatePicker, Space } from "antd";
-const { Meta } = Card;
-const { Header, Content, Footer, Sider } = Layout;
-const { Title } = Typography;
+
 /****************************************************************/
-const { option } = Select;
 
 function LiquidP() {
   const config = {
@@ -56,14 +47,7 @@ export default function Taskk() {
   };
 
   /************************************************************* */
-  function getItem(label, key, icon, children) {
-    return {
-      key,
-      icon,
-      children,
-      label,
-    };
-  }
+
   const Projects = [
     {
       id: 1,
@@ -134,15 +118,17 @@ export default function Taskk() {
         })}
       </Row>
 
-      <Row justify="end">
+      
+        <TasksLists />
+        <Row justify="end">
         <Col span={4}>
           {" "}
           <Button
             type="primary"
             onClick={showDrawer}
             style={{
-              backgroundColor: "#002766",
-              borderColor: "#002766",
+              backgroundColor: "0092ff",
+              borderColor: "#0092ff",
               borderRadius: "500",
             }}
             icon={
@@ -250,7 +236,6 @@ export default function Taskk() {
             </Form>
           </Drawer>
         </Col>
-        <TasksLists />
       </Row>
     </>
   );

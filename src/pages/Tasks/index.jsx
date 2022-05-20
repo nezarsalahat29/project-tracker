@@ -9,10 +9,10 @@ const { Header } = Layout;
 const { Title } = Typography;
 
 const items = [
-    { id: "1", content: "First Task" },
-    { id: "2", content: "Second Task" },
-    { id: "3", content: "Third Task" },
-    { id: "4", content: "Fourth Task" },
+    { id: "1", Title: "First Task",content:"The First task description" },
+    { id: "2", Title: "Second Task",content:"The Second task description" },
+    { id: "3", Title: "Third Task",content:"The Third task description" },
+    { id: "4", Title: "Fourth Task",content:"The Fourth task description" },
 
 ]
 const Titles = ["Requested Tasks", "To-Do", "In progress", "Finished"];
@@ -142,9 +142,9 @@ function TasksLists() {
                                                                     {(provided, snapshot) => {
                                                                         return (
                                                                             <div className="site-card-border-less-wrapper">
-                                                                                <Card title="Task Title" size='small' bordered={true}
+                                                                                <Card title={item.Title} size='small' bordered={true}
                                                                                     headStyle={{
-                                                                                        backgroundColor: "#002766",
+                                                                                        backgroundColor: "dodgerblue",
                                                                                         fontWeight: "bold",
                                                                                         color: "white",
                                                                                         fontSize: "20px",
@@ -161,7 +161,7 @@ function TasksLists() {
                                                                                         fontWeight: '450',
                                                                                         textAlign: "center",
                                                                                         fontSize: "15px",
-                                                                                        borderColor: "#002766",
+                                                                                        borderColor: "0092ff",
 
 
 
@@ -169,10 +169,10 @@ function TasksLists() {
                                                                                         ...provided.draggableProps.style
                                                                                     }}
                                                                                 >
-                                                                                    <h3> Task Description :</h3>
+                                                                                    
                                                                                     <p style={{
                                                                                         wordbreak: "keep-all"
-                                                                                    }}>Lorem ipsum dolor sit amet.</p>
+                                                                                    }}>{item.content}.</p>
 
 
                                                                                     <div style={{ width: 170 }}>
