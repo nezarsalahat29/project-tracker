@@ -121,115 +121,117 @@ const onDragEnd = (result, columns, setColumns) => {
 function TasksLists() {
     const [columns, setColumns] = useState(Titles);
     return (
+        <Divider orientation='center'>
+            <div style={{ marginTop: "50px", justifyContent: "center" }}>
+                <hr />
+                <Title>
+                    <h1 style={{ textAlign: "center", width: Header, fontWeight: 'bold' }}>
+                        Tasks Lists
+                    </h1>
+                </Title>
+                <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
+                    <DragDropContext
+                        onDragEnd={result => onDragEnd(result, columns, setColumns)}
+                    >
+                        {List.map((column, index) => {
+                            return (
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        fontWeight: 'bold',
+                                    }}
+                                    key={column.id}
+                                >
+                                    <h2 style={{ fontWeight: 'bold' }}>{column.name}<span>{column.icon}</span></h2>
 
-        <div style={{ marginTop: "50px", justifyContent: "center" }}>
-            <hr />
-            <Title>
-                <h1 style={{ textAlign: "center", width: Header, fontWeight: 'bold' }}>
-                    Tasks Lists
-                </h1>
-            </Title>
-            <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
-                <DragDropContext
-                    onDragEnd={result => onDragEnd(result, columns, setColumns)}
-                >
-                    {List.map((column, index) => {
-                        return (
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    alignItems: "center",
-                                    fontWeight: 'bold',
-                                }}
-                                key={column.id}
-                            >
-                                <h2 style={{ fontWeight: 'bold' }}>{column.name}<span>{column.icon}</span></h2>
-
-                                <div style={{ margin: 8 }}>
-                                    <Droppable droppableId={column.id} key={column.id}>
-                                        {(provided, snapshot) => {
-                                            return (
-                                                <div
-
-
-                                                    {...provided.droppableProps}
-                                                    ref={provided.innerRef}
-                                                    style={{
-                                                        background: snapshot.isDraggingOver
-                                                            ? "#69c0ff"
-                                                            : "#f0f5ff",
-                                                        fontSize: "30px",
-                                                        padding: 4,
-                                                        width: 260,
-                                                        minHeight: 500,
-                                                        color: "black"
-                                                    }}
-                                                >
-                                                    {column.items.map((item, index) => {
-                                                        return (
-                                                            <Draggable
-                                                                key={item.id}
-                                                                draggableId={item.id}
-                                                                index={index}
-                                                            >
-                                                                {(provided, snapshot) => {
-                                                                    return (
-                                                                        <div className="site-card-border-less-wrapper">
-                                                                            <Card title="Task Title" size='small' bordered={true}
-                                                                                headStyle={{
-                                                                                    backgroundColor: "#002766",
-                                                                                    fontWeight: "bold",
-                                                                                    color: "white",
-                                                                                    fontSize: "20px",
-
-                                                                                }}
-                                                                                ref={provided.innerRef}
-                                                                                {...provided.draggableProps}
-                                                                                {...provided.dragHandleProps}
-                                                                                style={{
-                                                                                    userSelect: "none",
-                                                                                    padding: 10,
-                                                                                    margin: "0 0 2px 0",
-                                                                                    minHeight: "50px",
-                                                                                    fontWeight: '450',
-                                                                                    textAlign: "center",
-                                                                                    fontSize: "15px",
-                                                                                    borderColor: "#002766",
+                                    <div style={{ margin: 8 }}>
+                                        <Droppable droppableId={column.id} key={column.id}>
+                                            {(provided, snapshot) => {
+                                                return (
+                                                    <div
 
 
+                                                        {...provided.droppableProps}
+                                                        ref={provided.innerRef}
+                                                        style={{
+                                                            background: snapshot.isDraggingOver
+                                                                ? "#69c0ff"
+                                                                : "#f0f5ff",
+                                                            fontSize: "30px",
+                                                            padding: 4,
+                                                            width: 260,
+                                                            minHeight: 500,
+                                                            color: "black"
+                                                        }}
+                                                    >
+                                                        {column.items.map((item, index) => {
+                                                            return (
+                                                                <Draggable
+                                                                    key={item.id}
+                                                                    draggableId={item.id}
+                                                                    index={index}
+                                                                >
+                                                                    {(provided, snapshot) => {
+                                                                        return (
+                                                                            <div className="site-card-border-less-wrapper">
+                                                                                <Card title="Task Title" size='small' bordered={true}
+                                                                                    headStyle={{
+                                                                                        backgroundColor: "#002766",
+                                                                                        fontWeight: "bold",
+                                                                                        color: "white",
+                                                                                        fontSize: "20px",
+
+                                                                                    }}
+                                                                                    ref={provided.innerRef}
+                                                                                    {...provided.draggableProps}
+                                                                                    {...provided.dragHandleProps}
+                                                                                    style={{
+                                                                                        userSelect: "none",
+                                                                                        padding: 10,
+                                                                                        margin: "0 0 2px 0",
+                                                                                        minHeight: "50px",
+                                                                                        fontWeight: '450',
+                                                                                        textAlign: "center",
+                                                                                        fontSize: "15px",
+                                                                                        borderColor: "#002766",
 
 
-                                                                                    ...provided.draggableProps.style
-                                                                                }}
-                                                                            >
-                                                                                <p> <h3> Task Description :</h3> <br />Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
 
 
-                                                                                <div style={{ width: 170 }}>
-                                                                                    <Progress strokeColor="#1890ff" type="line" percent={30} size="small" status="normal" />
-                                                                                </div>
+                                                                                        ...provided.draggableProps.style
+                                                                                    }}
+                                                                                >
+                                                                                    <h3> Task Description :</h3>
+                                                                                    Lorem ipsum dolor sit amet
 
-                                                                            </Card>
-                                                                        </div>
-                                                                    );
-                                                                }}
-                                                            </Draggable>
-                                                        );
-                                                    })}
-                                                    {provided.placeholder}
-                                                </div>
-                                            );
-                                        }}
-                                    </Droppable>
+
+                                                                                    <div style={{ width: 170 }}>
+                                                                                        <Progress strokeColor="#1890ff" type="line" percent={30} size="small" status="normal" />
+                                                                                    </div>
+
+                                                                                </Card>
+                                                                            </div>
+                                                                        );
+                                                                    }}
+                                                                </Draggable>
+                                                            );
+                                                        })}
+                                                        {provided.placeholder}
+                                                    </div>
+                                                );
+                                            }}
+                                        </Droppable>
+                                    </div>
                                 </div>
-                            </div>
 
-                        );
-                    })}
-                </DragDropContext>
+                            );
+                        })}
+                    </DragDropContext>
+                </div>
             </div>
-        </div>
+        </Divider>
     );
 }
 
