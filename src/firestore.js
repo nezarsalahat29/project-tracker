@@ -192,7 +192,7 @@ export const getChatRoomsFromDb = async (chatRoomsIds) => {
 
 export const getChatRoomsFromDbNotOptimized = async (chatRoomsIds) => {
   try {
-    const querySnapshot = await firestore.collection('users').get();
+    const querySnapshot = await firestore.collection('chatRooms').get();
     const chatRooms = [];
     querySnapshot.forEach((doc) => {
       if (chatRoomsIds.includes(doc.id)) {

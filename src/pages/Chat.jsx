@@ -1,5 +1,5 @@
 //https://chatscope.io/storybook/react/?path=/docs/components-maincontainer--without-right-sidebar
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   MainContainer,
   Sidebar,
@@ -14,8 +14,8 @@ import {
   ConversationList,
   Conversation,
   Avatar,
-} from '@chatscope/chat-ui-kit-react';
-import { useAuth } from '../contexts/AuthContext';
+} from "@chatscope/chat-ui-kit-react";
+import { useAuth } from "../contexts/AuthContext";
 import {
   // createConversation,
   // deleteConversation,
@@ -24,8 +24,8 @@ import {
   useMessagesData,
   getChatRoomsFromDbNotOptimized,
   GENERAL_CHATROOM,
-} from '../firestore';
-import Loader from '../components/Loader';
+} from "../firestore";
+import Loader from "../components/Loader";
 
 // function getName(list, userName) {
 //   console.log(list);
@@ -52,7 +52,7 @@ export default function Chat() {
   const [conversations, setConversations] = useState([]);
   const [activateChat, setActivateChat] = useState({ id: GENERAL_CHATROOM });
   const { currentUser } = useAuth();
-  const [messageInputValue, setMessageInputValue] = useState('');
+  const [messageInputValue, setMessageInputValue] = useState("");
   const [loading, setLoading] = useState(true);
   // console.log(currentUser);
 
@@ -66,8 +66,8 @@ export default function Chat() {
       const conversationsFromDb = await getChatRoomsFromDbNotOptimized(
         currentUser.chatRooms
       );
-      console.log('frontend chatRooms', conversationsFromDb);
-      console.log('first convo: ', conversationsFromDb[0]);
+      console.log("frontend chatRooms", conversationsFromDb);
+      console.log("first convo: ", conversationsFromDb[0]);
 
       setConversations(conversationsFromDb);
       setLoading(false);
@@ -89,11 +89,11 @@ export default function Chat() {
       currentUser.id,
       currentUser.name
     );
-    setMessageInputValue('');
+    setMessageInputValue("");
   };
   return (
     <div style={{ height: 800 }}>
-      {activateChat && console.log('active Chat:', activateChat)}
+      {activateChat && console.log("active Chat:", activateChat)}
       <MainContainer>
         <Sidebar position='left' scrollable={true}>
           <Search placeholder='Search...' />
@@ -106,26 +106,12 @@ export default function Chat() {
                   <Conversation
                     key={conversation.id}
                     id={conversation.id}
-                    name={
-                      conversation.name
-                      // conversation.isGroup
-                      //   ? conversation.name
-                      //   : getName(
-                      //       conversation.participants,
-                      //       currentUser.username
-                      //     )
-                    }
-                    // lastSenderName={
-                    //   conversation.lastSenderName === currentUser.username
-                    //     ? 'Me'
-                    //     : conversation.lastSenderName
-                    // }
-                    // info={conversation.lastMessage}
+                    name={conversation.name}
                     onClick={() => setActivateChat(conversation)}
                   >
                     <Avatar
                       src={
-                        'https://ui-avatars.com/api/?name=' + conversation.name
+                        "https://ui-avatars.com/api/?name=" + conversation.name
                       }
                       name={conversation.name}
                     />
@@ -140,14 +126,14 @@ export default function Chat() {
           <ConversationHeader>
             <Avatar
               src={
-                'https://ui-avatars.com/api/?name=' +
+                "https://ui-avatars.com/api/?name=" +
                 (currentUser.name === activateChat.name
-                  ? 'Instructor'
+                  ? "Instructor"
                   : activateChat.name)
               }
               name={
                 currentUser.name === activateChat.name
-                  ? 'Instructor'
+                  ? "Instructor"
                   : activateChat.name
               }
             />
@@ -155,7 +141,7 @@ export default function Chat() {
             <ConversationHeader.Content
               userName={
                 currentUser.name === activateChat.name
-                  ? 'Instructor'
+                  ? "Instructor"
                   : activateChat.name
               }
             />
@@ -172,13 +158,13 @@ export default function Chat() {
                       sender: message.name,
                       direction:
                         message.name === currentUser.name
-                          ? 'outgoing'
-                          : 'incoming',
-                      position: 'single',
+                          ? "outgoing"
+                          : "incoming",
+                      position: "single",
                     }}
                   >
                     <Avatar
-                      src={'https://ui-avatars.com/api/?name=' + message.name}
+                      src={"https://ui-avatars.com/api/?name=" + message.name}
                       name={message.name}
                     ></Avatar>
                   </Message>
@@ -192,105 +178,9 @@ export default function Chat() {
             value={messageInputValue}
             onChange={(val) => setMessageInputValue(val)}
             onSend={() => sendNewMessage()}
-            // onSend={function (val) {
-            //   conversations
-            //     .find(
-            //       (element) => element.chatroomID === activateChat.chatroomID
-            //     )
-            //     .Messages.push({
-            //       message: val,
-            //       sentTime: new Date(),
-            //       sender: currentUser.username,
-            //       position: 'single',
-            //     });
-            //   conversations.find(
-            //     (element) => element.chatroomID === activateChat.chatroomID
-            //   ).lastMessage = val;
-            //   conversations.find(
-            //     (element) => element.chatroomID === activateChat.chatroomID
-            //   ).lastSenderName = currentUser.username;
-            //   setActivateChat(
-            //     conversations.find(
-            //       (element) => element.chatroomID === activateChat.chatroomID
-            //     )
-            //   );
-            //   setMessageInputValue('');
-            //   sendNewMessage();
-            // }}
           />
         </ChatContainer>
       </MainContainer>
     </div>
   );
 }
-
-// var ChatRooms = [
-//   {
-//     name: 'Instructor',
-//     isGroup: false,
-//     chatroomID: '123456789',
-//     lastSenderName: 'Instructor',
-//     lastMessage: 'Yes i can do it for you',
-//     participants: ['AdminX2022', 'Suhaib Atef'],
-//     Messages: [
-//       {
-//         message: 'Hello my friend',
-//         sentTime: '15 mins ago',
-//         sender: 'AdminX2022',
-//         position: 'single',
-//       },
-//       {
-//         message: 'Hello my friend',
-//         sentTime: '15 mins ago',
-//         sender: 'Suhaib Atef',
-//         position: 'single',
-//       },
-//       {
-//         message: 'Hello my friend',
-//         sentTime: '15 mins ago',
-//         sender: 'Suhaib Atef',
-//         position: 'single',
-//       },
-//       {
-//         message: 'Hello my friend',
-//         sentTime: '15 mins ago',
-//         sender: 'AdminX2022',
-//         position: 'single',
-//       },
-//     ],
-//   },
-//   {
-//     name: 'Group A',
-//     isGroup: true,
-//     chatroomID: '877951335',
-//     lastSenderName: 'Suhaib Atef',
-//     lastMessage: 'Yes i can do it for you',
-//     participants: ['AdminX2022', 'Suhaib Atef', 'Jafar Al-Juneidi'],
-//     Messages: [
-//       {
-//         message: 'Hello my friend',
-//         sentTime: '15 mins ago',
-//         sender: 'AdminX2022',
-//         position: 'single',
-//       },
-//       {
-//         message: 'Hello my friend',
-//         sentTime: '15 mins ago',
-//         sender: 'Suhaib Atef',
-//         position: 'single',
-//       },
-//       {
-//         message: 'Hello my friend',
-//         sentTime: '15 mins ago',
-//         sender: 'Suhaib Atef',
-//         position: 'single',
-//       },
-//       {
-//         message: 'Hello my friend',
-//         sentTime: '15 mins ago',
-//         sender: 'Jafar Al-Juneidi',
-//         position: 'single',
-//       },
-//     ],
-//   },
-// ];
