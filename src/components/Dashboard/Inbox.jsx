@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
   ConversationList,
@@ -7,98 +8,33 @@ import {
 import { Card } from "antd";
 import { Divider } from "antd";
 import { Typography } from "antd";
+import { getChatRoomsFromDbNotOptimized } from "../../firestore";
+import { useAuth } from "../../contexts/AuthContext";
 const { Title } = Typography;
 
-const Data = [
-  { name: "Lilly", lastSenderName: "Lilly", info: "Yes i can do it for you" },
-  { name: "Joe", lastSenderName: "Joe", info: "Yes i can do it for you" },
-  { name: "Emily", lastSenderName: "Emily", info: "Yes i can do it for you" },
-  { name: "Kai", lastSenderName: "Kai", info: "Yes i can do it for you" },
-  { name: "Akane", lastSenderName: "Akane", info: "Yes i can do it for you" },
-  { name: "Eliot", lastSenderName: "Eliot", info: "Yes i can do it for you" },
-  { name: "Zoe", lastSenderName: "Zoe", info: "Yes i can do it for you" },
-  {
-    name: "Patrik",
-    lastSenderName: "Patrik",
-    info: "Yes i can do it for you",
-  },
-];
-
-var ChatRooms = [
-  {
-    name: "Instructor",
-    chatroomID: "123456789",
-    lastSenderName: "Instructor",
-    lastMessage: "Yes i can do it for you",
-    participants: ["Instructor", "Suhaib Atef"],
-    Messages: [
-      {
-        message: "Hello my friend",
-        sentTime: "15 mins ago",
-        sender: "Instructor",
-        position: "single",
-      },
-      {
-        message: "Hello my friend",
-        sentTime: "15 mins ago",
-        sender: "Suhaib Atef",
-        position: "single",
-      },
-      {
-        message: "Hello my friend",
-        sentTime: "15 mins ago",
-        sender: "Suhaib Atef",
-        position: "single",
-      },
-      {
-        message: "Hello my friend",
-        sentTime: "15 mins ago",
-        sender: "Instructor",
-        position: "single",
-      },
-    ],
-  },
-  {
-    name: "Group A",
-    chatroomID: "877951335",
-    lastSenderName: "Suhaib Atef",
-    lastMessage: "Yes i can do it for you",
-    participants: ["Instructor", "Suhaib Atef", "Jafar Al-Juneidi"],
-    Messages: [
-      {
-        message: "Hello my friend",
-        sentTime: "15 mins ago",
-        sender: "Instructor",
-        position: "single",
-      },
-      {
-        message: "Hello my friend",
-        sentTime: "15 mins ago",
-        sender: "Suhaib Atef",
-        position: "single",
-      },
-      {
-        message: "Hello my friend",
-        sentTime: "15 mins ago",
-        sender: "Suhaib Atef",
-        position: "single",
-      },
-      {
-        message: "Hello my friend",
-        sentTime: "15 mins ago",
-        sender: "Jafar Al-Juneidi",
-        position: "single",
-      },
-    ],
-  },
-];
-
 export default function Inbox() {
+  const { currentUser } = useAuth();
+  const [conversations, setConversations] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const conversationsFromDb = await getChatRoomsFromDbNotOptimized(
+        currentUser.chatRooms
+      );
+      console.log("frontend chatRooms", conversationsFromDb);
+      console.log("first convo: ", conversationsFromDb[0]);
+
+      setConversations(conversationsFromDb);
+    };
+
+    getData();
+  }, []);
+
   return (
     <Card style={{ backgroundColor: "#F7F7F7", height: "100%" }}>
       <Title level={2}>Inbox</Title> <Divider />
       <ConversationList>
-        {ChatRooms.map((convers) => {
+        {conversations.map((convers) => {
           return (
             <Conversation
               name={convers.name}
@@ -106,7 +42,10 @@ export default function Inbox() {
               info={convers.lastMessage}
             >
               <Avatar
-                src={"https://ui-avatars.com/api/?name=" + convers.name}
+                src={
+                  "https://ui-avatars.com/api/?background=random&name=" +
+                  convers.name
+                }
                 name={convers.name}
               />
             </Conversation>

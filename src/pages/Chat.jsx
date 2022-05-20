@@ -26,34 +26,21 @@ import {
   GENERAL_CHATROOM,
 } from "../firestore";
 import Loader from "../components/Loader";
-
-// function getName(list, userName) {
-//   console.log(list);
-//   console.log(userName);
-//   return userName === list[0] ? list[1] : list[0];
-// }
-
-// const ChatRoomsList = [
-//   { name: 'Lilly', lastSenderName: 'Lilly', info: 'Yes i can do it for you' },
-//   { name: 'Joe', lastSenderName: 'Joe', info: 'Yes i can do it for you' },
-//   { name: 'Emily', lastSenderName: 'Emily', info: 'Yes i can do it for you' },
-//   { name: 'Kai', lastSenderName: 'Kai', info: 'Yes i can do it for you' },
-//   { name: 'Akane', lastSenderName: 'Akane', info: 'Yes i can do it for you' },
-//   { name: 'Eliot', lastSenderName: 'Eliot', info: 'Yes i can do it for you' },
-//   { name: 'Zoe', lastSenderName: 'Zoe', info: 'Yes i can do it for you' },
-//   {
-//     name: 'Patrik',
-//     lastSenderName: 'Patrik',
-//     info: 'Yes i can do it for you',
-//   },
-// ];
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en.json";
+TimeAgo.addDefaultLocale(en);
+const timeAgo = new TimeAgo("en-US");
 
 export default function Chat() {
   const [conversations, setConversations] = useState([]);
-  const [activateChat, setActivateChat] = useState({ id: GENERAL_CHATROOM });
+  const [activateChat, setActivateChat] = useState({
+    id: GENERAL_CHATROOM,
+    name: "general",
+  });
   const { currentUser } = useAuth();
   const [messageInputValue, setMessageInputValue] = useState("");
   const [loading, setLoading] = useState(true);
+  const [disabledInput, setDisabledInput] = useState(!currentUser.instructor);
   // console.log(currentUser);
 
   const [messages] = useMessagesData(activateChat.id);
@@ -96,22 +83,39 @@ export default function Chat() {
       {activateChat && console.log("active Chat:", activateChat)}
       <MainContainer>
         <Sidebar position='left' scrollable={true}>
-          <Search placeholder='Search...' />
           {loading ? (
             <Loader />
           ) : (
             <ConversationList>
               {conversations.map((conversation) => {
+                console.log(conversation);
                 return (
                   <Conversation
+                    active={conversation.name === activateChat.name}
                     key={conversation.id}
                     id={conversation.id}
-                    name={conversation.name}
-                    onClick={() => setActivateChat(conversation)}
+                    name={
+                      currentUser.name === conversation.name
+                        ? "Instructor"
+                        : conversation.name
+                    }
+                    onClick={() => {
+                      setActivateChat(conversation);
+                      setDisabledInput(
+                        currentUser.instructor
+                          ? false
+                          : conversation.name === "general"
+                          ? true
+                          : false
+                      );
+                    }}
                   >
                     <Avatar
                       src={
-                        "https://ui-avatars.com/api/?name=" + conversation.name
+                        "https://ui-avatars.com/api/?background=random&name=" +
+                        (currentUser.name === conversation.name
+                          ? "Instructor"
+                          : conversation.name)
                       }
                       name={conversation.name}
                     />
@@ -126,7 +130,7 @@ export default function Chat() {
           <ConversationHeader>
             <Avatar
               src={
-                "https://ui-avatars.com/api/?name=" +
+                "https://ui-avatars.com/api/?background=random&name=" +
                 (currentUser.name === activateChat.name
                   ? "Instructor"
                   : activateChat.name)
@@ -155,24 +159,35 @@ export default function Chat() {
                     model={{
                       message: message.text,
                       sentTime: message.createdAt,
-                      sender: message.name,
+                      sender: message.username,
                       direction:
-                        message.name === currentUser.name
+                        message.username === currentUser.name
                           ? "outgoing"
                           : "incoming",
                       position: "single",
                     }}
                   >
+                    <Message.Footer
+                      sentTime={timeAgo.format(
+                        new Date(
+                          message.createdAt
+                            ? message.createdAt.seconds * 1000
+                            : new Date()
+                        )
+                      )}
+                    />
                     <Avatar
-                      src={"https://ui-avatars.com/api/?name=" + message.name}
-                      name={message.name}
+                      src={
+                        "https://ui-avatars.com/api/?name=" + message.username
+                      }
+                      name={message.username}
                     ></Avatar>
                   </Message>
                 );
               })}
           </MessageList>
           <MessageInput
-            disabled={false}
+            disabled={disabledInput}
             attachButton={false}
             placeholder='Type message here'
             value={messageInputValue}
