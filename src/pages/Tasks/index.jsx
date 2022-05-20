@@ -33,31 +33,31 @@ const items = [
     { id: "2", content: "Second Task" },
     { id: "3", content: "Third Task" },
     { id: "4", content: "Fourth Task" },
-    { id: "5", content: "Fifth Task" }
+
 ]
 const Titles = ["Requested Tasks", "To-Do", "In progress", "Finished"];
 const List = [
     {
-        id: "1",
+        id: 1,
         icon: " 📂 ",
         name: "Requested Tasks",
         items: items,
     },
 
     {
-        id: "2",
+        id: 2,
         name: "To-Do",
         icon: "📝",
         items: [],
     },
     {
-        id: "3",
+        id: 3,
         name: "In progress",
         icon: "⚡️",
         items: [],
     },
     {
-        id: "4",
+        id: 4,
         name: "Finished",
         icon: "✅",
         items: [],
@@ -151,6 +151,8 @@ function TasksLists() {
                                         {(provided, snapshot) => {
                                             return (
                                                 <div
+
+
                                                     {...provided.droppableProps}
                                                     ref={provided.innerRef}
                                                     style={{
@@ -161,6 +163,7 @@ function TasksLists() {
                                                         padding: 4,
                                                         width: 260,
                                                         minHeight: 500,
+                                                        color: "black"
                                                     }}
                                                 >
                                                     {column.items.map((item, index) => {
@@ -172,30 +175,42 @@ function TasksLists() {
                                                             >
                                                                 {(provided, snapshot) => {
                                                                     return (
-                                                                        <div
-                                                                            ref={provided.innerRef}
-                                                                            {...provided.draggableProps}
-                                                                            {...provided.dragHandleProps}
-                                                                            style={{
-                                                                                userSelect: "none",
-                                                                                padding: 22,
-                                                                                margin: "0 0 8px 0",
-                                                                                minHeight: "50px",
-                                                                                fontWeight: '450',
-                                                                                textAlign: "center",
-                                                                                fontSize: "20px",
+                                                                        <div className="site-card-border-less-wrapper">
+                                                                            <Card title="Task Title" size='small' bordered={true}
+                                                                                headStyle={{
+                                                                                    backgroundColor: "#002766",
+                                                                                    fontWeight: "bold",
+                                                                                    color: "white",
+                                                                                    fontSize: "20px",
+
+                                                                                }}
+                                                                                ref={provided.innerRef}
+                                                                                {...provided.draggableProps}
+                                                                                {...provided.dragHandleProps}
+                                                                                style={{
+                                                                                    userSelect: "none",
+                                                                                    padding: 10,
+                                                                                    margin: "0 0 2px 0",
+                                                                                    minHeight: "50px",
+                                                                                    fontWeight: '450',
+                                                                                    textAlign: "center",
+                                                                                    fontSize: "15px",
+                                                                                    borderColor: "#002766",
 
 
 
-                                                                                backgroundColor: snapshot.isDragging
-                                                                                    ? "#061178"
-                                                                                    : "#40a9ff",
-                                                                                color: "white",
 
-                                                                                ...provided.draggableProps.style
-                                                                            }}
-                                                                        >
-                                                                            {item.content}
+                                                                                    ...provided.draggableProps.style
+                                                                                }}
+                                                                            >
+                                                                                <p> <h3> Task Description :</h3> <br />Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+
+
+                                                                                <div style={{ width: 170 }}>
+                                                                                    <Progress strokeColor="#1890ff" type="line" percent={30} size="small" status="normal" />
+                                                                                </div>
+
+                                                                            </Card>
                                                                         </div>
                                                                     );
                                                                 }}
