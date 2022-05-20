@@ -1,33 +1,13 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { Typography, Button, Layout, Menu, Breadcrumb, Image, Space } from "antd";
-import {
-    DesktopOutlined,
-    PieChartOutlined,
-    FileOutlined,
-    TeamOutlined,
-    UserOutlined,
-    AppstoreAddOutlined,
-} from "@ant-design/icons";
+import { Typography, Layout } from "antd";
 import { Card } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
-import { Row, Col, Divider } from "antd";
+import { Divider } from "antd";
 import { Progress } from 'antd';
-import { Descriptions } from 'antd';
-const { Meta } = Card;
-const { Header, Content, Footer, Sider } = Layout;
+const { Header } = Layout;
 const { Title } = Typography;
 
-
-function getItem(label, key, icon, children) {
-    return {
-        key,
-        icon,
-        children,
-        label,
-    };
-}
 const items = [
     { id: "1", content: "First Task" },
     { id: "2", content: "Second Task" },
@@ -63,23 +43,7 @@ const List = [
         items: [],
     },
 ];
-const statuses = [{
-    status: "Requested Tasks",
 
-    color: "#EB5A46"
-}, {
-    status: "In Progress",
-
-    color: "#00C2E0"
-}, {
-    status: "To-Do",
-
-    color: "#C377E0"
-}, {
-    status: "Finished",
-
-    color: "#3981DE"
-}];
 
 const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
