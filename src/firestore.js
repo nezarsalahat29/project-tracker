@@ -2,6 +2,8 @@ import firebase from 'firebase/compat/app';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 const firestore = firebase.firestore();
+export const GENERAL_CHATROOM = 'ELN8CuTpwdv5vIQ4AE4S';
+const ADMIN_ID = 'jttNpOWD2HR3xAdS6WveFcr5fBm2';
 
 export const createUserDocument = (user, additionalData) => {
   if (!user) return;
@@ -15,8 +17,14 @@ export const createUserDocument = (user, additionalData) => {
       groupId: null,
       createdAt: new Date(),
       lastModified: new Date(),
+      chatRooms: [GENERAL_CHATROOM, user.uid],
     })
     .then(() => {
+      console.log('updating admin');
+      addChatRoomToAdmin(user.uid);
+
+      createChatRoom(user.uid, additionalData.name);
+
       console.log('new User document successfully written!');
     })
     .catch((error) => {
@@ -64,6 +72,16 @@ export const getStudentFromDb = async (userId) => {
   }
 };
 
+export const deleteUser = async (userId) => {
+  try {
+    await firestore.collection('users').doc(userId).delete();
+    deleteChatRoom(userId);
+    console.log('User document successfully deleted!');
+  } catch (error) {
+    console.error('Error removing user document: ', error);
+  }
+};
+
 export const createGroup = () => {
   firestore
     .collection('groups')
@@ -72,7 +90,9 @@ export const createGroup = () => {
       lastModified: new Date(),
       students: [],
     })
-    .then(() => {
+    .then((groupRef) => {
+      createChatRoom(groupRef.id, `group ${groupRef.id}`);
+      addChatRoomToAdmin(groupRef.id);
       console.log('Group document successfully written!');
     })
     .catch((error) => {
@@ -111,6 +131,8 @@ export const updateGroup = async (groupId, group) => {
 export const deleteGroup = async (groupId) => {
   try {
     await firestore.collection('groups').doc(groupId).delete();
+    deleteChatRoom(groupId);
+    removeChatRoomFromAdmin(groupId);
     console.log('Group document successfully deleted!');
   } catch (error) {
     console.error('Error removing group document: ', error);
@@ -138,35 +160,48 @@ export const createChatRoom = (docId, name) => {
     });
 };
 
-export const deleteConversation = async (convID) => {
+export const deleteChatRoom = async (chatRoomId) => {
   try {
-    await firestore.collection('conversations').doc(convID).delete();
-    console.log('conversation document successfully deleted!');
+    const chatRoomRef = firestore.collection('chatRooms').doc(chatRoomId);
+    const nestedCollections = chatRoomRef.listCollections();
+    await Promise.all(
+      nestedCollections.map((collection) => collection.delete())
+    );
+    await chatRoomRef.delete();
+    console.log('ChatRoom document successfully deleted!');
   } catch (error) {
-    console.error('Error removing conversation document: ', error);
+    console.error('Error removing ChatRoom document: ', error);
   }
 };
 
-export const getChatRoomsFromDb = async (conversationIds) => {
+export const getChatRoomsFromDb = async (chatRoomsIds) => {
   try {
-    const conversations = [];
-    const conversationsRef = firestore.collection('conversations');
-    conversationIds.forEach(async (id) => {
-      const doc = await conversationsRef.doc(id).get();
-      conversations.push({ id: doc.id, ...doc.data() });
+    const chatRooms = [];
+    const chatRoomsRef = firestore.collection('chatRooms');
+    chatRoomsIds.forEach(async (id) => {
+      const doc = await chatRoomsRef.doc(id).get();
+      chatRooms.push({ id: doc.id, ...doc.data() });
     });
-    // if (snapshot.empty) {
-    //   console.log('No matching documents.');
-    //   return;
-    // }
-    // snapshot.forEach((doc) => {
-    //   conversations.push({ id: doc.id, ...doc.data() });
-    // });
 
-    console.log('databse conversations: ', conversations);
-    return conversations;
+    console.log('database chatRooms: ', chatRooms);
+    return chatRooms;
   } catch (error) {
-    console.log('error fetching conversation documents', error);
+    console.log('error fetching chatRoom documents', error);
+  }
+};
+
+export const getChatRoomsFromDbNotOptimized = async (chatRoomsIds) => {
+  try {
+    const querySnapshot = await firestore.collection('users').get();
+    const chatRooms = [];
+    querySnapshot.forEach((doc) => {
+      if (chatRoomsIds.includes(doc.id)) {
+        chatRooms.push({ id: doc.id, ...doc.data() });
+      }
+    });
+    return chatRooms;
+  } catch (error) {
+    console.log('error fetching chatRooms documents', error);
   }
 };
 
@@ -195,6 +230,34 @@ export const useMessagesData = (chatRoomId) => {
     .collection('messages');
   const query = messagesRef.orderBy('createdAt').limit(25);
   return useCollectionData(query, { idField: 'id' });
+};
+
+const addChatRoomToAdmin = (chatRoomId) => {
+  firestore
+    .collection('users')
+    .doc(ADMIN_ID)
+    .get()
+    .then((adminRef) => {
+      updateUser(ADMIN_ID, {
+        ...adminRef.data(),
+        chatRooms: [...adminRef.data().chatRooms, chatRoomId],
+      });
+    });
+};
+
+const removeChatRoomFromAdmin = (chatRoomId) => {
+  firestore
+    .collection('users')
+    .doc(ADMIN_ID)
+    .get()
+    .then((adminRef) => {
+      updateUser(ADMIN_ID, {
+        ...adminRef.data(),
+        chatRooms: adminRef
+          .data()
+          .chatRooms.filter((chatRoom) => chatRoom !== chatRoomId),
+      });
+    });
 };
 
 // const userRef = firestore

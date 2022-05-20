@@ -22,7 +22,10 @@ import {
   sendMessage,
   getChatRoomsFromDb,
   useMessagesData,
+  getChatRoomsFromDbNotOptimized,
+  GENERAL_CHATROOM,
 } from '../firestore';
+import Loader from '../components/Loader';
 
 // function getName(list, userName) {
 //   console.log(list);
@@ -45,28 +48,29 @@ import {
 //   },
 // ];
 
-var UserChatRoomID = ['ELN8CuTpwdv5vIQ4AE4S', 'VI4aYHvIItF0LXnAXhFj'];
-
 export default function Chat() {
-  const [conversations, setConversations] = useState();
-  const [activateChat, setActivateChat] = useState({});
+  const [conversations, setConversations] = useState([]);
+  const [activateChat, setActivateChat] = useState({ id: GENERAL_CHATROOM });
   const { currentUser } = useAuth();
   const [messageInputValue, setMessageInputValue] = useState('');
+  const [loading, setLoading] = useState(true);
   // console.log(currentUser);
 
-  const [messages] = useMessagesData('ELN8CuTpwdv5vIQ4AE4S');
+  const [messages] = useMessagesData(activateChat.id);
   // console.log('activeChat: ', activateChat.id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
     const getData = async () => {
-      // await Promise.all([getConversations()]);
-      const coversationsFromDb = await getChatRoomsFromDb(UserChatRoomID);
-      console.log('frontend chatRooms', coversationsFromDb);
-      setConversations(coversationsFromDb);
-      setActivateChat(coversationsFromDb[0]);
-      console.log('active Chat:', activateChat);
+      const conversationsFromDb = await getChatRoomsFromDbNotOptimized(
+        currentUser.chatRooms
+      );
+      console.log('frontend chatRooms', conversationsFromDb);
+      console.log('first convo: ', conversationsFromDb[0]);
+
+      setConversations(conversationsFromDb);
+      setLoading(false);
     };
 
     getData();
@@ -80,7 +84,7 @@ export default function Chat() {
 
   const sendNewMessage = () => {
     sendMessage(
-      'ELN8CuTpwdv5vIQ4AE4S',
+      activateChat.id,
       messageInputValue,
       currentUser.id,
       currentUser.name
@@ -89,17 +93,19 @@ export default function Chat() {
   };
   return (
     <div style={{ height: 800 }}>
+      {activateChat && console.log('active Chat:', activateChat)}
       <MainContainer>
         <Sidebar position='left' scrollable={true}>
           <Search placeholder='Search...' />
-          <ConversationList>
-            {conversations &&
-              conversations.map((conversation) => {
+          {loading ? (
+            <Loader />
+          ) : (
+            <ConversationList>
+              {conversations.map((conversation) => {
                 return (
                   <Conversation
-                    key={conversation.chatroomID}
-                    id={conversation.chatroomID}
-                    //   conversation.name
+                    key={conversation.id}
+                    id={conversation.id}
                     name={
                       conversation.name
                       // conversation.isGroup
@@ -109,12 +115,12 @@ export default function Chat() {
                       //       currentUser.username
                       //     )
                     }
-                    lastSenderName={
-                      conversation.lastSenderName === currentUser.username
-                        ? 'Me'
-                        : conversation.lastSenderName
-                    }
-                    info={conversation.lastMessage}
+                    // lastSenderName={
+                    //   conversation.lastSenderName === currentUser.username
+                    //     ? 'Me'
+                    //     : conversation.lastSenderName
+                    // }
+                    // info={conversation.lastMessage}
                     onClick={() => setActivateChat(conversation)}
                   >
                     <Avatar
@@ -126,32 +132,31 @@ export default function Chat() {
                   </Conversation>
                 );
               })}
-          </ConversationList>
+            </ConversationList>
+          )}
         </Sidebar>
 
         <ChatContainer>
           <ConversationHeader>
             <Avatar
               src={
-                'https://ui-avatars.com/api/?name=' + 'activateChat.name'
-                // (activateChat.isGroup
-                //   ? activateChat.name
-                //   : getName(activateChat.participants, currentUser.username))
+                'https://ui-avatars.com/api/?name=' +
+                (currentUser.name === activateChat.name
+                  ? 'Instructor'
+                  : activateChat.name)
               }
               name={
-                'activateChat.name'
-                // activateChat.isGroup
-                //   ? activateChat.name
-                //   : getName(activateChat.participants, currentUser.username)
+                currentUser.name === activateChat.name
+                  ? 'Instructor'
+                  : activateChat.name
               }
             />
 
             <ConversationHeader.Content
               userName={
-                'activateChat.name'
-                // activateChat.isGroup
-                //   ? activateChat.name
-                //   : getName(activateChat.participants, currentUser.username)
+                currentUser.name === activateChat.name
+                  ? 'Instructor'
+                  : activateChat.name
               }
             />
             <ConversationHeader.Actions></ConversationHeader.Actions>
