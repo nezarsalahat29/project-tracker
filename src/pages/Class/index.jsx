@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Space, Typography, Divider, Button, Collapse } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import Loader from '../../components/Loader';
+import { getStudentsFromDb, updateUser } from '../../firestore/users';
 import {
   getGroupsFromDb,
-  getStudentsFromDb,
   createGroup,
   deleteGroup,
-  updateUser,
   updateGroup,
-} from '../../firestore';
+} from '../../firestore/groups';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 const { Title } = Typography;
@@ -52,7 +51,13 @@ export default function Class() {
 
     deleteGroup(group.id);
     group.students.forEach((student) => {
-      updateUser(student.id, { ...student, groupId: null });
+      updateUser(student.id, {
+        ...student,
+        groupId: null,
+        chatRooms: [
+          ...student.chatRooms.filter((chatRoom) => chatRoom !== group.id),
+        ],
+      });
     });
   };
 
@@ -114,6 +119,7 @@ export default function Class() {
         updateUser(removed.id, {
           ...removed,
           groupId: destination.droppableId,
+          chatRooms: [...removed.chatRooms, destination.droppableId],
         });
         updateGroup(destination.droppableId, {
           ...groups.find((group) => group.id === destination.droppableId),
@@ -133,6 +139,9 @@ export default function Class() {
         updateUser(removed.id, {
           ...removed,
           groupId: null,
+          chatRooms: removed.chatRooms.filter(
+            (chatRoom) => chatRoom !== source.droppableId
+          ),
         });
         updateGroup(source.droppableId, {
           ...groups.find((group) => group.id === source.droppableId),
@@ -158,6 +167,17 @@ export default function Class() {
         updateGroup(destination.droppableId, {
           ...groups.find((group) => group.id === destination.droppableId),
           students: destinationItems,
+        });
+
+        updateUser(removed.id, {
+          ...removed,
+          groupId: destination.droppableId,
+          chatRooms: [
+            ...removed.chatRooms.filter(
+              (chatRoom) => chatRoom !== source.droppableId
+            ),
+            destination.droppableId,
+          ],
         });
       }
     }

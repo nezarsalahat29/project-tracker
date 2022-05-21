@@ -1,9 +1,10 @@
-import firebase from 'firebase/compat/app';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-
-const firestore = firebase.firestore();
-export const GENERAL_CHATROOM = 'ELN8CuTpwdv5vIQ4AE4S';
-const ADMIN_ID = 'jttNpOWD2HR3xAdS6WveFcr5fBm2';
+import { firestore, GENERAL_CHATROOM } from './index';
+import {
+  addChatRoomToAdmin,
+  createChatRoom,
+  deleteChatRoom,
+  removeChatRoomFromAdmin,
+} from './chatRooms';
 
 export const createUserDocument = (user, additionalData) => {
   if (!user) return;
@@ -76,66 +77,10 @@ export const deleteUser = async (userId) => {
   try {
     await firestore.collection('users').doc(userId).delete();
     deleteChatRoom(userId);
+    removeChatRoomFromAdmin(userId);
     console.log('User document successfully deleted!');
   } catch (error) {
     console.error('Error removing user document: ', error);
-  }
-};
-
-export const createGroup = () => {
-  firestore
-    .collection('groups')
-    .add({
-      createdAt: new Date(),
-      lastModified: new Date(),
-      students: [],
-    })
-    .then((groupRef) => {
-      createChatRoom(groupRef.id, `group ${groupRef.id}`);
-      addChatRoomToAdmin(groupRef.id);
-      console.log('Group document successfully written!');
-    })
-    .catch((error) => {
-      console.error('Error writing Group document: ', error);
-    });
-};
-
-export const getGroupsFromDb = async () => {
-  try {
-    const querySnapshot = await firestore.collection('groups').get();
-    const groups = [];
-    querySnapshot.forEach((doc) => {
-      groups.push({ id: doc.id, ...doc.data() });
-    });
-    return groups;
-  } catch (error) {
-    console.log('error fetching group documents', error);
-  }
-};
-
-export const getGroupFromDb = async (groupId) => {
-  try {
-    const doc = await firestore.collection('groups').doc(groupId).get();
-    return { id: groupId, ...doc.data() };
-  } catch (error) {
-    console.log('error fetching group documents', error);
-  }
-};
-
-export const updateGroup = async (groupId, group) => {
-  const groupRef = firestore.collection('groups').doc(groupId);
-  await groupRef.update(group);
-  console.log('Group updated successfully');
-};
-
-export const deleteGroup = async (groupId) => {
-  try {
-    await firestore.collection('groups').doc(groupId).delete();
-    deleteChatRoom(groupId);
-    removeChatRoomFromAdmin(groupId);
-    console.log('Group document successfully deleted!');
-  } catch (error) {
-    console.error('Error removing group document: ', error);
   }
 };
 
