@@ -7,6 +7,7 @@ import "./index.css";
 import { Liquid } from "@ant-design/plots";
 import TasksLists from "../Tasks";
 import { Button, } from "antd";
+
 import {
 
   AppstoreAddOutlined,
@@ -16,7 +17,8 @@ import { Card } from "antd";
 import { Row, Col, Divider } from "antd";
 
 import { Drawer, Form, Input, Select, DatePicker, Space } from "antd";
-
+import Calendar from "../../components/Dashboard/Calendar";
+import Title from "antd/lib/skeleton/Title";
 /****************************************************************/
 
 function LiquidP() {
@@ -30,7 +32,7 @@ function LiquidP() {
     },
   };
   return (
-    <div style={{ width: 150, height: 140 }}>
+    <div style={{ width: 300, height: 300 }}>
       <Liquid {...config} />
     </div>
   );
@@ -53,8 +55,8 @@ export default function Taskk() {
       id: 1,
       description:
         "You will find here the description of this project and other details",
-      startDate: "12-7-2022",
-      endDAte: "7-8-2022",
+      startDate: "12-Jul-2022",
+      endDAte: "7-Aug-2022",
       Title: "Project 1",
       tasks: ["task1", "task2", "task3"],
       Progress: 0.6,
@@ -66,18 +68,16 @@ export default function Taskk() {
     <>
       <Row gutter={26}>
         {Projects.map((e) => {
+
           return (
-            <Row>
-              <Divider
-                orientation="center"
-                style={{
-                  fontWeight: "bolder",
-                  fontSize: "40px",
-                  fontFamily: "cursive",
-                }}
-              >
-                {e.Title}
-              </Divider>
+            <Row style={{
+              fontWeight: "bolder",
+              fontSize: "40px",
+              fontFamily: "cursive",
+              textAlign: "center",
+            }} >
+
+              {e.Title}
               <div className="site-card-border-less-wrapper">
                 <Card
                   headStyle={{ fontFamily: "-moz-initial", fontSize: "25px" }}
@@ -87,40 +87,45 @@ export default function Taskk() {
                   bodyStyle={{
                     fontWeight: "bold",
                     fontFamily: "-moz-initial",
-                    fontSize: "20px",
+                    fontSize: "18px",
                   }}
                 >
+
+                  <p>Project ID: {e.id}</p> <br />
                   <Row>
-                    <Col span={12}>
-                      <p>Start Date: {e.startDate}</p>
-                      
+                    <Col offset={0}>
+                      <Divider orientation="left">
+                        <p style={{
+                          fontWeight: "bold",
+                          fontSize: "25px",
+                          fontFamily: "cursive",
+                          textAlign: "center",
+                        }}>Work Sumary</p>
+                        <LiquidP />
+                      </Divider>
+
                     </Col>
-                    <Col span={12}>
-                      <p>End Date: {e.endDAte}</p>
-                      <LiquidP/>
+                    <Col span={7} offset={6}>
+                      Start Date      →     End Date <br />
+                      {e.startDate}   →  {e.endDAte}
+                      <br /><br />
+                      <Calendar />
                     </Col>
-                    
                   </Row>
-                  
-                    
-                    <p>ID: {e.id}</p>
-                    
-              
-                    
-                  
-                  
-                  
+
                 </Card>
               </div>
-              
+
             </Row>
           );
+
+
         })}
+
       </Row>
 
-      
-        <TasksLists />
-        <Row justify="end">
+      <TasksLists />
+      <Row justify="end">
         <Col span={4}>
           {" "}
           <Button
@@ -196,7 +201,7 @@ export default function Taskk() {
                       { required: true, message: "Select Project Leader" },
                     ]}
                   >
-                    <Input placeholder="Please Enter Project Leadr Name" />
+                    <Input placeholder="Please Enter Project Leader Name" />
                   </Form.Item>
                 </Col>
               </Row>
@@ -211,7 +216,7 @@ export default function Taskk() {
                     ]}
                   >
                     <DatePicker.RangePicker
-                      style={{ width: "100%" }}
+                      style={{ width: "120%" }}
                       getPopupContainer={(trigger) => trigger.parentElement}
                     />
                   </Form.Item>
