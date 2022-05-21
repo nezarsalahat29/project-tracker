@@ -3,13 +3,10 @@ import React, { useState, useEffect } from "react";
 import {
   MainContainer,
   Sidebar,
-  Search,
   ChatContainer,
   ConversationHeader,
   MessageList,
-  MessageSeparator,
   Message,
-  TypingIndicator,
   MessageInput,
   ConversationList,
   Conversation,
@@ -20,11 +17,10 @@ import {
   // createConversation,
   // deleteConversation,
   sendMessage,
-  getChatRoomsFromDb,
   useMessagesData,
   getChatRoomsFromDbNotOptimized,
-  GENERAL_CHATROOM,
-} from "../firestore";
+} from "../firestore/chatRooms";
+import { GENERAL_CHATROOM } from "../firestore/index";
 import Loader from "../components/Loader";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
@@ -61,7 +57,7 @@ export default function Chat() {
     };
 
     getData();
-  }, []);
+  }, [currentUser.chatRooms]);
 
   // const getConversations = async () => {
   //   const conversation = await getConversationFromDb(UserChatRoomID);

@@ -1,7 +1,6 @@
 import firebase, { firestore, ADMIN_ID } from './index';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { updateUser } from './users';
-
 export const createChatRoom = (docId, name) => {
   firestore
     .collection('chatRooms')
@@ -106,4 +105,19 @@ export const removeChatRoomFromAdmin = (chatRoomId) => {
           .chatRooms.filter((chatRoom) => chatRoom !== chatRoomId),
       });
     });
+};
+
+export const getChatRoomsFromDbNotOptimized = async (chatRoomsIds) => {
+  try {
+    const querySnapshot = await firestore.collection('chatRooms').get();
+    const chatRooms = [];
+    querySnapshot.forEach((doc) => {
+      if (chatRoomsIds.includes(doc.id)) {
+        chatRooms.push({ id: doc.id, ...doc.data() });
+      }
+    });
+    return chatRooms;
+  } catch (error) {
+    console.log('error fetching chatRooms documents', error);
+  }
 };

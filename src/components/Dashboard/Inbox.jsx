@@ -8,7 +8,7 @@ import {
 import { Card } from "antd";
 import { Divider } from "antd";
 import { Typography } from "antd";
-import { getChatRoomsFromDbNotOptimized } from "../../firestore";
+import { getChatRoomsFromDbNotOptimized } from "../../firestore/chatRooms";
 import { useAuth } from "../../contexts/AuthContext";
 const { Title } = Typography;
 
