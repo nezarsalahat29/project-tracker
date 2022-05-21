@@ -10,6 +10,8 @@ import { Divider } from "antd";
 import { Typography } from "antd";
 import { getChatRoomsFromDbNotOptimized } from "../../firestore/chatRooms";
 import { useAuth } from "../../contexts/AuthContext";
+import { Link } from "react-router-dom";
+
 const { Title } = Typography;
 
 export default function Inbox() {
@@ -31,27 +33,37 @@ export default function Inbox() {
   }, [currentUser.chatRooms]);
 
   return (
-    <Card style={{ backgroundColor: "#F7F7F7", height: "100%" }}>
-      <Title level={2}>Inbox</Title> <Divider />
-      <ConversationList>
-        {conversations.map((convers) => {
-          return (
-            <Conversation
-              name={convers.name}
-              lastSenderName={convers.lastSenderName}
-              info={convers.lastMessage}
-            >
-              <Avatar
-                src={
-                  "https://ui-avatars.com/api/?background=random&name=" +
-                  convers.name
+    <Link to='/Chat'>
+      <Card style={{ backgroundColor: "#F7F7F7", height: "100%" }}>
+        <Title level={2}>Inbox</Title> <Divider />
+        <ConversationList>
+          {conversations.map((convers) => {
+            return (
+              <Conversation
+                info={convers.lastMessage}
+                lastSenderName={
+                  convers.lastSender === currentUser.name
+                    ? "Me"
+                    : convers.lastSender
                 }
-                name={convers.name}
-              />
-            </Conversation>
-          );
-        })}
-      </ConversationList>
-    </Card>
+                name={
+                  currentUser.name === convers.name
+                    ? "Instructor"
+                    : convers.name
+                }
+              >
+                <Avatar
+                  src={
+                    "https://ui-avatars.com/api/?background=random&name=" +
+                    convers.name
+                  }
+                  name={convers.name}
+                />
+              </Conversation>
+            );
+          })}
+        </ConversationList>
+      </Card>
+    </Link>
   );
 }

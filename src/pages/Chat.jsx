@@ -102,7 +102,9 @@ export default function Chat() {
                   <Conversation
                     info={conversation.lastMessage}
                     lastSenderName={
-                      conversation.lastSender === currentUser.name
+                      conversation.lastSender === ""
+                        ? null
+                        : conversation.lastSender === currentUser.name
                         ? "Me"
                         : conversation.lastSender
                     }

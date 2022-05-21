@@ -82,7 +82,7 @@ export const useMessagesData = (chatRoomId) => {
     .collection("chatRooms")
     .doc(chatRoomId)
     .collection("messages");
-  const query = messagesRef.orderBy("createdAt").limit(25);
+  const query = messagesRef.orderBy("createdAt","asc").limit(100);
   return useCollectionData(query, { idField: "id" });
 };
 
