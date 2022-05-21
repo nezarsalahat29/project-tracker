@@ -5,6 +5,7 @@ import {
   deleteChatRoom,
   removeChatRoomFromAdmin,
 } from './chatRooms';
+import { auth } from '../firebase';
 
 export const createUserDocument = (user, additionalData) => {
   if (!user) return;
@@ -43,9 +44,16 @@ export const getUserDocument = async (userId) => {
   }
 };
 
-export const updateUser = async (userId, user) => {
+export const updateUser = async (userId, newUser) => {
   const groupRef = firestore.collection('users').doc(userId);
-  await groupRef.update(user);
+  await groupRef.update(newUser);
+  if (userId === auth.currentUser.uid) {
+    console.log('updating local storage');
+    localStorage.setItem(
+      'currentUser',
+      JSON.stringify({ id: userId, ...newUser })
+    );
+  }
   console.log('User updated successfully');
 };
 
