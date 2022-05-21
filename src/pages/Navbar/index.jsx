@@ -12,6 +12,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import Dashboard from '../Dashboard';
 import Class from '../Class';
 import FaultPage from '../faultPage';
+import Project from '../Project';
 import Chat from '../Chat';
 
 const { Header, Content, Sider } = Layout;
@@ -109,6 +110,7 @@ export default function Navbar() {
               <Route path='/Class' element={<Class />} />
               <Route path='/Chat' element={<Chat />} />
               <Route path='*' element={<FaultPage />} />
+              <Route path='/project/:id' element={<Project />} />
             </Routes>
           </div>
         </Content>

@@ -1,5 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 export default function Project() {
-  return <div>project</div>;
+  const { id } = useParams();
+
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
+
+  return <div>project: {id}</div>;
 }
