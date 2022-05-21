@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Space, Typography, Divider, Button, Collapse } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import Loader from '../../components/Loader';
+import { getStudentsFromDb, updateUser } from '../../firestore/users';
 import {
   getGroupsFromDb,
-  getStudentsFromDb,
   createGroup,
   deleteGroup,
-  updateUser,
   updateGroup,
-} from '../../firestore';
+} from '../../firestore/groups';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 const { Title } = Typography;
