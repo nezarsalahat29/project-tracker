@@ -28,7 +28,7 @@ export default function Inbox() {
     };
 
     getData();
-  }, []);
+  }, [currentUser.chatRooms]);
 
   return (
     <Card style={{ backgroundColor: "#F7F7F7", height: "100%" }}>

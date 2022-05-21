@@ -1,9 +1,9 @@
-import firebase, { firestore, ADMIN_ID } from './index';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { updateUser } from './users';
+import firebase, { firestore, ADMIN_ID } from "./index";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { updateUser } from "./users";
 export const createChatRoom = (docId, name) => {
   firestore
-    .collection('chatRooms')
+    .collection("chatRooms")
     .doc(docId)
     .set({
       name: name,
@@ -15,49 +15,56 @@ export const createChatRoom = (docId, name) => {
         uid: docId,
         name,
       });
-      console.log('ChatRoom successfully written!');
+      console.log("ChatRoom successfully written!");
     })
     .catch((error) => {
-      console.error('Error creating ChatRoom document: ', error);
+      console.error("Error creating ChatRoom document: ", error);
     });
 };
 
 export const deleteChatRoom = async (chatRoomId) => {
   try {
-    const chatRoomRef = firestore.collection('chatRooms').doc(chatRoomId);
+    const chatRoomRef = firestore.collection("chatRooms").doc(chatRoomId);
     const nestedCollections = chatRoomRef.listCollections();
     await Promise.all(
       nestedCollections.map((collection) => collection.delete())
     );
     await chatRoomRef.delete();
-    console.log('ChatRoom document successfully deleted!');
+    console.log("ChatRoom document successfully deleted!");
   } catch (error) {
-    console.error('Error removing ChatRoom document: ', error);
+    console.error("Error removing ChatRoom document: ", error);
   }
 };
 
 export const getChatRoomsFromDb = async (chatRoomsIds) => {
   try {
     const chatRooms = [];
-    const chatRoomsRef = firestore.collection('chatRooms');
+    const chatRoomsRef = firestore.collection("chatRooms");
     chatRoomsIds.forEach(async (id) => {
       const doc = await chatRoomsRef.doc(id).get();
       chatRooms.push({ id: doc.id, ...doc.data() });
     });
 
-    console.log('database chatRooms: ', chatRooms);
+    console.log("database chatRooms: ", chatRooms);
     return chatRooms;
   } catch (error) {
-    console.log('error fetching chatRoom documents', error);
+    console.log("error fetching chatRoom documents", error);
   }
 };
 
 export const sendMessage = async (chatRoomId, messageText, uid, username) => {
   try {
-    const messagesRef = firestore
-      .collection('chatRooms')
+    //db.collection("users").doc("frank").update({
+    //"favorites.firebase": "Help")}
+    //})
+    firestore
+      .collection("chatRooms")
       .doc(chatRoomId)
-      .collection('messages');
+      .update({ lastMessage: messageText, lastSender: username });
+    const messagesRef = firestore
+      .collection("chatRooms")
+      .doc(chatRoomId)
+      .collection("messages");
 
     messagesRef.add({
       text: messageText,
@@ -66,22 +73,22 @@ export const sendMessage = async (chatRoomId, messageText, uid, username) => {
       username,
     });
   } catch (error) {
-    console.log('error adding message to chatroom', error);
+    console.log("error adding message to chatroom", error);
   }
 };
 
 export const useMessagesData = (chatRoomId) => {
   const messagesRef = firestore
-    .collection('chatRooms')
+    .collection("chatRooms")
     .doc(chatRoomId)
-    .collection('messages');
-  const query = messagesRef.orderBy('createdAt').limit(25);
-  return useCollectionData(query, { idField: 'id' });
+    .collection("messages");
+  const query = messagesRef.orderBy("createdAt").limit(25);
+  return useCollectionData(query, { idField: "id" });
 };
 
 export const addChatRoomToAdmin = (chatRoomId) => {
   firestore
-    .collection('users')
+    .collection("users")
     .doc(ADMIN_ID)
     .get()
     .then((adminRef) => {
@@ -94,7 +101,7 @@ export const addChatRoomToAdmin = (chatRoomId) => {
 
 export const removeChatRoomFromAdmin = (chatRoomId) => {
   firestore
-    .collection('users')
+    .collection("users")
     .doc(ADMIN_ID)
     .get()
     .then((adminRef) => {
@@ -109,7 +116,7 @@ export const removeChatRoomFromAdmin = (chatRoomId) => {
 
 export const getChatRoomsFromDbNotOptimized = async (chatRoomsIds) => {
   try {
-    const querySnapshot = await firestore.collection('chatRooms').get();
+    const querySnapshot = await firestore.collection("chatRooms").get();
     const chatRooms = [];
     querySnapshot.forEach((doc) => {
       if (chatRoomsIds.includes(doc.id)) {
@@ -118,6 +125,6 @@ export const getChatRoomsFromDbNotOptimized = async (chatRoomsIds) => {
     });
     return chatRooms;
   } catch (error) {
-    console.log('error fetching chatRooms documents', error);
+    console.log("error fetching chatRooms documents", error);
   }
 };

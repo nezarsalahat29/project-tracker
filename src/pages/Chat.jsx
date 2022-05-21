@@ -31,7 +31,7 @@ export default function Chat() {
   const [conversations, setConversations] = useState([]);
   const [activateChat, setActivateChat] = useState({
     id: GENERAL_CHATROOM,
-    name: "general",
+    name: "Announcements",
   });
   const { currentUser } = useAuth();
   const [messageInputValue, setMessageInputValue] = useState("");
@@ -57,7 +57,7 @@ export default function Chat() {
     };
 
     getData();
-  }, [currentUser.chatRooms]);
+  }, [currentUser.chatRooms, messages]);
 
   // const getConversations = async () => {
   //   const conversation = await getConversationFromDb(UserChatRoomID);
@@ -87,6 +87,12 @@ export default function Chat() {
                 console.log(conversation);
                 return (
                   <Conversation
+                    info={conversation.lastMessage}
+                    lastSenderName={
+                      conversation.lastSender === currentUser.name
+                        ? "Me"
+                        : conversation.lastSender
+                    }
                     active={conversation.name === activateChat.name}
                     key={conversation.id}
                     id={conversation.id}
@@ -100,7 +106,7 @@ export default function Chat() {
                       setDisabledInput(
                         currentUser.instructor
                           ? false
-                          : conversation.name === "general"
+                          : conversation.name === "Announcements"
                           ? true
                           : false
                       );
@@ -164,6 +170,7 @@ export default function Chat() {
                     }}
                   >
                     <Message.Footer
+                      sender={message.username}
                       sentTime={timeAgo.format(
                         new Date(
                           message.createdAt
@@ -172,12 +179,6 @@ export default function Chat() {
                         )
                       )}
                     />
-                    <Avatar
-                      src={
-                        "https://ui-avatars.com/api/?name=" + message.username
-                      }
-                      name={message.username}
-                    ></Avatar>
                   </Message>
                 );
               })}
