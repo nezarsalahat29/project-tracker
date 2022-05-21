@@ -83,3 +83,15 @@ export const deleteUser = async (userId) => {
     console.error('Error removing user document: ', error);
   }
 };
+
+// const userRef = firestore
+//   .collection('users')
+//   .doc('jttNpOWD2HR3xAdS6WveFcr5fBm2');
+// userRef.update({
+//   chatRooms: [
+//     'ELN8CuTpwdv5vIQ4AE4S',
+//     'QMXUybyTUUerrw91sLEY4wgnc8t1',
+//     'fzw7eFaKbsRPS1NiuPUE3GqCuys2',
+//     'qzTPOKrQC5aqjGPRGB7xAamFjMI2',
+//   ],
+// });
