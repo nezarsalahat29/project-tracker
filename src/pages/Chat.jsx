@@ -41,7 +41,16 @@ export default function Chat() {
 
   const [messages] = useMessagesData(activateChat.id);
   // console.log('activeChat: ', activateChat.id);
-
+  const [screenSize, getDimension] = useState({
+    dynamicWidth: window.innerWidth,
+    dynamicHeight: window.innerHeight,
+  });
+  const setDimension = () => {
+    getDimension({
+      dynamicWidth: window.innerWidth,
+      dynamicHeight: window.innerHeight,
+    });
+  };
   useEffect(() => {
     window.scrollTo(0, 0);
 
@@ -57,7 +66,11 @@ export default function Chat() {
     };
 
     getData();
-  }, [currentUser.chatRooms, messages]);
+    window.addEventListener("resize", setDimension);
+    return () => {
+      window.removeEventListener("resize", setDimension);
+    };
+  }, [currentUser.chatRooms, messages, screenSize]);
 
   // const getConversations = async () => {
   //   const conversation = await getConversationFromDb(UserChatRoomID);
@@ -75,7 +88,7 @@ export default function Chat() {
     setMessageInputValue("");
   };
   return (
-    <div style={{ height: 800 }}>
+    <div style={{ height: screenSize.dynamicHeight * 0.8 }}>
       {activateChat && console.log("active Chat:", activateChat)}
       <MainContainer>
         <Sidebar position='left' scrollable={true}>
