@@ -158,7 +158,7 @@ export default function Chat() {
               messages.map((message) => {
                 return (
                   <Message
-                    key={message}
+                    key={Math.random().toString(16).slice(2)}
                     model={{
                       message: message.text,
                       sentTime: String(message.createdAt),
