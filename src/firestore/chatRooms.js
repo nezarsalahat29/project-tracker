@@ -7,6 +7,8 @@ export const createChatRoom = (docId, name) => {
     .doc(docId)
     .set({
       name: name,
+      lastSender:"",
+      lastMessage:""
     })
     .then((docRef) => {
       firestore.collection(`chatRooms/${docId}/messages`).add({
@@ -52,15 +54,12 @@ export const getChatRoomsFromDb = async (chatRoomsIds) => {
   }
 };
 
-export const sendMessage = async (chatRoomId, messageText, uid, username) => {
+export const sendMessage = async (chatRoomId, messageText, uid, name) => {
   try {
-    //db.collection("users").doc("frank").update({
-    //"favorites.firebase": "Help")}
-    //})
     firestore
       .collection("chatRooms")
       .doc(chatRoomId)
-      .update({ lastMessage: messageText, lastSender: username });
+      .update({ lastMessage: messageText, lastSender: name });
     const messagesRef = firestore
       .collection("chatRooms")
       .doc(chatRoomId)
@@ -70,7 +69,7 @@ export const sendMessage = async (chatRoomId, messageText, uid, username) => {
       text: messageText,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       uid,
-      username,
+      name,
     });
   } catch (error) {
     console.log("error adding message to chatroom", error);

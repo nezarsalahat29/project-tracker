@@ -16,17 +16,17 @@ const { Title } = Typography;
 
 export default function Inbox() {
   const { currentUser } = useAuth();
-  const [conversations, setConversations] = useState([]);
+  const [chatRooms, setChatRooms] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
-      const conversationsFromDb = await getChatRoomsFromDbNotOptimized(
+      const chatroomsFromDb = await getChatRoomsFromDbNotOptimized(
         currentUser.chatRooms
       );
-      console.log("frontend chatRooms", conversationsFromDb);
-      console.log("first convo: ", conversationsFromDb[0]);
+      console.log("frontend chatRooms", chatroomsFromDb);
+      console.log("first convo: ", chatroomsFromDb[0]);
 
-      setConversations(conversationsFromDb);
+      setChatRooms(chatroomsFromDb);
     };
 
     getData();
@@ -37,27 +37,29 @@ export default function Inbox() {
       <Card style={{ backgroundColor: "#F7F7F7", height: "100%" }}>
         <Title level={2}>Inbox</Title> <Divider />
         <ConversationList>
-          {conversations.map((convers) => {
+          {chatRooms.map((chatroom) => {
             return (
               <Conversation
-                info={convers.lastMessage}
+                info={chatroom.lastMessage}
                 lastSenderName={
-                  convers.lastSender === currentUser.name
+                  chatroom.lastSender === ""
+                    ? null
+                    : chatroom.lastSender === currentUser.name
                     ? "Me"
-                    : convers.lastSender
+                    : chatroom.lastSender
                 }
                 name={
-                  currentUser.name === convers.name
+                  currentUser.name === chatroom.name
                     ? "Instructor"
-                    : convers.name
+                    : chatroom.name
                 }
               >
                 <Avatar
                   src={
                     "https://ui-avatars.com/api/?background=random&name=" +
-                    convers.name
+                    chatroom.name
                   }
-                  name={convers.name}
+                  name={chatroom.name}
                 />
               </Conversation>
             );

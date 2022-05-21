@@ -1,4 +1,3 @@
-//https://chatscope.io/storybook/react/?path=/docs/components-maincontainer--without-right-sidebar
 import React, { useState, useEffect } from "react";
 import {
   MainContainer,
@@ -14,8 +13,6 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { useAuth } from "../contexts/AuthContext";
 import {
-  // createConversation,
-  // deleteConversation,
   sendMessage,
   useMessagesData,
   getChatRoomsFromDbNotOptimized,
@@ -24,11 +21,12 @@ import { GENERAL_CHATROOM } from "../firestore/index";
 import Loader from "../components/Loader";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
+
 TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo("en-US");
 
 export default function Chat() {
-  const [conversations, setConversations] = useState([]);
+  const [chatRooms, setChatRooms] = useState([]);
   const [activateChat, setActivateChat] = useState({
     id: GENERAL_CHATROOM,
     name: "Announcements",
@@ -37,10 +35,7 @@ export default function Chat() {
   const [messageInputValue, setMessageInputValue] = useState("");
   const [loading, setLoading] = useState(true);
   const [disabledInput, setDisabledInput] = useState(!currentUser.instructor);
-  // console.log(currentUser);
-
   const [messages] = useMessagesData(activateChat.id);
-  // console.log('activeChat: ', activateChat.id);
   const [screenSize, getDimension] = useState({
     dynamicWidth: window.innerWidth,
     dynamicHeight: window.innerHeight,
@@ -51,17 +46,15 @@ export default function Chat() {
       dynamicHeight: window.innerHeight,
     });
   };
+
   useEffect(() => {
     window.scrollTo(0, 0);
 
     const getData = async () => {
-      const conversationsFromDb = await getChatRoomsFromDbNotOptimized(
+      const chatRoomsFromDb = await getChatRoomsFromDbNotOptimized(
         currentUser.chatRooms
       );
-      console.log("frontend chatRooms", conversationsFromDb);
-      console.log("first convo: ", conversationsFromDb[0]);
-
-      setConversations(conversationsFromDb);
+      setChatRooms(chatRoomsFromDb);
       setLoading(false);
     };
 
@@ -71,12 +64,6 @@ export default function Chat() {
       window.removeEventListener("resize", setDimension);
     };
   }, [currentUser.chatRooms, messages, screenSize]);
-
-  // const getConversations = async () => {
-  //   const conversation = await getConversationFromDb(UserChatRoomID);
-  //   console.log('return list:');
-  //   setConversations(conversation);
-  // };
 
   const sendNewMessage = () => {
     sendMessage(
@@ -96,32 +83,32 @@ export default function Chat() {
             <Loader />
           ) : (
             <ConversationList>
-              {conversations.map((conversation) => {
-                console.log(conversation);
+              {chatRooms.map((chatRoom) => {
+                console.log(chatRoom);
                 return (
                   <Conversation
-                    info={conversation.lastMessage}
+                    info={chatRoom.lastMessage}
                     lastSenderName={
-                      conversation.lastSender === ""
+                      chatRoom.lastSender === ""
                         ? null
-                        : conversation.lastSender === currentUser.name
+                        : chatRoom.lastSender === currentUser.name
                         ? "Me"
-                        : conversation.lastSender
+                        : chatRoom.lastSender
                     }
-                    active={conversation.name === activateChat.name}
-                    key={conversation.id}
-                    id={conversation.id}
+                    active={chatRoom.name === activateChat.name}
+                    key={chatRoom.id}
+                    id={chatRoom.id}
                     name={
-                      currentUser.name === conversation.name
+                      currentUser.name === chatRoom.name
                         ? "Instructor"
-                        : conversation.name
+                        : chatRoom.name
                     }
                     onClick={() => {
-                      setActivateChat(conversation);
+                      setActivateChat(chatRoom);
                       setDisabledInput(
                         currentUser.instructor
                           ? false
-                          : conversation.name === "Announcements"
+                          : chatRoom.name === "Announcements"
                           ? true
                           : false
                       );
@@ -130,11 +117,11 @@ export default function Chat() {
                     <Avatar
                       src={
                         "https://ui-avatars.com/api/?background=random&name=" +
-                        (currentUser.name === conversation.name
+                        (currentUser.name === chatRoom.name
                           ? "Instructor"
-                          : conversation.name)
+                          : chatRoom.name)
                       }
-                      name={conversation.name}
+                      name={chatRoom.name}
                     />
                   </Conversation>
                 );
@@ -176,16 +163,24 @@ export default function Chat() {
                     model={{
                       message: message.text,
                       sentTime: message.createdAt,
-                      sender: message.username,
+                      sender: message.name,
                       direction:
-                        message.username === currentUser.name
+                        message.name === currentUser.name
                           ? "outgoing"
                           : "incoming",
                       position: "single",
                     }}
                   >
+                    <Avatar
+                      style={{ justifyContent: "flex-start" }}
+                      src={
+                        "https://ui-avatars.com/api/?background=random&name=" +
+                        message.name
+                      }
+                      name={message.name}
+                    />
                     <Message.Footer
-                      sender={message.username}
+                      sender={message.name}
                       sentTime={timeAgo.format(
                         new Date(
                           message.createdAt
