@@ -6,18 +6,21 @@ import React from "react";
 import "./index.css";
 import { Liquid } from "@ant-design/plots";
 import TasksLists from "../Tasks";
-import { Button, } from "antd";
+import { Button } from "antd";
 
-import {
-
-  AppstoreAddOutlined,
-} from "@ant-design/icons";
+import { AppstoreAddOutlined } from "@ant-design/icons";
 import { Card } from "antd";
 
-import { Row, Col, Divider } from "antd";
+import { Row, Col, Collapse , Radio } from "antd";
 
 import { Drawer, Form, Input, Select, DatePicker, Space } from "antd";
 import Calendar from "../../components/Dashboard/Calendar";
+import { Avatar, List } from 'antd';
+
+
+import {
+  TeamOutlined 
+} from '@ant-design/icons';
 /****************************************************************/
 
 function LiquidP() {
@@ -36,16 +39,42 @@ function LiquidP() {
     </div>
   );
 }
-export default function Taskk() {
-  const [visible, setVisible] = React.useState(false);
+export default function Project() {
+  const [Taskvisible, setTaskVisible] = React.useState(false);
+  const [Groupvisible, setGroupVisible] = React.useState(false);
 
-  const showDrawer = () => {
-    setVisible(true);
+  const showTaskDrawer = () => {
+    setTaskVisible(true);
   };
 
-  const onClose = () => {
-    setVisible(false);
+  const showGroupDrawer = () => {
+    setGroupVisible(true);
   };
+
+  const TaskonClose = () => {
+    setTaskVisible(false);
+  };
+  const GrouponClose = () => {
+    setGroupVisible(false);
+  };
+  const { Panel } = Collapse;
+
+  
+
+  const data = [
+    {id:133050,
+      title: 'Jebril',
+    },
+    {id:133051,
+      title: 'Nezar',
+    },
+    {id:133052,
+      title: 'Hedaya',
+    },
+    {id:133053,
+      title: 'Mohannad',
+    },
+  ];
 
   /************************************************************* */
 
@@ -64,76 +93,149 @@ export default function Taskk() {
   ];
 
   return (
+    
     <>
-
-
       {Projects.map((e) => {
-
         return (
-
           <div>
+            <h1>{e.Title}</h1>
+            <br />
+            <span>
+              {" "}
 
-            <h1>{e.Title}</h1><br />
-            <span> <Button
-              type="primary"
-              onClick={showDrawer}
-              style={{
-                backgroundColor: "0092ff",
-                borderColor: "#0092ff",
-                borderRadius: "500",
-              }}
-              icon={
+              <Collapse defaultActiveKey={['1']} >
+            <Panel header="Group 1" key="1">
+        <p> <List
+    itemLayout="horizontal"
+    dataSource={data}
+    renderItem={(item) => (
+      <List.Item>
+        <List.Item.Meta
+          avatar={<TeamOutlined/>}
+          title={<a href="https://ant.design">{item.title}</a>}
+          description={item.id}
+        />
+      </List.Item>
+    )}
+  /></p>
+      </Panel>
+      
+    </Collapse>
+              <Button
+              
+                type="primary"
+                onClick={showGroupDrawer}
+                style={{
+                  backgroundColor: "0092ff",
+                  borderColor: "#0092ff",
+                  borderRadius: "500",
+                  marginTop:"20px"
+                }}
+                icon={
+                  <AppstoreAddOutlined
+                    style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
+                  />
+                }
+              >
+                Assign Project To Group 
+              </Button>
+            </span>
 
-                <AppstoreAddOutlined
-                  style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
-                />
+            <Drawer
+              title="Assign Project To Group " 
+              width={720}
+              onClose={GrouponClose}
+              visible={Groupvisible}
+              bodyStyle={{ paddingBottom: 80 }}
+              extra={
+                <Space>
+                  <Button onClick={GrouponClose}>Cancel</Button>
+                  <Button onClick={GrouponClose} type="primary">
+                    Assign
+                  </Button>
+                </Space>
               }
             >
-              Assign Project To Group
-            </Button></span>
+              <Form layout="vertical" hideRequiredMark>
+                <div className="RadioGroup">
+                  {" "}
+                  <Row gutter={12}>
+                    <Col span={30}>
+                      <Form.Item
+                        name="radio-button"
+                        label="Which Group do you want to assign to this project?: "
+                        rules={[
+                          { required: true, message: "Please pick a Group!" },
+                        ]}
+                      >
+                        <Radio.Group>
+                          <Radio.Button value="Group 1">Group 1</Radio.Button>
+                          <Radio.Button value="Group 2">Group 2</Radio.Button>
+                          <Radio.Button value="Group 3">Group 3</Radio.Button>
+                        </Radio.Group>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </div>
+              </Form>
+            </Drawer>
+
             <h3>Project ID: {e.id}</h3>
-            <p> {e.description}...Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tristique quam sed tristique molestie. Ut maximus dui et felis egestas rutrum. Praesent nec erat aliquet, congue eros non, imperdiet lorem. Quisque libero nisi, faucibus a felis eu, fermentum posuere ex. Quisque nec ex leo.</p>
-            <br /><br />
+            <p>
+              {" "}
+              {e.description}...Lorem ipsum dolor sit amet, consectetur
+              adipiscing elit. Curabitur tristique quam sed tristique molestie.
+              Ut maximus dui et felis egestas rutrum. Praesent nec erat aliquet,
+              congue eros non, imperdiet lorem. Quisque libero nisi, faucibus a
+              felis eu, fermentum posuere ex. Quisque nec ex leo.
+            </p>
+            <br />
+            <br />
 
             <div className="site-card-wrapper">
               <Row gutter={16}>
                 <Col span={8}>
-                  <Card.Grid title="Work Summary" bordered={true} style={{
-                    width: 400, height: 400, fontWeight: "bold",
-                    fontSize: "25px",
-                    fontFamily: "cursive",
-                    textAlign: "center",
-                  }}>
+                  <Card.Grid
+                    title="Work Summary"
+                    bordered={true}
+                    style={{
+                      width: 400,
+                      height: 400,
+                      fontWeight: "bold",
+                      fontSize: "25px",
+                      fontFamily: "cursive",
+                      textAlign: "center",
+                    }}
+                  >
                     <p>Work Summary</p>
                     <LiquidP />
                   </Card.Grid>
                 </Col>
-                <Col span={5}>
-
-                </Col>
+                <Col span={5}></Col>
                 <Col span={8}>
-                  <Card.Grid title="Project Calendar" bordered={true} hoverable={true} style={{
-                    width: 400, height: 400, fontWeight: "bold",
-                    fontSize: "25px",
-                    fontFamily: "cursive",
-                    textAlign: "center",
-                  }}>
+                  <Card.Grid
+                    title="Project Calendar"
+                    bordered={true}
+                    hoverable={true}
+                    style={{
+                      width: 400,
+                      height: 400,
+                      fontWeight: "bold",
+                      fontSize: "25px",
+                      fontFamily: "cursive",
+                      textAlign: "center",
+                    }}
+                  >
                     <p>Project Calendar</p>
                     <Calendar />
                   </Card.Grid>
                 </Col>
               </Row>
             </div>
-
           </div>
 
           /************************************************************/
-
-
-
         );
-
-
       })}
 
       <TasksLists />
@@ -142,7 +244,7 @@ export default function Taskk() {
           {" "}
           <Button
             type="primary"
-            onClick={showDrawer}
+            onClick={showTaskDrawer}
             style={{
               backgroundColor: "0092ff",
               borderColor: "#0092ff",
@@ -154,18 +256,18 @@ export default function Taskk() {
               />
             }
           >
-            Add New Task
+            Add New Task 
           </Button>
           <Drawer
             title="Add New Task"
             width={720}
-            onClose={onClose}
-            visible={visible}
+            onClose={TaskonClose}
+            visible={Taskvisible}
             bodyStyle={{ paddingBottom: 80 }}
             extra={
               <Space>
-                <Button onClick={onClose}>Cancel</Button>
-                <Button onClick={onClose} type="primary">
+                <Button onClick={TaskonClose}>Cancel</Button>
+                <Button onClick={TaskonClose} type="primary">
                   Submit
                 </Button>
               </Space>
