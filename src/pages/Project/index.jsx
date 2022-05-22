@@ -11,14 +11,13 @@ import { Button, } from "antd";
 import {
 
   AppstoreAddOutlined,
-} from "@ant-design/icons"; 
+} from "@ant-design/icons";
 import { Card } from "antd";
 
 import { Row, Col, Divider } from "antd";
 
 import { Drawer, Form, Input, Select, DatePicker, Space } from "antd";
 import Calendar from "../../components/Dashboard/Calendar";
-import Title from "antd/lib/skeleton/Title";
 /****************************************************************/
 
 function LiquidP() {
@@ -57,7 +56,7 @@ export default function Taskk() {
         "You will find here the description of this project and other details",
       startDate: "12-Jul-2022",
       endDAte: "7-Aug-2022",
-      Title: "Project 1",
+      Title: "Project Name",
       tasks: ["task1", "task2", "task3"],
       Progress: 0.6,
       deliverables: ["dev1", "dev2", "dev3"],
@@ -66,63 +65,76 @@ export default function Taskk() {
 
   return (
     <>
-      <Row gutter={26}>
-        {Projects.map((e) => {
-
-          return (
-            <Row style={{
-              fontWeight: "bolder",
-              fontSize: "40px",
-              fontFamily: "cursive",
-              textAlign: "center",
-            }} >
-
-              {e.Title}
-              <div className="site-card-border-less-wrapper">
-                <Card
-                  headStyle={{ fontFamily: "-moz-initial", fontSize: "25px" }}
-                  title={e.description}
-                  bordered={false}
-                  style={{ width: 800 }}
-                  bodyStyle={{
-                    fontWeight: "bold",
-                    fontFamily: "-moz-initial",
-                    fontSize: "18px",
-                  }}
-                >
-
-                  <p>Project ID: {e.id}</p> <br />
-                  <Row>
-                    <Col offset={0}>
-                      <Divider orientation="left">
-                        <p style={{
-                          fontWeight: "bold",
-                          fontSize: "25px",
-                          fontFamily: "cursive",
-                          textAlign: "center",
-                        }}>Work Sumary</p>
-                        <LiquidP />
-                      </Divider>
-
-                    </Col>
-                    <Col span={7} offset={6}>
-                      Start Date      →     End Date <br />
-                      {e.startDate}   →  {e.endDAte}
-                      <br /><br />
-                      <Calendar />
-                    </Col>
-                  </Row>
-
-                </Card>
-              </div>
-
-            </Row>
-          );
 
 
-        })}
+      {Projects.map((e) => {
 
-      </Row>
+        return (
+
+          <div>
+
+            <h1>{e.Title}</h1><br />
+            <span> <Button
+              type="primary"
+              onClick={showDrawer}
+              style={{
+                backgroundColor: "0092ff",
+                borderColor: "#0092ff",
+                borderRadius: "500",
+              }}
+              icon={
+
+                <AppstoreAddOutlined
+                  style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
+                />
+              }
+            >
+              Assign Project To Group
+            </Button></span>
+            <h3>Project ID: {e.id}</h3>
+            <p> {e.description}...Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tristique quam sed tristique molestie. Ut maximus dui et felis egestas rutrum. Praesent nec erat aliquet, congue eros non, imperdiet lorem. Quisque libero nisi, faucibus a felis eu, fermentum posuere ex. Quisque nec ex leo.</p>
+            <br /><br />
+
+            <div className="site-card-wrapper">
+              <Row gutter={16}>
+                <Col span={8}>
+                  <Card.Grid title="Work Summary" bordered={true} style={{
+                    width: 400, height: 400, fontWeight: "bold",
+                    fontSize: "25px",
+                    fontFamily: "cursive",
+                    textAlign: "center",
+                  }}>
+                    <p>Work Summary</p>
+                    <LiquidP />
+                  </Card.Grid>
+                </Col>
+                <Col span={5}>
+
+                </Col>
+                <Col span={8}>
+                  <Card.Grid title="Project Calendar" bordered={true} hoverable={true} style={{
+                    width: 400, height: 400, fontWeight: "bold",
+                    fontSize: "25px",
+                    fontFamily: "cursive",
+                    textAlign: "center",
+                  }}>
+                    <p>Project Calendar</p>
+                    <Calendar />
+                  </Card.Grid>
+                </Col>
+              </Row>
+            </div>
+
+          </div>
+
+          /************************************************************/
+
+
+
+        );
+
+
+      })}
 
       <TasksLists />
       <Row justify="end">

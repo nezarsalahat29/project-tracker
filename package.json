@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@ant-design/charts": "^1.3.6",
-    "@ant-design/icons": "^4.7.0",
     "@ant-design/plots": "^1.0.9",
     "@chatscope/chat-ui-kit-react": "^1.8.3",
     "antd": "^4.20.5",
@@ -38,5 +37,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@ant-design/icons": "^4.7.0"
   }
 }
