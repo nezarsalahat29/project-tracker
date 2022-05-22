@@ -9,10 +9,10 @@ const { Header } = Layout;
 const { Title } = Typography;
 
 const items = [
-    { id: "1", Title: "First Task",content:"The First task description" },
-    { id: "2", Title: "Second Task",content:"The Second task description" },
-    { id: "3", Title: "Third Task",content:"The Third task description" },
-    { id: "4", Title: "Fourth Task",content:"The Fourth task description" },
+    { id: "1", Title: "First Task", content: "The First task description" },
+    { id: "2", Title: "Second Task", content: "The Second task description" },
+    { id: "3", Title: "Third Task", content: "The Third task description" },
+    { id: "4", Title: "Fourth Task", content: "The Fourth task description" },
 
 ]
 const Titles = ["Requested Tasks", "To-Do", "In progress", "Finished"];
@@ -169,10 +169,8 @@ function TasksLists() {
                                                                                         ...provided.draggableProps.style
                                                                                     }}
                                                                                 >
-                                                                                    
-                                                                                    <p style={{
-                                                                                        wordbreak: "keep-all"
-                                                                                    }}>{item.content}.</p>
+
+                                                                                    {item.content}
 
 
                                                                                     <div style={{ width: 170 }}>
