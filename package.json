@@ -9,6 +9,7 @@
     "@chatscope/chat-ui-kit-react": "^1.8.3",
     "antd": "^4.20.5",
     "firebase": "^9.8.1",
+    "javascript-time-ago": "^2.5.1",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.2",

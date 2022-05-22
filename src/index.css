@@ -34,3 +34,8 @@
 .myForm .ant-btn {
     width: 100%;
 }
+
+.cs-message__avatar{
+
+    justify-content: flex-start;
+}

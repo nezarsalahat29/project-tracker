@@ -7,14 +7,13 @@ import {
   PieChartOutlined,
   FileOutlined,
   TeamOutlined,
-} from "@ant-design/icons";
-import { Routes, Route, Link } from "react-router-dom";
-import Dashboard from "../Dashboard";
-import Class from "../Class";
-import FaultPage from "../faultPage";
-import Chat from "../Chat";
-import Project from "../Project";
-import TasksLists from "../Tasks";
+} from '@ant-design/icons';
+import { Routes, Route, Link } from 'react-router-dom';
+import Dashboard from '../Dashboard';
+import Class from '../Class';
+import FaultPage from '../faultPage';
+import Project from '../Project';
+import Chat from '../Chat';
 
 const { Header, Content, Sider } = Layout;
 
@@ -81,7 +80,7 @@ export default function Navbar() {
             borderBottom: "1px solid rgba(240, 240, 240)",
           }}
         >
-          <Avatar
+          <Avatar 
             style={{
               backgroundColor: "#1890ff",
               verticalAlign: "middle",
@@ -108,12 +107,11 @@ export default function Navbar() {
             }}
           >
             <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/Class" element={<Class />} />
-              <Route path="/Chat" element={<Chat />} />
-              <Route path="*" element={<FaultPage />} />
-              <Route path="/Project" element={<Project />} />
-              <Route path="/Tasks" element={<TasksLists />} />
+              <Route path='/' element={<Dashboard />} />
+              <Route path='/Class' element={<Class />} />
+              <Route path='/Chat' element={<Chat />} />
+              <Route path='*' element={<FaultPage />} />
+              <Route path='/project/:id' element={<Project />} />
             </Routes>
           </div>
         </Content>
