@@ -112,6 +112,7 @@ export default function Navbar() {
               <Route path='/Chat' element={<Chat />} />
               <Route path='*' element={<FaultPage />} />
               <Route path='/Project' element={<Project />} />
+              {/* <Route path='/project/:id' element={<Project />} /> */}
             </Routes>
           </div>
         </Content>
