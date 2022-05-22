@@ -7116,6 +7116,13 @@
     "filelist" "^1.0.1"
     "minimatch" "^3.0.4"
 
+"javascript-time-ago@^2.5.1":
+  "integrity" "sha512-jB5PlImQRpWoniY+lMzb4cLaU878yHkNSU6heB9gIdNBYqZmu9NuVlLyeI82cvtzv4pLuF8Xo9giVo2YIC9L0w=="
+  "resolved" "https://registry.npmjs.org/javascript-time-ago/-/javascript-time-ago-2.5.1.tgz"
+  "version" "2.5.1"
+  dependencies:
+    "relative-time-format" "^1.0.8"
+
 "jest-changed-files@^27.5.1":
   "integrity" "sha512-buBLMiByfWGCoMsLLzGUUSpAmIAGnbR2KJoMN10ziLhOLvP4e0SlypHnAel8iqQXTrcbmfEY9sSqae5sgUsTvw=="
   "resolved" "https://registry.npmjs.org/jest-changed-files/-/jest-changed-files-27.5.1.tgz"
@@ -9646,17 +9653,7 @@
     "rc-motion" "^2.2.0"
     "rc-util" "^5.20.1"
 
-"rc-overflow@^1.0.0":
-  "integrity" "sha512-YqbocgzuQxfq2wZy72vdAgrgzzEuM/5d4gF9TBEodCpXPbUeXGrUXNm1J6G1MSkCU2N0ePIgCEu5qD/0Ldi63Q=="
-  "resolved" "https://registry.npmjs.org/rc-overflow/-/rc-overflow-1.2.6.tgz"
-  "version" "1.2.6"
-  dependencies:
-    "@babel/runtime" "^7.11.1"
-    "classnames" "^2.2.1"
-    "rc-resize-observer" "^1.0.0"
-    "rc-util" "^5.19.2"
-
-"rc-overflow@^1.2.0":
+"rc-overflow@^1.0.0", "rc-overflow@^1.2.0":
   "integrity" "sha512-YqbocgzuQxfq2wZy72vdAgrgzzEuM/5d4gF9TBEodCpXPbUeXGrUXNm1J6G1MSkCU2N0ePIgCEu5qD/0Ldi63Q=="
   "resolved" "https://registry.npmjs.org/rc-overflow/-/rc-overflow-1.2.6.tgz"
   "version" "1.2.6"
@@ -9890,16 +9887,7 @@
     "react-is" "^16.12.0"
     "shallowequal" "^1.1.0"
 
-"rc-virtual-list@^3.2.0":
-  "integrity" "sha512-qSN+Rv4i/E7RCTvTMr1uZo7f3crJJg/5DekoCagydo9zsXrxj07zsFSxqizqW+ldGA16lwa8So/bIbV9Ofjddg=="
-  "resolved" "https://registry.npmjs.org/rc-virtual-list/-/rc-virtual-list-3.4.8.tgz"
-  "version" "3.4.8"
-  dependencies:
-    "classnames" "^2.2.6"
-    "rc-resize-observer" "^1.0.0"
-    "rc-util" "^5.15.0"
-
-"rc-virtual-list@^3.4.2":
+"rc-virtual-list@^3.2.0", "rc-virtual-list@^3.4.2":
   "integrity" "sha512-qSN+Rv4i/E7RCTvTMr1uZo7f3crJJg/5DekoCagydo9zsXrxj07zsFSxqizqW+ldGA16lwa8So/bIbV9Ofjddg=="
   "resolved" "https://registry.npmjs.org/rc-virtual-list/-/rc-virtual-list-3.4.8.tgz"
   "version" "3.4.8"
@@ -10334,6 +10322,11 @@
   "integrity" "sha1-VNvzd+UUQKypCkzSdGANP/LYiKk="
   "resolved" "https://registry.npmjs.org/relateurl/-/relateurl-0.2.7.tgz"
   "version" "0.2.7"
+
+"relative-time-format@^1.0.8":
+  "integrity" "sha512-Gj3cF5mOYANOq9pbgO4xEXbyfB2nFqUBwe15ficeAwXE6EaTX/nBR1MnuIpQO6mqTL4BqH22Lg2AbnNGxobMDQ=="
+  "resolved" "https://registry.npmjs.org/relative-time-format/-/relative-time-format-1.1.1.tgz"
+  "version" "1.1.1"
 
 "renderkid@^3.0.0":
   "integrity" "sha512-q/7VIQA8lmM1hF+jn+sFSPWGlMkSAeNYcPLmDQx2zzuiDfaLrOmumR8iaUKlenFgh0XRPIUeSPlH3A+AW3Z5pg=="
