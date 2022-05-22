@@ -42,7 +42,7 @@ export const getGroupFromDb = async (groupId) => {
     const doc = await firestore.collection('groups').doc(groupId).get();
     return { id: groupId, ...doc.data() };
   } catch (error) {
-    console.log('error fetching group documents', error);
+    console.log('error fetching group document', error);
   }
 };
 

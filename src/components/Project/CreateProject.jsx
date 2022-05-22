@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Modal, Form, DatePicker, Input, Space } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { createProject } from '../../firestore/projects';
+import { v4 as uuidv4 } from 'uuid';
 
 const formItemLayout = {
   labelCol: {
@@ -205,9 +206,12 @@ export default function CreateProject({ getData }) {
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const onCreate = async (values) => {
-    console.log({ ...values, endDate: values.endDate.toDate() });
     setConfirmLoading(true);
-    await createProject({ ...values, dueDate: values.endDate.toDate() });
+    await createProject({
+      ...values,
+      dueDate: values.endDate.toDate(),
+      tasks: values.tasks.map((task) => ({ ...task, id: uuidv4() })),
+    });
     getData();
     setConfirmLoading(false);
     setVisible(false);

@@ -39,6 +39,15 @@ export const getAllProjects = async () => {
   }
 };
 
+export const getProject = async (projectId) => {
+  try {
+    const doc = await firestore.collection('projects').doc(projectId).get();
+    return { id: projectId, ...doc.data() };
+  } catch (error) {
+    console.log('error fetching project document', error);
+  }
+};
+
 export const deleteProject = async (projectId) => {
   try {
     await firestore.collection('projects').doc(projectId).delete();
