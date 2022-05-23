@@ -89,53 +89,7 @@ export default function Project() {
       message="Warning"
       description="No group is assigned to this project yet!"
       type="info"
-      showIcon
-      
-          <div>
-            <h1>{Projects.Title}</h1>
-            <br />
-            <span>
-              {" "}
-              <Collapse defaultActiveKey={["1"]}>
-                <Panel header="Group 1" key="1">
-                  <p>
-                    {" "}
-                    <List
-                      itemLayout="horizontal"
-                      dataSource={data}
-                      renderItem={(item) => (
-                        <List.Item>
-                          <List.Item.Meta
-                            avatar={<TeamOutlined />}
-                            title={
-                              <a href="https://ant.design">{item.title}</a>
-                            }
-                            description={item.id}
-                          />
-                        </List.Item>
-                      )}
-                    />
-                  </p>
-                </Panel>
-              </Collapse>
-              <Button
-                type="primary"
-                onClick={showGroupDrawer}
-                style={{
-                  backgroundColor: "0092ff",
-                  borderColor: "#0092ff",
-                  borderRadius: "500",
-                  marginTop: "20px",
-                }}
-                icon={
-                  <UsergroupAddOutlined 
-                    style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
-                  />
-                }
-              >
-                Assign Project To Group
-              </Button>
-            </span>
+      showIcon/>
 
           <Collapse defaultActiveKey={["1"]}>
             <Panel header="Group 1" key="1">
