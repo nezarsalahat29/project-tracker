@@ -80,14 +80,16 @@ h3 {
 
 
 .RadioGroup{
-    width:400;
+    width:300;
     height: 100%;
-    /* padding: 0px;
-    margin-left:25%;
-    display: inline-block; */
+    
+    /* margin-left:25%; */
+    display: block;
 
-    /* position: relative; */
-    /* left: 25%; */
+    /* position: relative;
+    right:50%;
+    left: 50%; */
+   
     text-align: center;
     font-size:200px;
     
