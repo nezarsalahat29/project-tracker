@@ -8,7 +8,7 @@ import { Liquid } from "@ant-design/plots";
 import TasksLists from "../Tasks";
 import { Button } from "antd";
 import { Alert } from 'antd';
-import { AppstoreAddOutlined } from "@ant-design/icons";
+import { AppstoreAddOutlined,UsergroupAddOutlined  } from "@ant-design/icons";
 import { Card } from "antd";
 
 import { Row, Col, Collapse, Radio } from "antd";
@@ -91,7 +91,51 @@ export default function Project() {
       type="info"
       showIcon
       
-    />
+          <div>
+            <h1>{Projects.Title}</h1>
+            <br />
+            <span>
+              {" "}
+              <Collapse defaultActiveKey={["1"]}>
+                <Panel header="Group 1" key="1">
+                  <p>
+                    {" "}
+                    <List
+                      itemLayout="horizontal"
+                      dataSource={data}
+                      renderItem={(item) => (
+                        <List.Item>
+                          <List.Item.Meta
+                            avatar={<TeamOutlined />}
+                            title={
+                              <a href="https://ant.design">{item.title}</a>
+                            }
+                            description={item.id}
+                          />
+                        </List.Item>
+                      )}
+                    />
+                  </p>
+                </Panel>
+              </Collapse>
+              <Button
+                type="primary"
+                onClick={showGroupDrawer}
+                style={{
+                  backgroundColor: "0092ff",
+                  borderColor: "#0092ff",
+                  borderRadius: "500",
+                  marginTop: "20px",
+                }}
+                icon={
+                  <UsergroupAddOutlined 
+                    style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
+                  />
+                }
+              >
+                Assign Project To Group
+              </Button>
+            </span>
 
           <Collapse defaultActiveKey={["1"]}>
             <Panel header="Group 1" key="1">
