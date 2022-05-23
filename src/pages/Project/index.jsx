@@ -7,9 +7,10 @@ import "./index.css";
 import { Liquid } from "@ant-design/plots";
 import TasksLists from "../Tasks";
 import { Button } from "antd";
-import { Alert } from 'antd';
-import { AppstoreAddOutlined,UsergroupAddOutlined  } from "@ant-design/icons";
+import { Alert } from "antd";
+import { AppstoreAddOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Card } from "antd";
+import { Layout, Divider } from "antd";
 
 import { Row, Col, Collapse, Radio } from "antd";
 
@@ -39,7 +40,7 @@ function LiquidP() {
 export default function Project() {
   const [Taskvisible, setTaskVisible] = React.useState(false);
   const [Groupvisible, setGroupVisible] = React.useState(false);
-  
+  const { Header } = Layout;
 
   const showTaskDrawer = () => {
     setTaskVisible(true);
@@ -63,7 +64,7 @@ export default function Project() {
     { id: 133052, title: "Hedaya" },
     { id: 133053, title: "Mohannad" },
   ];
-  <Alert message="Informational Notes" type="info" showIcon />
+  <Alert message="Informational Notes" type="info" showIcon />;
 
   const Projects = {
     id: 1,
@@ -83,14 +84,12 @@ export default function Project() {
         <br />
         <span>
           {" "}
-
-
           <Alert
-      message="Warning"
-      description="No group is assigned to this project yet!"
-      type="info"
-      showIcon/>
-
+            message="Warning"
+            description="No group is assigned to this project yet!"
+            type="info"
+            showIcon
+          />
           <Collapse defaultActiveKey={["1"]}>
             <Panel header="Group 1" key="1">
               <p>
@@ -114,11 +113,13 @@ export default function Project() {
           <Button
             type="primary"
             onClick={showGroupDrawer}
+            size="large"
             style={{
               backgroundColor: "0092ff",
               borderColor: "#0092ff",
               borderRadius: "500",
               marginTop: "20px",
+              size: "20px",
             }}
             icon={
               <AppstoreAddOutlined
@@ -245,27 +246,37 @@ export default function Project() {
           </Row>
         </div>
       </div>
-      /************************************************************/
+
+      <Divider orientation="center"></Divider>
+
+      <h1 style={{ textAlign: "center", fontWeight: "bold", marginTop: 75 }}>
+        Tasks Lists
+      </h1>
+      <br />
+
+      <div style={{textAlign:"right"}}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={showTaskDrawer}
+          style={{
+            backgroundColor: "0092ff",
+            borderColor: "#0092ff",
+            borderRadius: "500",
+          }}
+          icon={
+            <AppstoreAddOutlined
+              style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
+            />
+          }
+        >
+          Add New Task
+        </Button>
+      </div>
       <TasksLists />
       <Row justify="end">
         <Col span={4}>
           {" "}
-          <Button
-            type="primary"
-            onClick={showTaskDrawer}
-            style={{
-              backgroundColor: "0092ff",
-              borderColor: "#0092ff",
-              borderRadius: "500",
-            }}
-            icon={
-              <AppstoreAddOutlined
-                style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
-              />
-            }
-          >
-            Add New Task
-          </Button>
           <Drawer
             title="Add New Task"
             width={720}

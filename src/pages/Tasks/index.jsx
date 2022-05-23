@@ -88,15 +88,10 @@ const onDragEnd = (result, columns, setColumns) => {
 function TasksLists() {
     const [columns, setColumns] = useState(Titles);
     return (
-        <Divider orientation='center'>
+        
             <div style={{ justifyContent: "center" }}>
-                <hr />
-                <Title>
-                    <h1 style={{ textAlign: "center", width: Header, fontWeight: 'bold'}}>
-                        Tasks Lists 
-                    </h1>
-                    <br />
-                </Title>
+    
+               
                 <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
                     <DragDropContext
                         onDragEnd={result => onDragEnd(result, columns, setColumns)}
@@ -114,7 +109,7 @@ function TasksLists() {
                                 >
                                     <h2 style={{ fontWeight: 'bold' }}>{column.name}<span>{column.icon}</span></h2>
 
-                                    <div style={{ margin: 8 }}>
+                                    <div style={{ margin: 6 }}>
                                         <Droppable droppableId={column.id} key={column.id}>
                                             {(provided, snapshot) => {
                                                 return (
@@ -201,7 +196,7 @@ function TasksLists() {
                     </DragDropContext>
                 </div>
             </div>
-        </Divider>
+       
     );
 }
 
