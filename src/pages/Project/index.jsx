@@ -1,28 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Row, Col, Descriptions, Space, Typography, Divider } from 'antd';
+import {
+  Row,
+  Col,
+  Descriptions,
+  Space,
+  Typography,
+  Divider,
+  Select,
+} from 'antd';
 import Loader from '../../components/Loader';
-import { getProject } from '../../firestore/projects';
+import { getProject, updateProject } from '../../firestore/projects';
+import { getGroupsFromDb } from '../../firestore/groups';
 import TaskList from '../../components/Project/TaskList';
-import { ProjectTwoTone } from '@ant-design/icons';
+import Group from '../../components/Project/Group';
 
 const { Title } = Typography;
+const { Option } = Select;
 export default function Project() {
   const { id } = useParams();
   const [project, setProject] = useState({});
   const [loading, setLoading] = useState(true);
+  const [groups, setGroups] = useState([]);
 
   useEffect(() => {
     window.scroll(0, 0);
 
     const getData = async () => {
       const project = await getProject(id);
+      const groups = await getGroupsFromDb();
       setProject(project);
+      setGroups(groups);
       setLoading(false);
     };
 
     getData();
   }, [id]);
+
+  const onChange = (groupId) => {
+    console.log(`selected ${groupId}`);
+    updateProject(id, { groupId });
+    setProject((project) => ({ ...project, groupId }));
+  };
 
   return (
     <>
@@ -30,7 +49,7 @@ export default function Project() {
         <Loader />
       ) : (
         <>
-          <Row>
+          <Row gutter={32}>
             <Col span={12}>
               <Space
                 align='baseline'
@@ -65,8 +84,8 @@ export default function Project() {
                   </Descriptions.Item>
                   <Descriptions.Item label='Deliverables'>
                     {project.deliverables.map((deliverable, index) => (
-                      <div key={index}>
-                        deliverable <br />
+                      <div key={deliverable.id}>
+                        {deliverable.title} <br />
                       </div>
                     ))}
                   </Descriptions.Item>
@@ -77,7 +96,36 @@ export default function Project() {
                 </Descriptions>
               </div>
             </Col>
-            <Col span={12}></Col>
+            <Col
+              span={12}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+              }}
+            >
+              <Space>
+                <div>Assigned Group:</div>
+                <Select
+                  style={{ width: 200 }}
+                  defaultValue={project.groupId && `Group ${project.groupId}`}
+                  // value={project.groupId && `Group ${project.groupId}`}
+                  placeholder='Select a group'
+                  onChange={onChange}
+                >
+                  {groups.map((group) => (
+                    <Option key={group.id} value={group.id}>
+                      {group.id}
+                    </Option>
+                  ))}
+                  <Option value={null}>None</Option>
+                </Select>
+              </Space>
+              <Group
+                group={groups.find((group) => group.id === project.groupId)}
+              />
+            </Col>
           </Row>
           <Divider />
           <Row>
