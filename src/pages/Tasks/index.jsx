@@ -9,38 +9,38 @@ const { Header } = Layout;
 const { Title } = Typography;
 
 const items = [
-    { id: "1", Title: "First Task", content: "The First task description" },
-    { id: "2", Title: "Second Task", content: "The Second task description" },
-    { id: "3", Title: "Third Task", content: "The Third task description" },
-    { id: "4", Title: "Fourth Task", content: "The Fourth task description" },
+    { id: "1", Title: "First Task",content:"The First task description" },
+    { id: "2", Title: "Second Task",content:"The Second task description" },
+    { id: "3", Title: "Third Task",content:"The Third task description" },
+    { id: "4", Title: "Fourth Task",content:"The Fourth task description" },
 
 ]
-const Titles = ["Requested Tasks", "To-Do", "In progress", "Finished"];
+const Titles = ["Late", "To-Do", "In progress", "Finished"];
 const List = [
     {
-        id: 1,
-        icon: " 📂 ",
-        name: "Requested Tasks",
+        id: "1",
+        icon: "",
+        name: "To-Do",
         items: items,
     },
 
     {
-        id: 2,
-        name: "To-Do",
-        icon: "📝",
+        id: "2",
+        name: "In Progress",
+        icon: "",
         items: [],
     },
     {
-        id: 3,
-        name: "In progress",
-        icon: "⚡️",
+        id: "3",
+        name: "Done",
+        icon: "",
         borderColor: "red",
         items: [],
     },
     {
-        id: 4,
-        name: "Finished",
-        icon: "✔️",
+        id: "4",
+        name: "Late",
+        icon: "",
         items: [],
     },
 ];
@@ -51,6 +51,7 @@ const onDragEnd = (result, columns, setColumns) => {
     const { source, destination } = result;
 
     if (source.droppableId !== destination.droppableId) {
+        console.log(55555555555555555);
         const sourceColumn = columns[source.droppableId];
         const destColumn = columns[destination.droppableId];
         const sourceItems = [...sourceColumn.items];
@@ -70,7 +71,7 @@ const onDragEnd = (result, columns, setColumns) => {
         });
     } else {
         const column = columns[source.droppableId];
-        const copiedItems = [...column.items];
+        const copiedItems = [...columns.items];
         const [removed] = copiedItems.splice(source.index, 1);
         copiedItems.splice(destination.index, 0, removed);
         setColumns({
@@ -90,8 +91,8 @@ function TasksLists() {
             <div style={{ justifyContent: "center" }}>
                 <hr />
                 <Title>
-                    <h1 style={{ textAlign: "center", width: Header, fontWeight: 'bold', fontFamily: "cursive" }}>
-                        Tasks Lists 🔥
+                    <h1 style={{ textAlign: "center", width: Header, fontWeight: 'bold'}}>
+                        Tasks Lists 
                     </h1>
                     <br />
                 </Title>
@@ -169,8 +170,10 @@ function TasksLists() {
                                                                                         ...provided.draggableProps.style
                                                                                     }}
                                                                                 >
-
-                                                                                    {item.content}
+                                                                                    
+                                                                                    <p style={{
+                                                                                        wordbreak: "keep-all"
+                                                                                    }}>{item.content}.</p>
 
 
                                                                                     <div style={{ width: 170 }}>

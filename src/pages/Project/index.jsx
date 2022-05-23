@@ -203,7 +203,7 @@ export default function Project() {
                       height: 400,
                       fontWeight: "bold",
                       fontSize: "25px",
-                      fontFamily: "cursive",
+                      //fontFamily: "cursive",
                       textAlign: "center",
                     }}
                   >
@@ -222,7 +222,7 @@ export default function Project() {
                       height: 400,
                       fontWeight: "bold",
                       fontSize: "25px",
-                      fontFamily: "cursive",
+                      //fontFamily: "cursive",
                       textAlign: "center",
                     }}
                   >
