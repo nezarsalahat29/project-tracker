@@ -220,20 +220,6 @@ export default function CreateProject({ getData }) {
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const onCreate = async (values) => {
-    console.log({
-      ...values,
-      dueDate: values.dueDate.toDate(),
-      tasks: values.tasks.map((task) => ({
-        ...task,
-        id: uuidv4(),
-        dueDate: task.dueDate.toDate(),
-      })),
-      deliverables: values.deliverables.map((deliverable) => ({
-        ...deliverable,
-        id: uuidv4(),
-        dueDate: deliverable.dueDate.toDate(),
-      })),
-    });
     setConfirmLoading(true);
     await createProject({
       ...values,
