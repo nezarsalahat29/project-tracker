@@ -65,7 +65,7 @@ export default function Project() {
 
   /************************************************************* */
 
-  const Projects = [
+  const Projects = 
     {
       id: 1,
       description:
@@ -76,15 +76,14 @@ export default function Project() {
       tasks: ["task1", "task2", "task3"],
       Progress: 0.6,
       deliverables: ["dev1", "dev2", "dev3"],
-    },
-  ];
+    }
+  ;
 
   return (
     <>
-      {Projects.map((e) => {
-        return (
+      
           <div>
-            <h1>{e.Title}</h1>
+            <h1>{Projects.Title}</h1>
             <br />
             <span>
               {" "}
@@ -197,10 +196,10 @@ export default function Project() {
               </Form>
             </Drawer>
 
-            <h3>Project ID: {e.id}</h3>
+            <h3>Project ID: {Projects.id}</h3>
             <p>
               {" "}
-              {e.description}...Lorem ipsum dolor sit amet, consectetur
+              {Projects.description}...Lorem ipsum dolor sit amet, consectetur
               adipiscing elit. Curabitur tristique quam sed tristique molestie.
               Ut maximus dui et felis egestas rutrum. Praesent nec erat aliquet,
               congue eros non, imperdiet lorem. Quisque libero nisi, faucibus a
@@ -252,8 +251,8 @@ export default function Project() {
           </div>
 
           /************************************************************/
-        );
-      })}
+        
+      
 
       <TasksLists />
       <Row justify="end">
