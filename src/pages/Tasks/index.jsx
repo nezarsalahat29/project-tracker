@@ -1,4 +1,4 @@
-
+import { ClockCircleOutlined,SyncOutlined,CheckCircleTwoTone, FieldTimeOutlined } from "@ant-design/icons";
 import React, { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { Typography, Layout } from "antd";
@@ -7,6 +7,7 @@ import { Divider } from "antd";
 import { Progress } from 'antd';
 const { Header } = Layout;
 const { Title } = Typography;
+
 
 const items = [
     { id: "1", Title: "First Task",content:"The First task description" },
@@ -19,28 +20,28 @@ const Titles = ["Late", "To-Do", "In progress", "Finished"];
 const List = [
     {
         id: "1",
-        icon: "",
-        name: "To-Do",
+        icon: <ClockCircleOutlined style={{color:"dodgerblue"}}/>,
+        name: "To-Do  ",
         items: items,
     },
 
     {
         id: "2",
-        name: "In Progress",
-        icon: "",
+        name: "In Progress      ",
+        icon: <SyncOutlined spin style={{color:"dodgerblue"}}/>,
         items: [],
     },
     {
         id: "3",
-        name: "Done",
-        icon: "",
+        name: "Done      ",
+        icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
         borderColor: "red",
         items: [],
     },
     {
         id: "4",
-        name: "Late",
-        icon: "",
+        name: "Late     ",
+        icon: <FieldTimeOutlined style={{color:"red"}}/>,
         items: [],
     },
 ];

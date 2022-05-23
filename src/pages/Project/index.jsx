@@ -8,7 +8,7 @@ import { Liquid } from "@ant-design/plots";
 import TasksLists from "../Tasks";
 import { Button } from "antd";
 
-import { AppstoreAddOutlined } from "@ant-design/icons";
+import { AppstoreAddOutlined,UsergroupAddOutlined  } from "@ant-design/icons";
 import { Card } from "antd";
 
 import { Row, Col, Collapse, Radio } from "antd";
@@ -119,7 +119,7 @@ export default function Project() {
                   marginTop: "20px",
                 }}
                 icon={
-                  <AppstoreAddOutlined
+                  <UsergroupAddOutlined 
                     style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
                   />
                 }
