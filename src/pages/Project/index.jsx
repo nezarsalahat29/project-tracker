@@ -11,16 +11,13 @@ import { Button } from "antd";
 import { AppstoreAddOutlined } from "@ant-design/icons";
 import { Card } from "antd";
 
-import { Row, Col, Collapse , Radio } from "antd";
+import { Row, Col, Collapse, Radio } from "antd";
 
 import { Drawer, Form, Input, Select, DatePicker, Space } from "antd";
 import Calendar from "../../components/Dashboard/Calendar";
-import { Avatar, List } from 'antd';
+import { Avatar, List } from "antd";
 
-
-import {
-  TeamOutlined 
-} from '@ant-design/icons';
+import { TeamOutlined } from "@ant-design/icons";
 /****************************************************************/
 
 function LiquidP() {
@@ -59,21 +56,11 @@ export default function Project() {
   };
   const { Panel } = Collapse;
 
-  
-
   const data = [
-    {id:133050,
-      title: 'Jebril',
-    },
-    {id:133051,
-      title: 'Nezar',
-    },
-    {id:133052,
-      title: 'Hedaya',
-    },
-    {id:133053,
-      title: 'Mohannad',
-    },
+    { id: 133050, title: "Jebril" },
+    { id: 133051, title: "Nezar" },
+    { id: 133052, title: "Hedaya" },
+    { id: 133053, title: "Mohannad" },
   ];
 
   /************************************************************* */
@@ -93,7 +80,6 @@ export default function Project() {
   ];
 
   return (
-    
     <>
       {Projects.map((e) => {
         return (
@@ -102,34 +88,36 @@ export default function Project() {
             <br />
             <span>
               {" "}
-
-              <Collapse defaultActiveKey={['1']} >
-            <Panel header="Group 1" key="1">
-        <p> <List
-    itemLayout="horizontal"
-    dataSource={data}
-    renderItem={(item) => (
-      <List.Item>
-        <List.Item.Meta
-          avatar={<TeamOutlined/>}
-          title={<a href="https://ant.design">{item.title}</a>}
-          description={item.id}
-        />
-      </List.Item>
-    )}
-  /></p>
-      </Panel>
-      
-    </Collapse>
+              <Collapse defaultActiveKey={["1"]}>
+                <Panel header="Group 1" key="1">
+                  <p>
+                    {" "}
+                    <List
+                      itemLayout="horizontal"
+                      dataSource={data}
+                      renderItem={(item) => (
+                        <List.Item>
+                          <List.Item.Meta
+                            avatar={<TeamOutlined />}
+                            title={
+                              <a href="https://ant.design">{item.title}</a>
+                            }
+                            description={item.id}
+                          />
+                        </List.Item>
+                      )}
+                    />
+                  </p>
+                </Panel>
+              </Collapse>
               <Button
-              
                 type="primary"
                 onClick={showGroupDrawer}
                 style={{
                   backgroundColor: "0092ff",
                   borderColor: "#0092ff",
                   borderRadius: "500",
-                  marginTop:"20px"
+                  marginTop: "20px",
                 }}
                 icon={
                   <AppstoreAddOutlined
@@ -137,12 +125,12 @@ export default function Project() {
                   />
                 }
               >
-                Assign Project To Group 
+                Assign Project To Group
               </Button>
             </span>
 
             <Drawer
-              title="Assign Project To Group " 
+              title="Assign Project To Group "
               width={720}
               onClose={GrouponClose}
               visible={Groupvisible}
@@ -156,19 +144,26 @@ export default function Project() {
                 </Space>
               }
             >
-              <Form layout="vertical" hideRequiredMark>
+              <Form
+                layout="vertical"
+                hideRequiredMark
+                style={{ paddingLeft: 70 }}
+              >
+                <div className="GroupLabel">
+                  Which Group do you want to assign to this project?:
+                </div>
                 <div className="RadioGroup">
                   {" "}
                   <Row gutter={12}>
-                    <Col span={30}>
+                    <Col span={25}>
                       <Form.Item
                         name="radio-button"
-                        label="Which Group do you want to assign to this project?: "
+                        label=" "
                         rules={[
                           { required: true, message: "Please pick a Group!" },
                         ]}
                       >
-                        <Radio.Group>
+                        <Radio.Group style={{ marginTop: 30 }}>
                           <Radio.Button value="Group 1">Group 1</Radio.Button>
                           <Radio.Button value="Group 2">Group 2</Radio.Button>
                           <Radio.Button value="Group 3">Group 3</Radio.Button>
@@ -256,7 +251,7 @@ export default function Project() {
               />
             }
           >
-            Add New Task 
+            Add New Task
           </Button>
           <Drawer
             title="Add New Task"
