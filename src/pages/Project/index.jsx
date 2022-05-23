@@ -154,7 +154,7 @@ export default function Project() {
                 <div className="RadioGroup">
                   {" "}
                   <Row gutter={12}>
-                    <Col span={25}>
+                    <Col span={18}>
                       <Form.Item
                         name="radio-button"
                         label=" "
@@ -162,7 +162,7 @@ export default function Project() {
                           { required: true, message: "Please pick a Group!" },
                         ]}
                       >
-                        <Radio.Group style={{ marginTop: 30 }}>
+                        <Radio.Group style={{  marginBlock:30,}}>
                           <Radio.Button value="Group 1">Group 1</Radio.Button>
                           <Radio.Button value="Group 2">Group 2</Radio.Button>
                           <Radio.Button value="Group 3">Group 3</Radio.Button>
@@ -171,6 +171,28 @@ export default function Project() {
                     </Col>
                   </Row>
                 </div>
+                <Collapse defaultActiveKey={["1"]} style={{width:500}}>
+                <Panel header="Group 1" key="1">
+                  <p>
+                    {" "}
+                    <List
+                      itemLayout="horizontal"
+                      dataSource={data}
+                      renderItem={(item) => (
+                        <List.Item>
+                          <List.Item.Meta
+                            avatar={<TeamOutlined />}
+                            title={
+                              <a href="https://ant.design">{item.title}</a>
+                            }
+                            description={item.id}
+                          />
+                        </List.Item>
+                      )}
+                    />
+                  </p>
+                </Panel>
+              </Collapse>
               </Form>
             </Drawer>
 
