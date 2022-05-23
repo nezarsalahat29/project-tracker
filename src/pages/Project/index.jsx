@@ -84,9 +84,11 @@ export default function Project() {
                   </Descriptions.Item>
                   <Descriptions.Item label='Deliverables'>
                     {project.deliverables.map((deliverable, index) => (
-                      <div key={deliverable.id}>
-                        {deliverable.title} <br />
-                      </div>
+                      <li key={deliverable.id}>
+                        {deliverable.title} -{' '}
+                        {deliverable.dueDate.toDate().toLocaleDateString()}
+                        <br />
+                      </li>
                     ))}
                   </Descriptions.Item>
 
@@ -110,7 +112,6 @@ export default function Project() {
                 <Select
                   style={{ width: 200 }}
                   defaultValue={project.groupId && `Group ${project.groupId}`}
-                  // value={project.groupId && `Group ${project.groupId}`}
                   placeholder='Select a group'
                   onChange={onChange}
                 >
