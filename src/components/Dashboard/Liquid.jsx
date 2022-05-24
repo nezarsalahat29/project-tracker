@@ -6,9 +6,28 @@ import { Typography } from "antd";
 
 const { Title } = Typography;
 
+const dataProject = {
+  name: "project",
+  tasklist: [
+    { name: "task 1", status: "To-Do" },
+    { name: "task 2", status: "in-progress" },
+    { name: "task 3", status: "Done" },
+  ],
+};
+
+function GetCount(tasklist) {
+  let c = 0;
+  let dc = 0;
+  tasklist.forEach((element) => {
+    c = c + 1;
+    if (element.status === "Done") dc = dc + 1;
+  });
+  return { c, dc };
+}
 export default function LiquidPlot() {
+  let { c, dc } = GetCount(dataProject.tasklist);
   const config = {
-    percent: 0.5,
+    percent: dc / c,
     outline: {
       border: 4,
       distance: 8,
