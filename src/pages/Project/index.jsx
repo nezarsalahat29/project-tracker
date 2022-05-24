@@ -19,9 +19,10 @@ import Calendar from "../../components/Dashboard/Calendar";
 import { List } from "antd";
 
 import { TeamOutlined } from "@ant-design/icons";
+import { Progress } from "antd";
 /****************************************************************/
 
-function LiquidP() {
+/*function LiquidP() {
   const config = {
     percent: 0.7,
     outline: {
@@ -36,7 +37,7 @@ function LiquidP() {
       <Liquid {...config} />
     </div>
   );
-}
+}*/
 export default function Project() {
   const [Taskvisible, setTaskVisible] = React.useState(false);
   const [Groupvisible, setGroupVisible] = React.useState(false);
@@ -193,7 +194,7 @@ export default function Project() {
           </Form>
         </Drawer>
 
-        <h3>Project ID: {Projects.id}</h3>
+        <h2>Project ID: {Projects.id}</h2>
         <p>
           {" "}
           {Projects.description}...Lorem ipsum dolor sit amet, consectetur
@@ -205,48 +206,41 @@ export default function Project() {
         <br />
         <br />
 
-        <div className="site-card-wrapper">
-          <Row gutter={16}>
-            <Col span={8}>
-              <Card.Grid
-                title="Work Summary"
-                bordered={true}
-                style={{
-                  width: 400,
-                  height: 400,
-                  fontWeight: "bold",
-                  fontSize: "25px",
-                  //fontFamily: "cursive",
-                  textAlign: "center",
+        <div style={{ textAlign: "center" }}>
+          <h2>Work progres:</h2>
+          <div>
+            <Row gutter={5}>
+              <Progress
+                style={{ width: "75%", textAlign: "center",marginBottom:"25px" }}
+                strokeColor={{
+                  "0%": "#5ebcff",
+                  "100%": "#162b3b",
                 }}
-              >
-                <p>Work Summary</p>
-                <LiquidP />
-              </Card.Grid>
-            </Col>
-            <Col span={5}></Col>
-            <Col span={8}>
-              <Card.Grid
-                title="Project Calendar"
-                bordered={true}
-                hoverable={true}
-                style={{
-                  width: 400,
-                  height: 400,
-                  fontWeight: "bold",
-                  fontSize: "25px",
-                  //fontFamily: "cursive",
-                  textAlign: "center",
-                }}
-              >
-                <p>Project Calendar</p>
-                <Calendar />
-              </Card.Grid>
-            </Col>
-          </Row>
+                percent={75}
+              />
+              <Col span={5}></Col>
+              <Col span={8}>
+                <Card.Grid
+                  title="Project Calendar"
+                  bordered={true}
+                  hoverable={false}
+                  style={{
+                    width: 400,
+                    height: 400,
+                    fontWeight: "bold",
+                    fontSize: "25px",
+                    //fontFamily: "cursive",
+                    textAlign: "center",
+                  }}
+                >
+                  <p>Project Calendar</p>
+                  <Calendar />
+                </Card.Grid>
+              </Col>
+            </Row>
+          </div>
         </div>
       </div>
-
       <Divider orientation="center"></Divider>
 
       <h1 style={{ textAlign: "center", fontWeight: "bold", marginTop: 75 }}>
@@ -254,7 +248,7 @@ export default function Project() {
       </h1>
       <br />
 
-      <div style={{textAlign:"right"}}>
+      <div style={{ textAlign: "right" }}>
         <Button
           type="primary"
           size="large"
