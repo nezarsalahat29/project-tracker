@@ -1,5 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
-
+import { v4 as uuidv4 } from "uuid";
 
 import {
   ClockCircleOutlined,
@@ -17,42 +16,50 @@ const { Header } = Layout;
 const { Title } = Typography;
 uuidv4(); //
 const items = [
-  { id:  uuidv4(), Title: "First Task", content: "The First task description" },
-  { id:  uuidv4(), Title: "Second Task", content: "The Second task description" },
-  { id:  uuidv4(), Title: "Third Task", content: "The Third task description" },
-  { id:  uuidv4(), Title: "Fourth Task", content: "The Fourth task description" },
+  { id: uuidv4(), Title: "First cvxTask", content: "The First teze dsafsdf" },
+  {
+    id: uuidv4(),
+    Title: "sdf Task",
+    content: "The Second sdfsdfdf description",
+  },
+  {
+    id: uuidv4(),
+    Title: "Third sdfsdfvxcv",
+    content: "The Third task descxcvxrdsfsdfiption",
+  },
+  {
+    id: uuidv4(),
+    Title: "Fourthxcvxcv Task",
+    content: "The Fourth tcvask description",
+  },
 ];
 
 //const Titles = ["Late", "To-Do", "In progress", "Finished"];
 
-
 const ColumnsList = {
-  
-     [uuidv4()]:{
+  [uuidv4()]: {
     icon: <ClockCircleOutlined style={{ color: "dodgerblue" }} />,
     name: "To-Do  ",
-    items: items},
-     
+    items: items,
+  },
 
-    [uuidv4()]:{
+  [uuidv4()]: {
     name: "In Progress      ",
     icon: <SyncOutlined spin style={{ color: "dodgerblue" }} />,
-    items: []
+    items: [],
   },
-  [uuidv4()]:{
+  [uuidv4()]: {
     name: "Done      ",
     icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
     borderColor: "red",
-    items: []
+    items: [],
   },
-  [uuidv4()]:{
+  [uuidv4()]: {
     name: "Late     ",
     icon: <FieldTimeOutlined style={{ color: "red" }} />,
-    items: []
-  }
+    items: [],
+  },
 };
-
-
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -82,6 +89,7 @@ const onDragEnd = (result, columns, setColumns) => {
     const copiedItems = [...columns.items];
     const [removed] = copiedItems.splice(source.index, 1);
     copiedItems.splice(destination.index, 0, removed);
+
     setColumns({
       ...columns,
       [source.droppableId]: {
@@ -102,7 +110,7 @@ function TasksLists() {
         <DragDropContext
           onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
         >
-          {Object.entries(columns).map(([columnId,column ],index) => {
+          {Object.entries(columns).map(([columnId, column], index) => {
             return (
               <div
                 style={{

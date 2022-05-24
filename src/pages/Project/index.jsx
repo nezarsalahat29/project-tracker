@@ -38,6 +38,7 @@ import { Progress } from "antd";
     </div>
   );
 }*/
+
 export default function Project() {
   const [Taskvisible, setTaskVisible] = React.useState(false);
   const [Groupvisible, setGroupVisible] = React.useState(false);
@@ -65,26 +66,46 @@ export default function Project() {
     { id: 133052, title: "Hedaya" },
     { id: 133053, title: "Mohannad" },
   ];
+
   <Alert message="Informational Notes" type="info" showIcon />;
 
   const Projects = {
-    id: 1,
-    description:
-      "You will find here the description of this project and other details",
+    id: 13305,
+    description: `Lorem ipsum dolor sit amet, consectetur
+      adipiscing elit. Curabitur tristique quam sed tristique molestie.
+      Ut maximus dui et felis egestas rutrum. Praesent nec erat aliquet,
+      congue eros non, imperdiet lorem. Quisque libero nisi, faucibus a
+      felis eu, fermentum posuere ex. Quisque nec ex leo.`,
     startDate: "12-Jul-2022",
     endDAte: "7-Aug-2022",
-    Title: "Project Name",
+    Title: "Project Tracker",
     tasks: ["task1", "task2", "task3"],
-    Progress: 0.6,
-    deliverables: ["dev1", "dev2", "dev3"],
+    Progress: 0.75,
+    deliverables: [
+      "Project Tracker delevierable (1)",
+      "Project Tracker delevierable (1)",
+      "Project Tracker delevierable (1)",
+    ],
   };
   return (
     <>
       <div>
         <h1>{Projects.Title}</h1>
         <br />
-        <span>
-          {" "}
+      </div>
+
+      <Row
+        gutter={8}
+        style={{
+          marginTop: "50px",
+        }}
+      >
+        <Col span={12} style={{ padding: "50px" }}>
+          <h1>Project ID: {Projects.id}</h1>
+          <div className="Description">{Projects.description}</div>
+        </Col>
+
+        <Col span={12} style={{ padding: "50px", marginTop: "85px" }}>
           <Alert
             message="Warning"
             description="No group is assigned to this project yet!"
@@ -94,7 +115,6 @@ export default function Project() {
           <Collapse defaultActiveKey={["1"]}>
             <Panel header="Group 1" key="1">
               <p>
-                {" "}
                 <List
                   itemLayout="horizontal"
                   dataSource={data}
@@ -111,136 +131,110 @@ export default function Project() {
               </p>
             </Panel>
           </Collapse>
-          <Button
-            type="primary"
-            onClick={showGroupDrawer}
-            size="large"
-            style={{
-              backgroundColor: "0092ff",
-              borderColor: "#0092ff",
-              borderRadius: "500",
-              marginTop: "20px",
-              size: "20px",
-            }}
-            icon={
-              <UsergroupAddOutlined
-                style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
-              />
-            }
-          >
-            Assign Project To Group
-          </Button>
-        </span>
+          <div style={{ textAlign: "right" }}>
+            <Button
+              type="primary"
+              onClick={showGroupDrawer}
+              size="large"
+              style={{
+                backgroundColor: "0092ff",
+                borderColor: "#0092ff",
+                borderRadius: "500",
+                marginTop: "20px",
+                size: "20px",
+              }}
+              icon={
+                <UsergroupAddOutlined
+                  style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
+                />
+              }
+            >
+              Assign Project To Group
+            </Button>
+          </div>
+        </Col>
+      </Row>
 
-        <Drawer
-          title="Assign Project To Group "
-          width={720}
-          onClose={GrouponClose}
-          visible={Groupvisible}
-          bodyStyle={{ paddingBottom: 80 }}
-          extra={
-            <Space>
-              <Button onClick={GrouponClose}>Cancel</Button>
-              <Button onClick={GrouponClose} type="primary">
-                Assign
-              </Button>
-            </Space>
-          }
-        >
-          <Form layout="vertical" hideRequiredMark style={{ paddingLeft: 70 }}>
-            <div className="GroupLabel">
-              Which Group do you want to assign to this project?:
-            </div>
-            <div className="RadioGroup">
-              {" "}
-              <Row gutter={12}>
-                <Col span={18}>
-                  <Form.Item
-                    name="radio-button"
-                    label=" "
-                    rules={[
-                      { required: true, message: "Please pick a Group!" },
-                    ]}
-                  >
-                    <Radio.Group style={{ marginBlock: 30 }}>
-                      <Radio.Button value="Group 1">Group 1</Radio.Button>
-                      <Radio.Button value="Group 2">Group 2</Radio.Button>
-                      <Radio.Button value="Group 3">Group 3</Radio.Button>
-                    </Radio.Group>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </div>
-            <Collapse defaultActiveKey={["1"]} style={{ width: 500 }}>
-              <Panel header="Group 1" key="1">
-                <p>
-                  {" "}
-                  <List
-                    itemLayout="horizontal"
-                    dataSource={data}
-                    renderItem={(item) => (
-                      <List.Item>
-                        <List.Item.Meta
-                          avatar={<TeamOutlined />}
-                          title={<a href="https://ant.design">{item.title}</a>}
-                          description={item.id}
-                        />
-                      </List.Item>
-                    )}
-                  />
-                </p>
-              </Panel>
-            </Collapse>
-          </Form>
-        </Drawer>
-
-        <h2>Project ID: {Projects.id}</h2>
-        <p>
-          {" "}
-          {Projects.description}...Lorem ipsum dolor sit amet, consectetur
-          adipiscing elit. Curabitur tristique quam sed tristique molestie. Ut
-          maximus dui et felis egestas rutrum. Praesent nec erat aliquet, congue
-          eros non, imperdiet lorem. Quisque libero nisi, faucibus a felis eu,
-          fermentum posuere ex. Quisque nec ex leo.
-        </p>
-        <br />
-        <br />
-
-        <div style={{ textAlign: "center" }}>
-          <h2>Work progres:</h2>
-          <div>
-            <Row gutter={5}>
-              <Progress
-                style={{ width: "75%", textAlign: "center",marginBottom:"25px" }}
-                strokeColor={{
-                  "0%": "#5ebcff",
-                  "100%": "#162b3b",
-                }}
-                percent={75}
-              />
-              <Col span={5}></Col>
-              <Col span={8}>
-                <Card.Grid
-                  title="Project Calendar"
-                  bordered={true}
-                  hoverable={false}
-                  style={{
-                    width: 400,
-                    height: 400,
-                    fontWeight: "bold",
-                    fontSize: "25px",
-                    //fontFamily: "cursive",
-                    textAlign: "center",
-                  }}
+      <Drawer
+        title="Assign Project To Group "
+        width={720}
+        onClose={GrouponClose}
+        visible={Groupvisible}
+        bodyStyle={{ paddingBottom: 80 }}
+        extra={
+          <Space>
+            <Button onClick={GrouponClose}>Cancel</Button>
+            <Button onClick={GrouponClose} type="primary">
+              Assign
+            </Button>
+          </Space>
+        }
+      >
+        <Form layout="vertical" hideRequiredMark style={{ paddingLeft: 70 }}>
+          <div className="GroupLabel">
+            Which Group do you want to assign to this project?:
+          </div>
+          <div className="RadioGroup">
+            <Row gutter={12}>
+              <Col span={18}>
+                <Form.Item
+                  name="radio-button"
+                  label=" "
+                  rules={[{ required: true, message: "Please pick a Group!" }]}
                 >
-                  <p>Project Calendar</p>
-                  <Calendar />
-                </Card.Grid>
+                  <Radio.Group style={{ marginBlock: 30 }}>
+                    <Radio.Button value="Group 1">Group 1</Radio.Button>
+                    <Radio.Button value="Group 2">Group 2</Radio.Button>
+                    <Radio.Button value="Group 3">Group 3</Radio.Button>
+                  </Radio.Group>
+                </Form.Item>
               </Col>
             </Row>
           </div>
+          <Collapse defaultActiveKey={["1"]} style={{ width: 500 }}>
+            <Panel header="Group 1" key="1">
+              <p>
+                <List
+                  itemLayout="horizontal"
+                  dataSource={data}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<TeamOutlined />}
+                        title={<a href="https://ant.design">{item.title}</a>}
+                        description={item.id}
+                      />
+                    </List.Item>
+                  )}
+                />
+              </p>
+            </Panel>
+          </Collapse>
+        </Form>
+      </Drawer>
+      <div style={{ textAlign: "center" }}>
+        <h2>Work progres:</h2>
+        <div style={{ textAlign: "center",position:"relative",left:110 }}>
+          <Row gutter={6}>
+            <Progress
+              style={{
+                width: "90%",
+                
+                marginBottom: "25px",
+              }}
+              
+              strokeColor={{
+                "0%": "#5ebcff",
+                "100%": "#162b3b",
+              }}
+
+              trailColor="#c9c8c5"
+              percent={75}
+            />
+          </Row>
         </div>
       </div>
+
       <Divider orientation="center"></Divider>
 
       <h1 style={{ textAlign: "center", fontWeight: "bold", marginTop: 75 }}>
@@ -257,6 +251,7 @@ export default function Project() {
             backgroundColor: "0092ff",
             borderColor: "#0092ff",
             borderRadius: "500",
+            marginRight:46,
           }}
           icon={
             <AppstoreAddOutlined
@@ -270,7 +265,6 @@ export default function Project() {
       <TasksLists />
       <Row justify="end">
         <Col span={4}>
-          {" "}
           <Drawer
             title="Add New Task"
             width={720}
