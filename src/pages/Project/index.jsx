@@ -122,7 +122,7 @@ export default function Project() {
               size: "20px",
             }}
             icon={
-              <AppstoreAddOutlined
+              <UsergroupAddOutlined
                 style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
               />
             }
