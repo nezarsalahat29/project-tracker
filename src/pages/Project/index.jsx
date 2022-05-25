@@ -56,6 +56,17 @@ export const Projects = {
 
   }],
   };
+  export const GroupData = [
+    { id: 133050, title: "Jebril" },
+    { id: 133051, title: "Nezar" },
+    { id: 133052, title: "Hedaya" },
+    { id: 133053, title: "Mohannad" },
+    
+  ]
+  
+  export default function Project() {
+    <Alert message="Informational Notes" type="info" showIcon />;
+   
   return (
     <>
       <ProjectInfo Data={GroupData} _Project={Projects} />
