@@ -61,11 +61,19 @@ export default function Project() {
     Title: "Project Tracker",
     tasks: ["task1", "task2", "task3"],
     Progress: 0.75,
-    deliverables: [
-      "Project Tracker delevierable (1)",
-      "Project Tracker delevierable (1)",
-      "Project Tracker delevierable (1)",
-    ],
+    deliverables: [{
+      title:"Project Tracker delevierable (1)",
+      id:"768375343435",
+      dueDate:"16-AUG-1916"},
+      {title:"Project Tracker delevierable (2)",
+      id:"4854424545",
+      dueDate:"27-MAY-2023"},
+      {
+      title:"Project Tracker delevierable (3)",
+      id:"SSsf74saQE54",
+      dueDate:"17-1-2043"
+
+  }],
   };
   return (
     <>
