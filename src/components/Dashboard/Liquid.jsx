@@ -8,6 +8,18 @@ import { useAuth } from "../../contexts/AuthContext";
 import { getGroupFromDb } from "../../firestore/groups";
 const { Title } = Typography;
 
+<<<<<<< HEAD
+=======
+const dataProject = {
+  name: "project",
+  tasklist: [
+    { name: "task 1", status: "To-Do" },
+    { name: "task 2", status: "in-progress" },
+    { name: "task 3", status: "Done" },
+  ],
+};
+
+>>>>>>> 8d7e827d768f935d834db8a4f0983f5e852949d6
 function GetCount(taskList) {
   let c = 0;
   let dc = 0;
