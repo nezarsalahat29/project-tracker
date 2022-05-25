@@ -8,19 +8,43 @@ import { Typography } from 'antd';
 const { Title } = Typography;
 
 export default function TaskDonut() {
+	const dummydata = [
+		{ status: 'Assigned' },
+		{ status: 'Working on' },
+		{ status: 'Assigned' },
+		{ status: 'Working on' },
+		{ status: 'Assigned' },
+		{ status: 'Finished' },
+		{ status: 'Working on' },
+		{ status: 'Working on' },
+		{ status: 'Assigned' },
+		{ status: 'Finished' },
+		{ status: 'Finished' },
+	];
+	var assigned = 0;
+	var workingon = 0;
+	var finished = 0;
+	for (var i = 0; i < dummydata.length; i++) {
+		dummydata[i]['status'] == 'Assigned'
+			? assigned++
+			: dummydata[i]['status'] == 'Working on'
+			? workingon++
+			: finished++;
+	}
+	var total = assigned + workingon + finished;
 	const data = [
 		{
 			type: 'Assigned',
-			value: 42,
+			value: Number(((assigned / total) * 100).toFixed(2)),
 		},
 		{
 			type: 'Working on',
-			value: 30,
+			value: Number(((workingon / total) * 100).toFixed(2)),
 		},
 
 		{
 			type: 'Finished',
-			value: 18,
+			value: Number(((finished / total) * 100).toFixed(2)),
 		},
 	];
 	const config = {
