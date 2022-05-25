@@ -8,6 +8,9 @@ import {
   Typography,
   Divider,
   Select,
+  Card,
+  Progress,
+  Collapse,
 } from 'antd';
 import Loader from '../../components/Loader';
 import { getProject, updateProject } from '../../firestore/projects';
@@ -15,7 +18,8 @@ import { getGroupsFromDb } from '../../firestore/groups';
 import TaskList from '../../components/Project/TaskList';
 import Group from '../../components/Project/Group';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
+const { Panel } = Collapse;
 const { Option } = Select;
 export default function Project() {
   const { id } = useParams();
@@ -55,85 +59,41 @@ export default function Project() {
         <Loader />
       ) : (
         <>
-          <Row gutter={32}>
-            <Col span={12}>
-              <Space
-                align='baseline'
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <Title
-                  level={2}
-                  style={{
-                    width: '100%',
-                    textAlign: 'center',
-                    marginBottom: '0',
-                  }}
-                >
-                  Project
-                </Title>
+          <div>
+            <Card style={{ backgroundColor: '#F7F7F7' }}>
+              <Title level={2}>{project.title}</Title>
+              <Divider />
+              <p>{project.description}</p>
+              <Space direction='vertical'>
+                <Text strong>
+                  {project.dueDate.toDate().toLocaleDateString()}
+                </Text>
               </Space>
-              <div>
-                <Descriptions
-                  title={project.title}
-                  bordered
-                  column={{
-                    sm: 1,
-                    xs: 1,
-                  }}
-                >
-                  <Descriptions.Item label='Description'>
-                    {project.description}
-                  </Descriptions.Item>
-                  <Descriptions.Item label='Deliverables'>
-                    {project.deliverables.map((deliverable, index) => (
-                      <li key={deliverable.id}>
-                        {deliverable.title} -{' '}
-                        {deliverable.dueDate.toDate().toLocaleDateString()}
-                        <br />
-                      </li>
-                    ))}
-                  </Descriptions.Item>
-
-                  <Descriptions.Item label='Due Date'>
-                    {project.dueDate.toDate().toDateString()}
-                  </Descriptions.Item>
-                </Descriptions>
-              </div>
-            </Col>
-            <Col
-              span={12}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <Space>
-                <div>Assigned Group:</div>
-                <Select
-                  style={{ width: 200 }}
-                  defaultValue={project.groupId && `Group ${project.groupId}`}
-                  placeholder='Select a group'
-                  onChange={onChange}
-                >
-                  {groups.map((group) => (
-                    <Option key={group.id} value={group.id}>
-                      {group.id}
-                    </Option>
-                  ))}
-                  <Option value={null}>None</Option>
-                </Select>
-              </Space>
-              <Group
-                group={groups.find((group) => group.id === project.groupId)}
+              <Progress
+                strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
+                percent={59.5}
               />
-            </Col>
-          </Row>
+            </Card>
+
+            <Card style={{ backgroundColor: '#F7F7F7' }}>
+              <Title level={2}>Deliverables</Title>
+              <Collapse>
+                {project.deliverables.map((deliverable) => (
+                  <Panel header={deliverable.title} key={deliverable.id}>
+                    <p>
+                      {deliverable.description ||
+                        'Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy'}
+                    </p>
+                    <p>
+                      <Text strong>Due Date:</Text>{' '}
+                      {deliverable.dueDate.toDate().toLocaleDateString()}
+                    </p>
+                  </Panel>
+                ))}
+              </Collapse>
+            </Card>
+          </div>
+
           <Divider />
           <TaskList
             tasks={project.tasks}
