@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { Button, Modal } from "antd";
+import {  Modal } from "antd";
 import {
   ClockCircleOutlined,
   SyncOutlined,
@@ -8,12 +8,11 @@ import {
 } from "@ant-design/icons";
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Typography, Layout } from "antd";
+
 import { Card } from "antd";
-import { Divider } from "antd";
+
 import { Progress } from "antd";
-const { Header } = Layout;
-const { Title } = Typography;
+
 uuidv4(); //
 const items = [ 
 
