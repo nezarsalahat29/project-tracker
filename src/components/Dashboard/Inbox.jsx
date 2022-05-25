@@ -36,10 +36,17 @@ export default function Inbox() {
     <Link to='/Chat'>
       <Card style={{ backgroundColor: "#F7F7F7", height: "100%" }}>
         <Title level={2}>Inbox</Title> <Divider />
-        <ConversationList>
+        <ConversationList
+          scrollable
+          style={{
+            height: "340px",
+          }}
+        >
           {chatRooms.map((chatroom) => {
             return (
               <Conversation
+                key={chatroom.id}
+                id={chatroom.id}
                 info={chatroom.lastMessage}
                 lastSenderName={
                   chatroom.lastSender === ""
@@ -57,7 +64,9 @@ export default function Inbox() {
                 <Avatar
                   src={
                     "https://ui-avatars.com/api/?background=random&name=" +
-                    chatroom.name
+                    (currentUser.name === chatroom.name
+                      ? "Instructor"
+                      : chatroom.name)
                   }
                   name={chatroom.name}
                 />

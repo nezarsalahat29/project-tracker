@@ -1,31 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "antd";
 import { Liquid } from "@ant-design/plots";
 import { Divider } from "antd";
 import { Typography } from "antd";
-
+import { getProject } from "../../firestore/projects";
+import { useAuth } from "../../contexts/AuthContext";
+import { getGroupFromDb } from "../../firestore/groups";
 const { Title } = Typography;
 
-const dataProject = {
-  name: "project",
-  tasklist: [
-    { name: "task 1", status: "To-Do" },
-    { name: "task 2", status: "in-progress" },
-    { name: "task 3", status: "Done" },
-  ],
-};
-
-function GetCount(tasklist) {
+function GetCount(taskList) {
   let c = 0;
   let dc = 0;
-  tasklist.forEach((element) => {
-    c = c + 1;
-    if (element.status === "Done") dc = dc + 1;
-  });
+  if (taskList)
+    taskList.forEach((element) => {
+      c = c + 1;
+      if (element.status === "done") dc = dc + 1;
+    });
+  else return { c: 0, dc: 0 };
   return { c, dc };
 }
 export default function LiquidPlot() {
-  let { c, dc } = GetCount(dataProject.tasklist);
+  const { currentUser } = useAuth();
+  const [project, setProject] = useState([]);
+
+  const getProjectData = async () => {
+    const groups = await getGroupFromDb(currentUser.groupId);
+    const projectData = await getProject(groups.projectID);
+    setProject(projectData);
+    console.log(projectData);
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      await Promise.all([getProjectData()]);
+    };
+
+    getData();
+  }, []);
+
+  let { c, dc } = project ? GetCount(project.tasks) : { c: 0, dc: 0 };
   const config = {
     percent: dc / c,
     outline: {
