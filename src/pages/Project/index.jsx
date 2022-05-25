@@ -8,7 +8,7 @@ import { Liquid } from "@ant-design/plots";
 import TasksLists from "../Tasks";
 import { Button } from "antd";
 import { Alert } from "antd";
-import { AppstoreAddOutlined, UsergroupAddOutlined } from "@ant-design/icons";
+import { AppstoreAddOutlined, UsergroupAddOutlined,FileTextOutlined } from "@ant-design/icons";
 import { Card } from "antd";
 import { Layout, Divider } from "antd";
 
@@ -102,6 +102,8 @@ export default function Project() {
       >
         <Col span={12} style={{ padding: "50px" }}>
           <h1>Project ID: {Projects.id}</h1>
+          <h3 className="Description">From:{Projects.startDate}</h3>
+          <h3 className="Description">To:{Projects.endDAte}</h3>
           <div className="Description">{Projects.description}</div>
         </Col>
 
@@ -124,6 +126,25 @@ export default function Project() {
                         avatar={<TeamOutlined />}
                         title={<a href="https://ant.design">{item.title}</a>}
                         description={item.id}
+                      />
+                    </List.Item>
+                  )}
+                />
+              </p>
+            </Panel>
+          </Collapse>
+          <Collapse defaultActiveKey={["1"]}>
+            <Panel header="Deliverables" key="1">
+              <p>
+                <List
+                  itemLayout="horizontal"
+                  dataSource={Projects.deliverables}
+                  renderItem={(deli) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<FileTextOutlined />}
+                        title={<a href="https://ant.design">{deli}</a>}
+                        
                       />
                     </List.Item>
                   )}
