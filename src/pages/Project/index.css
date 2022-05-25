@@ -103,6 +103,15 @@ h3,h2 {
    padding-right:75px;
    padding-left:75px;
 }
+.DATE
+{   text-align: justify;
+    display: block;
+    font-size: 20px;
+    text-justify:"left";
+   padding-right:75px;
+   padding-left:75px;
+   background-color: rgb(230, 240, 243);
+}
 
 .rightSection
 {
