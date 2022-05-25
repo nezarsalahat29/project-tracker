@@ -81,7 +81,7 @@ export default function Chat() {
           {loading ? (
             <Loader />
           ) : (
-            <ConversationList>
+            <ConversationList scrollable>
               {chatRooms.map((chatRoom) => {
                 return (
                   <Conversation
