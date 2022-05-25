@@ -23,6 +23,11 @@ export default function Project() {
   const [loading, setLoading] = useState(true);
   const [groups, setGroups] = useState([]);
 
+  const getNewData = async () => {
+    const newProject = await getProject(id);
+    setProject((project) => ({ ...project, tasks: newProject.tasks }));
+  };
+
   useEffect(() => {
     window.scroll(0, 0);
 
@@ -45,6 +50,7 @@ export default function Project() {
 
   return (
     <>
+      {console.log('project in code: ', project)}
       {loading ? (
         <Loader />
       ) : (
@@ -103,7 +109,7 @@ export default function Project() {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-around',
+                justifyContent: 'space-between',
                 alignItems: 'center',
               }}
             >
@@ -129,9 +135,11 @@ export default function Project() {
             </Col>
           </Row>
           <Divider />
-          <Row>
-            <TaskList tasks={project.tasks} />
-          </Row>
+          <TaskList
+            tasks={project.tasks}
+            projectId={id}
+            getNewData={getNewData}
+          />
         </>
       )}
     </>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Modal, Form, DatePicker, Input, Space } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { createProject } from '../../firestore/projects';
+import { Button, Modal, Form, DatePicker, Input } from 'antd';
+import { updateProject } from '../../firestore/projects';
 import { v4 as uuidv4 } from 'uuid';
 
 const TaskAddForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
@@ -39,11 +38,6 @@ const TaskAddForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
           span: 19,
         }}
         layout='horizontal'
-        //   initialValues={{
-        //     size: componentSize,
-        //   }}
-        //   onValuesChange={onFormLayoutChange}
-        //   size={componentSize}
       >
         <Form.Item name='title' label='Title'>
           <Input />
@@ -62,184 +56,31 @@ const TaskAddForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
         <Form.Item name='dueDate' label='Due Date'>
           <DatePicker />
         </Form.Item>
-
-        <Form.Item label='Deliverables'>
-          <Form.List
-            name='deliverables'
-            rules={[
-              {
-                validator: async (_, deliverables) => {
-                  if (!deliverables || deliverables.length < 1) {
-                    return Promise.reject(new Error('At least 1 deliverable'));
-                  }
-                },
-              },
-            ]}
-          >
-            {(fields, { add, remove }, { errors }) => (
-              <>
-                {fields.map(({ key, name, ...restField }) => (
-                  <Space
-                    key={key}
-                    style={{ display: 'flex', marginBottom: 2 }}
-                    align='baseline'
-                  >
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'title']}
-                      rules={[
-                        {
-                          required: true,
-                          whitespace: true,
-                          message:
-                            'Please input deliverable or delete this field.',
-                        },
-                      ]}
-                    >
-                      <Input placeholder='deliverable' style={{ width: 350 }} />
-                    </Form.Item>
-
-                    <Form.Item
-                      name={[name, 'dueDate']}
-                      rules={[
-                        ({ getFieldValue }) => ({
-                          validator(_, value) {
-                            if (value > getFieldValue('dueDate')) {
-                              return Promise.reject(
-                                new Error('Due date too late!')
-                              );
-                            }
-                            return Promise.resolve();
-                          },
-                        }),
-                      ]}
-                    >
-                      <DatePicker
-                        placeholder='Deliverable due date'
-                        style={{ width: '100%' }}
-                      />
-                    </Form.Item>
-
-                    {fields.length > 1 ? (
-                      <MinusCircleOutlined
-                        className='dynamic-delete-button'
-                        onClick={() => remove(name)}
-                      />
-                    ) : null}
-                  </Space>
-                ))}
-                <Form.Item style={{ marginBottom: 2 }}>
-                  <Button
-                    type='dashed'
-                    onClick={() => add()}
-                    block
-                    icon={<PlusOutlined />}
-                  >
-                    Add Deliverable
-                  </Button>
-                  <Form.ErrorList errors={errors} />
-                </Form.Item>
-              </>
-            )}
-          </Form.List>
-        </Form.Item>
-
-        <Form.Item label='Tasks'>
-          <Form.List name='tasks'>
-            {(fields, { add, remove }) => (
-              <>
-                {fields.map(({ key, name, ...restField }) => (
-                  <Space
-                    key={key}
-                    style={{ display: 'flex', marginBottom: 2 }}
-                    align='baseline'
-                  >
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'title']}
-                      rules={[
-                        { required: true, message: 'Missing task title' },
-                      ]}
-                    >
-                      <Input placeholder='Task title' />
-                    </Form.Item>
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'description']}
-                      rules={[
-                        { required: true, message: 'Missing task description' },
-                      ]}
-                    >
-                      <Input placeholder='Task description' />
-                    </Form.Item>
-
-                    <Form.Item
-                      name={[name, 'dueDate']}
-                      rules={[
-                        ({ getFieldValue }) => ({
-                          validator(_, value) {
-                            if (value > getFieldValue('dueDate')) {
-                              return Promise.reject(
-                                new Error('Due date too late!')
-                              );
-                            }
-                            return Promise.resolve();
-                          },
-                        }),
-                      ]}
-                    >
-                      <DatePicker
-                        placeholder='Task due date'
-                        style={{ width: '100%' }}
-                      />
-                    </Form.Item>
-                    <MinusCircleOutlined onClick={() => remove(name)} />
-                  </Space>
-                ))}
-                <Form.Item style={{ marginBottom: 2 }}>
-                  <Button
-                    type='dashed'
-                    onClick={() => add()}
-                    block
-                    icon={<PlusOutlined />}
-                  >
-                    Add Task
-                  </Button>
-                </Form.Item>
-              </>
-            )}
-          </Form.List>
-        </Form.Item>
       </Form>
     </Modal>
   );
 };
 
-export default function AddTask({ getData }) {
+export default function AddTask({ projectId, otherTasks, getNewData }) {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const onCreate = async (values) => {
     setConfirmLoading(true);
-    await createProject({
-      ...values,
-      dueDate: values.dueDate.toDate(),
-      tasks:
-        values.tasks.map((task) => ({
-          ...task,
+    await updateProject(projectId, {
+      tasks: [
+        ...otherTasks,
+        {
+          ...values,
           id: uuidv4(),
-          dueDate: task.dueDate.toDate(),
+          dueDate: values.dueDate.toDate(),
           status: 'todo',
           comments: [],
           resources: [],
-        })) || [],
-      deliverables: values.deliverables.map((deliverable) => ({
-        ...deliverable,
-        id: uuidv4(),
-        dueDate: deliverable.dueDate.toDate(),
-      })),
+        },
+      ],
     });
-    getData();
+    getNewData();
     setConfirmLoading(false);
     setVisible(false);
   };

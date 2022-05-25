@@ -11,6 +11,7 @@ export default function Group({ group }) {
         >
           {group.students.map((student) => (
             <div
+              key={student.id}
               style={{
                 userSelect: 'none',
                 padding: '0.5rem',
