@@ -19,8 +19,15 @@ export default function Collaps({ items, icon, head }) {
                 <List.Item.Meta
                   avatar={icon}
                   title={<a href="https://ant.design">{item.title || item }</a>}
-                  description={"ID: "+item.id}
+                  description={`ID: ${item.id}` }
+                   
+              
                 />
+                <p>
+                 {`
+                     Due date:  ${item.dueDate}
+                `}
+                </p>
               </List.Item>
             )}
           />

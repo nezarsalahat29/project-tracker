@@ -12,7 +12,7 @@ const ProjectInfo = ({Data,_Project}) => {
   return (
     <div>
       <div>
-        <h1>{Projects.Title}</h1>
+        <h1>{_Project.Title}</h1>
         <br />
       </div>
 
