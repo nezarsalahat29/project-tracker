@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-
+import { Button, Modal } from "antd";
 import {
   ClockCircleOutlined,
   SyncOutlined,
@@ -15,26 +15,25 @@ import { Progress } from "antd";
 const { Header } = Layout;
 const { Title } = Typography;
 uuidv4(); //
-const items = [
-  { id: uuidv4(), Title: "First cvxTask", content: "The First teze dsafsdf" },
+const items = [ 
+
+  { id: uuidv4(), Title: "First Task", content: "The First task description", },
   {
     id: uuidv4(),
-    Title: "sdf Task",
-    content: "The Second sdfsdfdf description",
+    Title: "Second Task",
+    content: "The Second task description",
   },
+  { id: uuidv4(), Title: "Third Task", content: "The Third task description" },
   {
     id: uuidv4(),
-    Title: "Third sdfsdfvxcv",
-    content: "The Third task descxcvxrdsfsdfiption",
-  },
-  {
-    id: uuidv4(),
-    Title: "Fourthxcvxcv Task",
-    content: "The Fourth tcvask description",
+    Title: "Fourth Task",
+    content: "The Fourth task description",
   },
 ];
 
 //const Titles = ["Late", "To-Do", "In progress", "Finished"];
+
+
 
 const ColumnsList = {
   [uuidv4()]: {
@@ -60,6 +59,7 @@ const ColumnsList = {
     items: [],
   },
 };
+
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -102,6 +102,32 @@ const onDragEnd = (result, columns, setColumns) => {
 
 function TasksLists() {
   const [columns, setColumns] = useState(ColumnsList);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const CallModal=(Content)=>
+{
+  <Modal
+  title="Task Description"
+  visible={isModalVisible}
+  onOk={handleOk}
+  onCancel={handleCancel}
+>
+  <p>{Content}</p>
+</Modal>}
+
   return (
     <div style={{ justifyContent: "center" }}>
       <div
@@ -145,6 +171,7 @@ function TasksLists() {
                           }}
                         >
                           {column.items.map((item, index) => {
+
                             return (
                               <Draggable
                                 key={item.id}
@@ -154,7 +181,9 @@ function TasksLists() {
                                 {(provided, snapshot) => {
                                   return (
                                     <div className="site-card-border-less-wrapper">
+                                      
                                       <Card
+                                        
                                         title={item.Title}
                                         size="small"
                                         bordered={true}
@@ -164,6 +193,7 @@ function TasksLists() {
                                           color: "white",
                                           fontSize: "20px",
                                         }}
+                                        onDoubleClick={showModal}
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
@@ -186,8 +216,9 @@ function TasksLists() {
                                           }}
                                         >
                                           {item.content}.
+                                         
                                         </p>
-
+                                          
                                         <div style={{ width: 170 }}>
                                           <Progress
                                             strokeColor="#1890ff"
@@ -196,6 +227,15 @@ function TasksLists() {
                                             size="small"
                                             status="normal"
                                           />
+                                         { console.log(item.content)}
+                                          <Modal
+                                        title="Task Description"
+                                        visible={isModalVisible}
+                                        onOk={handleOk}
+                                        onCancel={handleCancel}
+                                      >
+                                        <p>{item.content}</p>
+                                      </Modal>
                                         </div>
                                       </Card>
                                     </div>
