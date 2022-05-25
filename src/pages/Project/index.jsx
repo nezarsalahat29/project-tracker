@@ -1,4 +1,4 @@
-// Components:  
+// Components:
 // Project Title and info
 //Warning
 //Group
@@ -37,36 +37,39 @@ export const Projects = {
       Ut maximus dui et felis egestas rutrum. Praesent nec erat aliquet,
       congue eros non, imperdiet lorem. Quisque libero nisi, faucibus a
       felis eu, fermentum posuere ex. Quisque nec ex leo.`,
-    startDate: "12-Jul-2022",
-    endDAte: "7-Aug-2022",
-    Title: "Project Tracker",
-    tasks: ["task1", "task2", "task3"],
-    Progress: 0.75,
-    deliverables: [{
-      title:"Project Tracker delevierable (1)",
-      id:"768375343435",
-      dueDate:"16-AUG-1916"},
-      {title:"Project Tracker delevierable (2)",
-      id:"4854424545",
-      dueDate:"27-MAY-2023"},
-      {
-      title:"Project Tracker delevierable (3)",
-      id:"SSsf74saQE54",
-      dueDate:"17-1-2043"
+  startDate: "12-Jul-2022",
+  endDAte: "7-Aug-2022",
+  Title: "Project Tracker",
+  tasks: ["task1", "task2", "task3"],
+  Progress:69,
+  deliverables: [
+    {
+      title: "Project Tracker delevierable (1)",
+      id: "768375343435",
+      dueDate: "16-AUG-1916",
+    },
+    {
+      title: "Project Tracker delevierable (2)",
+      id: "4854424545",
+      dueDate: "27-MAY-2023",
+    },
+    {
+      title: "Project Tracker delevierable (3)",
+      id: "SSsf74saQE54",
+      dueDate: "17-1-2043",
+    },
+  ],
+};
+export const GroupData = [
+  { id: 133050, title: "Jebril" },
+  { id: 133051, title: "Nezar" },
+  { id: 133052, title: "Hedaya" },
+  { id: 133053, title: "Mohannad" },
+];
 
-  }],
-  };
-  export const GroupData = [
-    { id: 133050, title: "Jebril" },
-    { id: 133051, title: "Nezar" },
-    { id: 133052, title: "Hedaya" },
-    { id: 133053, title: "Mohannad" },
-    
-  ]
-  
-  export default function Project() {
-    <Alert message="Informational Notes" type="info" showIcon />;
-   
+export default function Project() {
+  <Alert message="Informational Notes" type="info" showIcon />;
+
   return (
     <>
       <ProjectInfo Data={GroupData} _Project={Projects} />

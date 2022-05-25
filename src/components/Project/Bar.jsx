@@ -6,8 +6,8 @@ const Bar = ({p}) => {
   return (   
       
     <div style={{ textAlign: "center" }}>
-         { console.log(p)}
-        <h2>Work progres:</h2>
+        
+        <h2>Work progress:</h2>
         <div style={{ textAlign: "center", position: "relative", left: 110 }}>
           <Row gutter={6}>
             <Progress
