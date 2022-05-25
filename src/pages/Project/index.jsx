@@ -11,7 +11,7 @@
 import React from "react";
 import "./index.css";
 
-import TasksLists from "../Tasks";
+import TasksLists from "../Tasks/index.jsx";
 
 import { Alert } from "antd";
 import { FileTextOutlined } from "@ant-design/icons";
@@ -20,7 +20,6 @@ import { Divider } from "antd";
 
 import { Row, Col } from "antd";
 
-import Collaps from "../../components/Project/Collaps";
 
 import { TeamOutlined } from "@ant-design/icons";
 import { Progress } from "antd";

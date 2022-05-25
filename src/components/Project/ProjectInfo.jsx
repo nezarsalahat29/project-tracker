@@ -2,7 +2,8 @@ import "../../pages/Project/index.css";
 import { Alert } from "antd";
 import { FileTextOutlined } from "@ant-design/icons";
 import { Row, Col } from "antd";
-import Collaps from "../../components/Project/Collaps";
+import GroupCollapse from "../../components/Project/GroupCollapse";
+import DeliCollapse from "../../components/Project/DeliverabelsCollapse";
 import { TeamOutlined } from "@ant-design/icons";
 import Projects from "../../pages/Project";
 import { data } from "../../pages/Project";
@@ -36,8 +37,8 @@ const ProjectInfo = ({Data,_Project}) => {
             type="info"
             showIcon
           />
-          <Collaps items={Data} icon={<TeamOutlined />} head="Group1" />
-          <Collaps
+          <GroupCollapse items={Data} icon={<TeamOutlined />} head="Group1" />
+          <DeliCollapse
             items={_Project.deliverables}
             icon={<FileTextOutlined />}
             head="Deliverables"
