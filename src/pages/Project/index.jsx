@@ -50,7 +50,6 @@ export default function Project() {
 
   return (
     <>
-      {console.log('project in code: ', project)}
       {loading ? (
         <Loader />
       ) : (
