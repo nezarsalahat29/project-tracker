@@ -34,44 +34,41 @@ export default function Inbox() {
     <Link to='/Chat'>
       <Card style={{ backgroundColor: "#F7F7F7", height: "100%" }}>
         <Title level={2}>Inbox</Title> <Divider />
-        <ConversationList
-          scrollable
-          style={{
-            height: "340px",
-          }}
-        >
-          {chatRooms.map((chatroom) => {
-            return (
-              <Conversation
-                key={chatroom.id}
-                id={chatroom.id}
-                info={chatroom.lastMessage}
-                lastSenderName={
-                  chatroom.lastSender === ""
-                    ? null
-                    : chatroom.lastSender === currentUser.name
-                    ? "Me"
-                    : chatroom.lastSender
-                }
-                name={
-                  currentUser.name === chatroom.name
-                    ? "Instructor"
-                    : chatroom.name
-                }
-              >
-                <Avatar
-                  src={
-                    "https://ui-avatars.com/api/?background=random&name=" +
-                    (currentUser.name === chatroom.name
-                      ? "Instructor"
-                      : chatroom.name)
+        <div style={{ overflowY: "auto", height: "340px", padding: "5px" }}>
+          <ConversationList>
+            {chatRooms.map((chatroom) => {
+              return (
+                <Conversation
+                  key={chatroom.id}
+                  id={chatroom.id}
+                  info={chatroom.lastMessage}
+                  lastSenderName={
+                    chatroom.lastSender === ""
+                      ? null
+                      : chatroom.lastSender === currentUser.name
+                      ? "Me"
+                      : chatroom.lastSender
                   }
-                  name={chatroom.name}
-                />
-              </Conversation>
-            );
-          })}
-        </ConversationList>
+                  name={
+                    currentUser.name === chatroom.name
+                      ? "Instructor"
+                      : chatroom.name
+                  }
+                >
+                  <Avatar
+                    src={
+                      "https://ui-avatars.com/api/?background=random&name=" +
+                      (currentUser.name === chatroom.name
+                        ? "Instructor"
+                        : chatroom.name)
+                    }
+                    name={chatroom.name}
+                  />
+                </Conversation>
+              );
+            })}
+          </ConversationList>
+        </div>
       </Card>
     </Link>
   );

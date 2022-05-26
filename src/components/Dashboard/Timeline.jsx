@@ -5,6 +5,7 @@ import { Typography } from "antd";
 import { getProject, getAllProjects } from "../../firestore/projects";
 import { useAuth } from "../../contexts/AuthContext";
 import { getGroupFromDb } from "../../firestore/groups";
+
 const { Title } = Typography;
 let a = [{ day: "numeric" }, { month: "short" }, { year: "numeric" }];
 function join(t, a, s) {
@@ -83,19 +84,21 @@ function TimelineComponent() {
     <Card style={{ backgroundColor: "#F7F7F7", height: "100%" }}>
       <Title level={2}>TimeLine</Title>
       <Divider />
-      <Timeline>
-        {data &&
-          data.map((item) => {
-            return (
-              <Timeline.Item key={item}>
-                <p key={item[0]}>{item[0]}</p>
-                {item[1].map((item2) => (
-                  <p key={item2 + item[0]}>{item2}</p>
-                ))}
-              </Timeline.Item>
-            );
-          })}
-      </Timeline>
+      <div style={{ overflowY: "auto", height: "340px", padding: "5px" }}>
+        <Timeline>
+          {data &&
+            data.map((item) => {
+              return (
+                <Timeline.Item key={item}>
+                  <p key={item[0]}>{item[0]}</p>
+                  {item[1].map((item2) => (
+                    <p key={item2 + item[0]}>{item2}</p>
+                  ))}
+                </Timeline.Item>
+              );
+            })}
+        </Timeline>
+      </div>
     </Card>
   );
 }
