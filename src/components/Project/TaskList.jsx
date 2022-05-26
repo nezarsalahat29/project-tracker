@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Space, Typography } from 'antd';
+import { Typography } from 'antd';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Loader from '../Loader';
 import AddTask from './AddTask';
@@ -113,26 +113,6 @@ export default function TaskList({
 
   return (
     <>
-      {/* <Space
-        align='baseline'
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          margin: '0 5rem',
-          alignItems: 'center',
-          // width: '100%',
-        }}
-      >
-        <Title level={2} style={{ marginBottom: '0' }}>
-          Tasks
-        </Title>
-        <AddTask
-          projectId={projectId}
-          projectDueDate={projectDueDate}
-          otherTasks={tasks}
-          getNewData={getNewData}
-        />
-      </Space> */}
       <div
         style={{
           display: 'flex',

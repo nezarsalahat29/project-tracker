@@ -1,14 +1,10 @@
 import React from 'react';
-import { Empty, Card } from 'antd';
+import { Empty } from 'antd';
 
 export default function Group({ group }) {
   return (
     <>
       {group ? (
-        // <Card
-        //   title={`Group ${group.id}`}
-        //   style={{ minWidth: 400, minHeight: 200 }}
-        // >
         group.students.map((student) => (
           <div
             key={student.id}
@@ -30,7 +26,6 @@ export default function Group({ group }) {
           </div>
         ))
       ) : (
-        // </Card>
         <Empty />
       )}
     </>
