@@ -104,9 +104,12 @@ const ProjectCreateForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
                       rules={[
                         ({ getFieldValue }) => ({
                           validator(_, value) {
-                            if (value > getFieldValue('dueDate')) {
+                            if (
+                              value > getFieldValue('dueDate') ||
+                              value < new Date()
+                            ) {
                               return Promise.reject(
-                                new Error('Due date too late!')
+                                new Error('Due date no valid!')
                               );
                             }
                             return Promise.resolve();
@@ -178,9 +181,12 @@ const ProjectCreateForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
                       rules={[
                         ({ getFieldValue }) => ({
                           validator(_, value) {
-                            if (value > getFieldValue('dueDate')) {
+                            if (
+                              value > getFieldValue('dueDate') ||
+                              value < new Date()
+                            ) {
                               return Promise.reject(
-                                new Error('Due date too late!')
+                                new Error('Due date not valid!')
                               );
                             }
                             return Promise.resolve();

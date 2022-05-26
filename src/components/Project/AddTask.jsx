@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { Button, Modal, Form, DatePicker, Input } from 'antd';
 import { updateProject } from '../../firestore/projects';
 import { v4 as uuidv4 } from 'uuid';
+import moment from 'moment';
 
-const TaskAddForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
+const TaskAddForm = ({
+  visible,
+  onCreate,
+  onCancel,
+  confirmLoading,
+  projectDueDate,
+}) => {
   const [form] = Form.useForm();
   return (
     <Modal
@@ -53,7 +60,22 @@ const TaskAddForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
           <Input.TextArea showCount maxLength={200} />
         </Form.Item>
 
-        <Form.Item name='dueDate' label='Due Date'>
+        <Form.Item
+          name='dueDate'
+          label='Due Date'
+          rules={[
+            {
+              validator: async (_, value) => {
+                if (
+                  value > moment(projectDueDate.toDate()) ||
+                  value < new Date()
+                ) {
+                  return Promise.reject(new Error('Due date not valid!'));
+                }
+              },
+            },
+          ]}
+        >
           <DatePicker />
         </Form.Item>
       </Form>
@@ -61,7 +83,12 @@ const TaskAddForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
   );
 };
 
-export default function AddTask({ projectId, otherTasks, getNewData }) {
+export default function AddTask({
+  projectId,
+  otherTasks,
+  getNewData,
+  projectDueDate,
+}) {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -92,6 +119,7 @@ export default function AddTask({ projectId, otherTasks, getNewData }) {
       </Button>
       <TaskAddForm
         visible={visible}
+        projectDueDate={projectDueDate}
         onCreate={onCreate}
         confirmLoading={confirmLoading}
         onCancel={() => {

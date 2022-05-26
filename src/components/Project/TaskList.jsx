@@ -8,7 +8,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { updateProject } from '../../firestore/projects';
 
 const { Title } = Typography;
-export default function TaskList({ tasks, projectId, getNewData }) {
+export default function TaskList({
+  tasks,
+  projectId,
+  getNewData,
+  projectDueDate,
+}) {
   const [columns, setColumns] = useState([
     {
       id: uuidv4(),
@@ -35,14 +40,15 @@ export default function TaskList({ tasks, projectId, getNewData }) {
 
   useEffect(() => {
     const getData = () => {
-      setColumns((columns) => [
-        ...columns.map((column) => {
+      setColumns((columns) =>
+        columns.map((column) => {
+          column.tasks = [];
           tasks.forEach((task) => {
             if (task.status === column.name) column.tasks.push(task);
           });
           return column;
-        }),
-      ]);
+        })
+      );
     };
 
     getData();
@@ -120,6 +126,7 @@ export default function TaskList({ tasks, projectId, getNewData }) {
         </Title>
         <AddTask
           projectId={projectId}
+          projectDueDate={projectDueDate}
           otherTasks={tasks}
           getNewData={getNewData}
         />

@@ -10,7 +10,7 @@ import {
   Row,
   Col,
 } from 'antd';
-import Loader from '../Loader';
+// import Loader from '../Loader';
 import { SendOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { useAuth } from '../../contexts/AuthContext';
@@ -57,9 +57,7 @@ const TaskModal = ({
 
   return (
     <>
-      {loading ? (
-        <Loader />
-      ) : (
+      {!loading && (
         <Modal
           width={1000}
           visible={visible}

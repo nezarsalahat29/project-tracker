@@ -25,7 +25,16 @@ export default function Project() {
 
   const getNewData = async () => {
     const newProject = await getProject(id);
-    setProject((project) => ({ ...project, tasks: newProject.tasks }));
+    setProject({
+      title: newProject.title,
+      description: newProject.description,
+      dueDate: newProject.dueDate,
+      deliverables: [...newProject.deliverables],
+      tasks: [...newProject.tasks.map((task) => ({ ...task }))],
+      createdAt: newProject.createdAt,
+      lastModified: newProject.lastModified,
+      groupId: newProject.groupId || null,
+    });
   };
 
   useEffect(() => {
@@ -137,6 +146,7 @@ export default function Project() {
           <TaskList
             tasks={project.tasks}
             projectId={id}
+            projectDueDate={project.dueDate}
             getNewData={getNewData}
           />
         </>
