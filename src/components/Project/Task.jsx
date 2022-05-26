@@ -10,24 +10,29 @@ import {
   Row,
   Col,
   Avatar,
+  Select,
 } from 'antd';
 // import Loader from '../Loader';
 import { SendOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { useAuth } from '../../contexts/AuthContext';
 import { updateProject } from '../../firestore/projects';
+
+const { Option } = Select;
 const TaskModal = ({
   visible,
-  onUpdate,
+  setVisible,
   onCancel,
-  confirmLoading,
   taskProp,
   projectId,
   otherTasks,
   projectDueDate,
+  group,
+  getNewData,
 }) => {
   const [task, setTask] = useState();
   const [loading, setLoading] = useState(true);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [form] = Form.useForm();
   const { currentUser } = useAuth();
 
@@ -43,11 +48,11 @@ const TaskModal = ({
       name: currentUser.name,
       time: new Date(),
     };
-    form.resetFields();
+    form.setFieldsValue({ comment: null });
 
     setTask((task) => ({ ...task, comments: [...task.comments, comment] }));
     updateProject(projectId, {
-      otherTasks: otherTasks.map((t) => {
+      tasks: otherTasks.map((t) => {
         if (t.id === task.id)
           return { ...task, comments: [...task.comments, comment] };
         return t;
@@ -63,17 +68,48 @@ const TaskModal = ({
       name: currentUser.name,
       time: new Date(),
     };
-    form.resetFields();
+    form.setFieldsValue({ resource: null });
 
     setTask((task) => ({ ...task, resources: [...task.resources, resource] }));
     updateProject(projectId, {
-      otherTasks: otherTasks.map((t) => {
+      tasks: otherTasks.map((t) => {
         if (t.id === task.id)
           return { ...task, resources: [...task.resources, resource] };
         return t;
       }),
     });
     console.log(task);
+  };
+
+  const handleChange = (studentIds) => {
+    console.log(studentIds);
+    setTask((task) => ({ ...task, students: studentIds }));
+    updateProject(projectId, {
+      tasks: otherTasks.map((t) => {
+        if (t.id === task.id) return { ...task, students: studentIds };
+        return t;
+      }),
+    });
+  };
+
+  const onUpdate = (values) => {
+    console.log(values);
+    setConfirmLoading(true);
+    updateProject(projectId, {
+      tasks: otherTasks.map((t) => {
+        if (t.id === task.id)
+          return {
+            ...task,
+            title: values.title,
+            description: values.description,
+            dueDate: values.dueDate.toDate(),
+          };
+        return t;
+      }),
+    });
+    getNewData();
+    setConfirmLoading(false);
+    setVisible(false);
   };
 
   return (
@@ -95,7 +131,7 @@ const TaskModal = ({
               .validateFields()
               .then((values) => {
                 onUpdate(values);
-                form.resetFields();
+                // form.resetFields();
               })
               .catch((info) => {
                 console.log('Validate Failed:', info);
@@ -108,6 +144,10 @@ const TaskModal = ({
               title: task.title,
               description: task.description,
               dueDate: moment(task.dueDate.toDate()),
+              students: group.students.reduce((result, student) => {
+                if (task.students.includes(student.id)) result.push(student.id);
+                return result;
+              }, []),
             }}
             labelCol={{
               span: 5,
@@ -153,6 +193,21 @@ const TaskModal = ({
             >
               <DatePicker disabled={!currentUser.instructor} />
             </Form.Item>
+
+            {group && (
+              <Form.Item name='students' label='Students'>
+                <Select
+                  mode='multiple'
+                  allowClear
+                  placeholder='Select students'
+                  onChange={handleChange}
+                >
+                  {group.students.map((student) => (
+                    <Option key={student.id}>{student.name}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            )}
 
             <Row gutter={16}>
               <Col
@@ -282,30 +337,9 @@ export default function Task({
   otherTasks,
   projectDueDate,
   getNewData,
+  group,
 }) {
   const [visible, setVisible] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-
-  const onUpdate = (values) => {
-    console.log(values);
-    setConfirmLoading(true);
-    updateProject(projectId, {
-      tasks: otherTasks.map((t) => {
-        if (t.id === task.id)
-          return {
-            ...task,
-            title: values.title,
-            description: values.description,
-            dueDate: values.dueDate.toDate(),
-          };
-        return t;
-      }),
-    });
-    getNewData();
-    setConfirmLoading(false);
-    setVisible(false);
-  };
-
   return (
     <>
       <div
@@ -331,13 +365,14 @@ export default function Task({
         {task.title}
       </div>
       <TaskModal
+        group={group}
         taskProp={task}
+        getNewData={getNewData}
         projectId={projectId}
         projectDueDate={projectDueDate}
         otherTasks={otherTasks}
         visible={visible}
-        onUpdate={onUpdate}
-        confirmLoading={confirmLoading}
+        setVisible={setVisible}
         onCancel={() => {
           setVisible(false);
         }}

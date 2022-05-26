@@ -13,6 +13,7 @@ export default function TaskList({
   projectId,
   getNewData,
   projectDueDate,
+  group,
 }) {
   const [columns, setColumns] = useState([
     {
@@ -179,6 +180,7 @@ export default function TaskList({
                               getNewData={getNewData}
                               projectDueDate={projectDueDate}
                               projectId={projectId}
+                              group={group}
                             />
                           )}
                         </Draggable>

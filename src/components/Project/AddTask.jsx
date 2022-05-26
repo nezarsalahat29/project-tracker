@@ -104,6 +104,7 @@ export default function AddTask({
           status: 'todo',
           comments: [],
           resources: [],
+          students: [],
         },
       ],
     });

@@ -144,6 +144,7 @@ export default function Project() {
           </Row>
           <Divider />
           <TaskList
+            group={groups.find((group) => group.id === project.groupId)}
             tasks={project.tasks}
             projectId={id}
             projectDueDate={project.dueDate}
