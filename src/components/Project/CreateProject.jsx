@@ -238,6 +238,8 @@ export default function CreateProject({ getData }) {
           status: 'todo',
           comments: [],
           resources: [],
+          students: [],
+          rating: 0,
         })) || [],
       deliverables: values.deliverables.map((deliverable) => ({
         ...deliverable,

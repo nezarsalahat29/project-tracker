@@ -105,6 +105,7 @@ export default function AddTask({
           comments: [],
           resources: [],
           students: [],
+          rating: 0,
         },
       ],
     });

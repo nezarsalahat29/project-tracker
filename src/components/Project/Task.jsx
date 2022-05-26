@@ -11,6 +11,7 @@ import {
   Col,
   Avatar,
   Select,
+  Rate,
 } from 'antd';
 // import Loader from '../Loader';
 import { SendOutlined } from '@ant-design/icons';
@@ -82,7 +83,6 @@ const TaskModal = ({
   };
 
   const handleChange = (studentIds) => {
-    console.log(studentIds);
     setTask((task) => ({ ...task, students: studentIds }));
     updateProject(projectId, {
       tasks: otherTasks.map((t) => {
@@ -110,6 +110,16 @@ const TaskModal = ({
     getNewData();
     setConfirmLoading(false);
     setVisible(false);
+  };
+
+  const addRating = (value) => {
+    setTask((task) => ({ ...task, rating: value }));
+    updateProject(projectId, {
+      tasks: otherTasks.map((t) => {
+        if (t.id === task.id) return { ...task, srating: value };
+        return t;
+      }),
+    });
   };
 
   return (
@@ -147,6 +157,7 @@ const TaskModal = ({
                 if (task.students.includes(student.id)) result.push(student.id);
                 return result;
               }, []),
+              rating: task.rating,
             }}
             labelCol={{
               span: 5,
@@ -191,6 +202,14 @@ const TaskModal = ({
               ]}
             >
               <DatePicker disabled={!currentUser.instructor} />
+            </Form.Item>
+
+            <Form.Item name='rating' label='Rating'>
+              <Rate
+                allowHalf
+                onChange={addRating}
+                disabled={!currentUser.instructor}
+              />
             </Form.Item>
 
             {group && (
