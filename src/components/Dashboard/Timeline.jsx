@@ -37,6 +37,14 @@ function getData(projects) {
           ]
         : ["Deliverable: " + deliverable.title];
     });
+    data[Math.floor(element.dueDate.seconds / (3600 * 24))] = data[
+      Math.floor(element.dueDate.seconds / (3600 * 24))
+    ]
+      ? [
+          ...data[Math.floor(element.dueDate.seconds / (3600 * 24))],
+          "Project: " + element.title,
+        ]
+      : ["Project: " + element.title];
   });
   return data;
 }
