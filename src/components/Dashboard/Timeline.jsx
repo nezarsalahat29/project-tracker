@@ -67,6 +67,8 @@ function TimelineComponent() {
     };
 
     getData();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -77,10 +79,10 @@ function TimelineComponent() {
         {data &&
           data.map((item) => {
             return (
-              <Timeline.Item>
-                <p>{item[0]}</p>
+              <Timeline.Item key={item}>
+                <p key={item[0]}>{item[0]}</p>
                 {item[1].map((item2) => (
-                  <p>{item2}</p>
+                  <p key={item2 + item[0]}>{item2}</p>
                 ))}
               </Timeline.Item>
             );
