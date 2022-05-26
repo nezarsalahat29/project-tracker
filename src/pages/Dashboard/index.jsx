@@ -45,9 +45,6 @@ const studentDashboard = (
 const studentDashboardNoGroup = (
   <Row gutter={[16, 24]}>
     <Col xs={24} sm={12}>
-      <TimelineComponent />
-    </Col>
-    <Col xs={24} sm={12}>
       <Inbox />
     </Col>
   </Row>
