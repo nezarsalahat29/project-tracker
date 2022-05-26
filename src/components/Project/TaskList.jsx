@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+
 
 import {
   ClockCircleOutlined,
@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Task from "./Task";
 import { updateProject } from "../../firestore/projects";
-
+import { v4 as uuidv4 } from "uuid";
 uuidv4(); //
 
 // const items = [

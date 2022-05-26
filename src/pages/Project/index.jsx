@@ -24,6 +24,8 @@ import AddNewTask from "../../components/Project/AddNewTask";
 import Bar from "../../components/Project/Bar";
 import ProjectInfo from "../../components/Project/ProjectInfo";
 import TasksLists from "../../components/Project/TaskList";
+import { v4 as uuidv4 } from "uuid";
+
 
 /****************************************************************/
 
@@ -66,6 +68,24 @@ export const GroupData = [
 
 export default function Project() {
   <Alert message="Informational Notes" type="info" showIcon />;
+  
+  uuidv4(); 
+
+  const items = [
+  { id: uuidv4(), Title: "First Task", content: "The First task description" },
+  {
+    id: uuidv4(),
+    Title: "Second Task",
+    content: "The Second task description",
+
+  },
+  { id: uuidv4(), Title: "Third Task", content: "The Third task description" },
+  {
+    id: uuidv4(),
+    Title: "Fourth Task",
+    content: "The Fourth task description",
+  },
+];
 
   return (
     <>
@@ -81,7 +101,7 @@ export default function Project() {
       </h1>
       <br />
 
-      <TasksLists />
+      <TasksLists tasks={items} projectId={"Hp1pG6QCkzYn8h043QPE"} />
       <AddNewTask />
     </>
   );
