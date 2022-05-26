@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Task from "./Task";
-import { updateProject } from "../../firestore/projects";
+//import { updateProject } from "../../firestore/projects";
 import { v4 as uuidv4 } from "uuid";
 uuidv4(); //
 
@@ -122,13 +122,13 @@ function TaskList(tasks, projectId, getNewData) {
     },
   ]);
 
-  // const [loading, setLoading] = useState(true);
+const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getData = () => {
       setColumns((columns) => [
         ...columns.map((column) => {
-          tasks.forEach((task) => {
+          Object.keys(tasks).forEach((task) => {
             if (task.status === column.name) column.tasks.push(task);
           });
           return column;
@@ -137,7 +137,7 @@ function TaskList(tasks, projectId, getNewData) {
     };
 
     getData();
-    // setLoading(false);
+    setLoading(false);
   }, [tasks]);
   const onDragEnd = (result) => {
     console.log(result);
@@ -179,7 +179,7 @@ function TaskList(tasks, projectId, getNewData) {
           task.status = destination.droppableId;
         }
       });
-      updateProject(projectId, { tasks });
+      //updateProject(projectId, { tasks });
 
       setColumns(
         columns.map((column) => {

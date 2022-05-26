@@ -6,19 +6,20 @@ import { List } from "antd";
 
 const { Panel } = Collapse;
 
-export default function GroupCollapse({ items, icon, head }) {
+export default function GroupCollapse({ items, icon }) {
+  let HEAD="Group:\t"+items.id;
   return (
     <Collapse defaultActiveKey={["0"]} style={{ width: 500 }} >
-      <Panel header={head} key="1">
+      <Panel header={HEAD} key="1">
         <p>
           <List
             itemLayout="horizontal"
-            dataSource={items}
+            dataSource={items.students}
             renderItem={(item) => (
               <List.Item>
                 <List.Item.Meta
                   avatar={icon}
-                  title={<a href="https://ant.design">{item.title || item }</a>}
+                  title={<a href="https://ant.design">{item.name}</a>}
                   description={`ID: ${item.id}` }
                    
               
