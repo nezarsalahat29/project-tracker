@@ -8,7 +8,7 @@ import { AppstoreAddOutlined, UsergroupAddOutlined,FileTextOutlined } from "@ant
 import { Row, Col, Collapse, Radio } from "antd";
 
 import { Drawer, Form, Space } from "antd";
-import Collaps from ".//Collaps";
+import GroupCollapse from ".//GroupCollapse";
 
 
 import { TeamOutlined } from "@ant-design/icons";
@@ -89,7 +89,7 @@ const data = [
             </Col>
           </Row>
         </div>
-        <Collaps items={data} icon= {<TeamOutlined/>} head="Group1"/>
+        <GroupCollapse items={data} icon= {<TeamOutlined/>} head="Group1"/>
       </Form>
     </Drawer>
     </>

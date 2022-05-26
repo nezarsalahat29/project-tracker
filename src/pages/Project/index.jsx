@@ -11,6 +11,10 @@
 import React from "react";
 import "./index.css";
 
+<<<<<<< HEAD
+=======
+import TasksLists from "../Tasks/index.jsx";
+>>>>>>> 3eb822ce67acb56d3905e44c95c9ef3ecf053028
 
 import { Alert } from "antd";
 

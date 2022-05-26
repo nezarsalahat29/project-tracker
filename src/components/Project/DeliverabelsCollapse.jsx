@@ -6,7 +6,7 @@ import { List } from "antd";
 
 const { Panel } = Collapse;
 
-export default function Collaps({ items, icon, head }) {
+export default function DeliCollapse({ items, icon, head }) {
   return (
     <Collapse defaultActiveKey={["0"]} style={{ width: 500 }} >
       <Panel header={head} key="1">
