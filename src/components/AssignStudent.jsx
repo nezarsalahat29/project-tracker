@@ -42,8 +42,8 @@ export default function AssignStudent(props) {
   );
   return (
     <div>
-      <Row justify='space-between' align='middle'>
-        <p>{props.student.name}</p>
+      <Row justify='space-between' align='middle' style={{ padding: "5px" }}>
+        <p style={{ textAlign: "center", margin: "0" }}>{props.student.name}</p>
 
         <Dropdown overlay={menu}>
           <Button>{Role ? Role : "Role"}</Button>
