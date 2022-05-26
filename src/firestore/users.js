@@ -84,6 +84,18 @@ export const deleteUser = async (userId) => {
   }
 };
 
+export const updateRole = async (uid,Role) => {
+  try {
+    firestore
+      .collection("users")
+      .doc(uid)
+      .update({ role: Role });
+    
+  } catch (error) {
+    console.log("error updating Role to user", error);
+  }
+};
+
 // const userRef = firestore
 //   .collection('users')
 //   .doc('jttNpOWD2HR3xAdS6WveFcr5fBm2');

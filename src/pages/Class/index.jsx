@@ -1,24 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { Row, Col, Space, Typography, Divider, Button, Collapse } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
-import Loader from '../../components/Loader';
-import { getStudentsFromDb, updateUser } from '../../firestore/users';
+import React, { useEffect, useState } from "react";
+import { Row, Col, Space, Typography, Divider, Button, Collapse } from "antd";
+import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
+import Loader from "../../components/Loader";
+import { getStudentsFromDb, updateUser } from "../../firestore/users";
 import {
   getGroupsFromDb,
   createGroup,
   deleteGroup,
   updateGroup,
-} from '../../firestore/groups';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-
+} from "../../firestore/groups";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Modal } from "antd";
+import AssignStudent from "../../components/AssignStudent";
 const { Title } = Typography;
 const { Panel } = Collapse;
+
 export default function Class() {
   const [students, setStudents] = useState([]);
   const [studentLoading, setStudentLoading] = useState(true);
   const [groups, setGroups] = useState([]);
   const [groupLoading, setGroupLoading] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState([]);
+  const [Roles, setRoles] = useState([
+    {
+      name: "Leader",
+    },
+    {
+      name: "TimeKeeper",
+    },
+    {
+      name: "Integrator",
+    },
+    {
+      name: "Designer",
+    },
+    {
+      name: "Author",
+    },
+  ]);
+  const setRolesForAll = (data) => {
+    setRoles(data);
+  };
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
 
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   const getStudentsData = async () => {
     let students = await getStudentsFromDb();
     students = students.filter((student) => !student.groupId);
@@ -38,7 +72,7 @@ export default function Class() {
     };
 
     getData();
-  }, []);
+  }, [Roles]);
 
   const createNewGroup = () => {
     createGroup({});
@@ -68,14 +102,14 @@ export default function Class() {
 
     if (source.droppableId === destination.droppableId) {
       const column =
-        source.droppableId === 'studentsDroppable'
+        source.droppableId === "studentsDroppable"
           ? students
           : groups.find((g) => g.id === destination.droppableId).students;
 
       const copiedItems = [...column];
       const [removed] = copiedItems.splice(source.index, 1);
       copiedItems.splice(destination.index, 0, removed);
-      if (source.droppableId === 'studentsDroppable') {
+      if (source.droppableId === "studentsDroppable") {
         setStudents(copiedItems);
       } else {
         setGroups(
@@ -89,12 +123,12 @@ export default function Class() {
       }
     } else {
       const sourceColumn =
-        source.droppableId === 'studentsDroppable'
+        source.droppableId === "studentsDroppable"
           ? students
           : groups.find((g) => g.id === source.droppableId).students;
 
       const destinationColumn =
-        destination.droppableId === 'studentsDroppable'
+        destination.droppableId === "studentsDroppable"
           ? students
           : groups.find((g) => g.id === destination.droppableId).students;
 
@@ -105,7 +139,7 @@ export default function Class() {
 
       console.log(destinationItems);
 
-      if (source.droppableId === 'studentsDroppable') {
+      if (source.droppableId === "studentsDroppable") {
         setStudents(sourceItems);
         setGroups(
           groups.map((group) => {
@@ -125,7 +159,7 @@ export default function Class() {
           ...groups.find((group) => group.id === destination.droppableId),
           students: destinationItems,
         });
-      } else if (destination.droppableId === 'studentsDroppable') {
+      } else if (destination.droppableId === "studentsDroppable") {
         setStudents(destinationItems);
         setGroups(
           groups.map((group) => {
@@ -186,7 +220,7 @@ export default function Class() {
   return (
     <Row
       gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-      style={{ height: '100%' }}
+      style={{ height: "100%" }}
       wrap={false}
     >
       <DragDropContext onDragEnd={onDragEnd}>
@@ -194,23 +228,23 @@ export default function Class() {
           <Space
             align='baseline'
             style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <Title
               level={2}
               style={{
-                width: '100%',
-                textAlign: 'center',
-                marginBottom: '0',
+                width: "100%",
+                textAlign: "center",
+                marginBottom: "0",
               }}
             >
               Students
             </Title>
           </Space>
-          <Divider style={{ margin: '12px 0' }} />
+          <Divider style={{ margin: "12px 0" }} />
 
           {studentLoading ? (
             <Loader />
@@ -222,16 +256,16 @@ export default function Class() {
                   ref={provided.innerRef}
                   style={{
                     background: snapshot.isDraggingOver
-                      ? 'lightblue'
-                      : '#f0f2f5',
-                    borderRadius: '10px',
+                      ? "lightblue"
+                      : "#f0f2f5",
+                    borderRadius: "10px",
                     padding: 4,
-                    width: '100%',
+                    width: "100%",
                     minHeight: 100,
-                    height: '90%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
+                    height: "90%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
                   }}
                 >
                   {students.map((student, index) => (
@@ -246,19 +280,19 @@ export default function Class() {
                           ref={provided.innerRef}
                           {...provided.dragHandleProps}
                           style={{
-                            userSelect: 'none',
-                            padding: '0.5rem',
-                            margin: '0.5rem',
+                            userSelect: "none",
+                            padding: "0.5rem",
+                            margin: "0.5rem",
                             background: snapshot.isDragging
-                              ? '#4a9cc2'
-                              : '#5cc2f2',
-                            color: 'white',
-                            display: 'inline-block',
-                            width: '120px',
-                            textAlign: 'center',
-                            borderRadius: '5px',
-                            height: '40px',
-                            whiteSpace: 'nowrap',
+                              ? "#4a9cc2"
+                              : "#5cc2f2",
+                            color: "white",
+                            display: "inline-block",
+                            width: "120px",
+                            textAlign: "center",
+                            borderRadius: "5px",
+                            height: "40px",
+                            whiteSpace: "nowrap",
                             ...provided.draggableProps.style,
                           }}
                         >
@@ -277,12 +311,12 @@ export default function Class() {
           <Space
             align='baseline'
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            <Title level={2} style={{ marginBottom: '0' }}>
+            <Title level={2} style={{ marginBottom: "0" }}>
               Groups
             </Title>
             <Button type='primary' onClick={createNewGroup}>
@@ -292,14 +326,14 @@ export default function Class() {
 
           {groupLoading ? (
             <>
-              <Divider style={{ margin: '12px 0' }} />
+              <Divider style={{ margin: "12px 0" }} />
               <Loader />
             </>
           ) : (
             <Collapse
               style={{
-                margin: '12px 0',
-                borderColor: 'rgba(0, 0, 0, 0.06)',
+                margin: "12px 0",
+                borderColor: "rgba(0, 0, 0, 0.06)",
               }}
             >
               {groups.map((group) => (
@@ -308,12 +342,23 @@ export default function Class() {
                   header={`Group ${group.id}`}
                   extra={
                     // eslint-disable-next-line
-                    <a onClick={() => deleteThisGroup(group)}>
-                      <DeleteOutlined />
-                    </a>
+                    <Space>
+                      <a onClick={() => deleteThisGroup(group)}>
+                        <DeleteOutlined />
+                      </a>
+                      <Button
+                        type='primary'
+                        onClick={() => {
+                          setSelectedGroup(group);
+                          showModal();
+                        }}
+                      >
+                        Assign Roles
+                      </Button>
+                    </Space>
                   }
                   style={{
-                    marginBottom: '0.5rem',
+                    marginBottom: "0.5rem",
                   }}
                 >
                   <Droppable
@@ -327,13 +372,13 @@ export default function Class() {
                         ref={provided.innerRef}
                         style={{
                           background: snapshot.isDraggingOver
-                            ? 'lightblue'
-                            : '#f0f2f5',
-                          borderRadius: '10px',
+                            ? "lightblue"
+                            : "#f0f2f5",
+                          borderRadius: "10px",
                           // padding: 4,
                           minHeight: 50,
 
-                          display: 'flex',
+                          display: "flex",
                         }}
                       >
                         {group.students.map((student, index) => (
@@ -348,18 +393,18 @@ export default function Class() {
                                 ref={provided.innerRef}
                                 {...provided.dragHandleProps}
                                 style={{
-                                  userSelect: 'none',
-                                  padding: '0.5rem',
-                                  margin: '0.5rem',
+                                  userSelect: "none",
+                                  padding: "0.5rem",
+                                  margin: "0.5rem",
                                   background: snapshot.isDragging
-                                    ? '#4a9cc2'
-                                    : '#5cc2f2',
-                                  color: 'white',
-                                  width: '120px',
-                                  textAlign: 'center',
-                                  borderRadius: '5px',
-                                  height: '40px',
-                                  whiteSpace: 'nowrap',
+                                    ? "#4a9cc2"
+                                    : "#5cc2f2",
+                                  color: "white",
+                                  width: "120px",
+                                  textAlign: "center",
+                                  borderRadius: "5px",
+                                  height: "40px",
+                                  whiteSpace: "nowrap",
                                   ...provided.draggableProps.style,
                                 }}
                               >
@@ -376,6 +421,24 @@ export default function Class() {
               ))}
             </Collapse>
           )}
+
+          <Modal
+            title='Assigning Roles'
+            visible={isModalVisible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+          >
+            {selectedGroup.students &&
+              selectedGroup.students.map((student) => {
+                return (
+                  <AssignStudent
+                    key={student.id}
+                    student={student}
+                    Roles={Roles}
+                  ></AssignStudent>
+                );
+              })}
+          </Modal>
         </Col>
       </DragDropContext>
     </Row>
