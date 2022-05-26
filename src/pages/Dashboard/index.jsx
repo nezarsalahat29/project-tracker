@@ -7,6 +7,7 @@ import LiquidPlot from "../../components/Dashboard/Liquid";
 import { useAuth } from "../../contexts/AuthContext";
 import { Row, Col } from "antd";
 import ProjectsTable from "../../components/Dashboard/ProjectsTable";
+import NoData from "../../components/Dashboard/NoData";
 
 const instructorDashboard = (
   <Row gutter={[16, 24]}>
@@ -45,7 +46,16 @@ const studentDashboard = (
 const studentDashboardNoGroup = (
   <Row gutter={[16, 24]}>
     <Col xs={24} sm={12}>
+      <NoData title='TimeLine' />
+    </Col>
+    <Col xs={24} sm={12}>
       <Inbox />
+    </Col>
+    <Col xs={24} sm={12}>
+      <NoData title='Tasks Summary' />
+    </Col>
+    <Col xs={24} sm={12}>
+      <NoData title='Group Progress' />
     </Col>
   </Row>
 );
@@ -55,6 +65,7 @@ export default function Dashboard() {
   const hasAGroup = currentUser.groupId
     ? studentDashboard
     : studentDashboardNoGroup;
+
   useEffect(() => {
     window.scroll(0, 0);
   }, []);

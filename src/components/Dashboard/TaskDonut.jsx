@@ -108,7 +108,7 @@ export default function TaskDonut() {
 
   return (
     <Card style={{ backgroundColor: "#F7F7F7", height: "100%" }}>
-      <Title level={2}>Tasks summary</Title>
+      <Title level={2}>Tasks Summary</Title>
       <Divider />
       <Pie {...config} />
     </Card>

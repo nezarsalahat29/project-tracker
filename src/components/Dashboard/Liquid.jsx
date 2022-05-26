@@ -51,7 +51,7 @@ export default function LiquidPlot() {
   return (
     <div>
       <Card style={{ backgroundColor: "#F7F7F7" }}>
-        <Title level={2}>Group Process for the project</Title>
+        <Title level={2}>Group Progress</Title>
         <Divider />
         <Liquid {...config} />
       </Card>
