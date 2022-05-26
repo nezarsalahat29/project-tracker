@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import {  Modal } from "antd";
+import { Modal } from "antd";
 import {
   ClockCircleOutlined,
   SyncOutlined,
@@ -14,9 +14,8 @@ import { Card } from "antd";
 import { Progress } from "antd";
 
 uuidv4(); //
-const items = [ 
-
-  { id: uuidv4(), Title: "First Task", content: "The First task description", },
+const items = [
+  { id: uuidv4(), Title: "First Task", content: "The First task description" },
   {
     id: uuidv4(),
     Title: "Second Task",
@@ -31,8 +30,6 @@ const items = [
 ];
 
 //const Titles = ["Late", "To-Do", "In progress", "Finished"];
-
-
 
 const ColumnsList = {
   [uuidv4()]: {
@@ -59,13 +56,12 @@ const ColumnsList = {
   },
 };
 
-
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
   const { source, destination } = result;
 
   if (source.droppableId !== destination.droppableId) {
-    console.log(55555555555555555);
+    //console.log(55555555555555555);
     const sourceColumn = columns[source.droppableId];
     const destColumn = columns[destination.droppableId];
     const sourceItems = [...sourceColumn.items];
@@ -102,7 +98,6 @@ const onDragEnd = (result, columns, setColumns) => {
 function TasksLists() {
   const [columns, setColumns] = useState(ColumnsList);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -116,16 +111,22 @@ function TasksLists() {
     setIsModalVisible(false);
   };
 
-  const CallModal=(Content)=>
-{
-  <Modal
-  title="Task Description"
-  visible={isModalVisible}
-  onOk={handleOk}
-  onCancel={handleCancel}
->
-  <p>{Content}</p>
-</Modal>}
+
+
+  //FromHere
+
+  const CallModal = (Content) => {
+    <Modal
+      title="Task Description"
+      visible={isModalVisible}
+      onOk={handleOk}
+      onCancel={handleCancel}
+    >
+      <p>{Content}</p>
+    </Modal>;
+  };
+
+  //To Here
 
   return (
     <div style={{ justifyContent: "center" }}>
@@ -170,19 +171,19 @@ function TasksLists() {
                           }}
                         >
                           {column.items.map((item, index) => {
-
                             return (
                               <Draggable
                                 key={item.id}
                                 draggableId={item.id}
                                 index={index}
                               >
+
+                                  {/* from here  */}
+                                  
                                 {(provided, snapshot) => {
                                   return (
                                     <div className="site-card-border-less-wrapper">
-                                      
                                       <Card
-                                        
                                         title={item.Title}
                                         size="small"
                                         bordered={true}
@@ -215,9 +216,8 @@ function TasksLists() {
                                           }}
                                         >
                                           {item.content}.
-                                         
                                         </p>
-                                          
+
                                         <div style={{ width: 170 }}>
                                           <Progress
                                             strokeColor="#1890ff"
@@ -226,18 +226,19 @@ function TasksLists() {
                                             size="small"
                                             status="normal"
                                           />
-                                         { console.log(item.content)}
+                                          {console.log(item.content)}
                                           <Modal
-                                        title="Task Description"
-                                        visible={isModalVisible}
-                                        onOk={handleOk}
-                                        onCancel={handleCancel}
-                                      >
-                                        <p>{item.content}</p>
-                                      </Modal>
+                                            title="Task Description"
+                                            visible={isModalVisible}
+                                            onOk={handleOk}
+                                            onCancel={handleCancel}
+                                          >
+                                            <p>{item.content}</p>
+                                          </Modal>
                                         </div>
                                       </Card>
                                     </div>
+                                    /* TO Here*/ 
                                   );
                                 }}
                               </Draggable>

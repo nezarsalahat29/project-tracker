@@ -11,23 +11,19 @@
 import React from "react";
 import "./index.css";
 
-import TasksLists from "../Tasks";
 
 import { Alert } from "antd";
-import { FileTextOutlined } from "@ant-design/icons";
+
 
 import { Divider } from "antd";
 
-import { Row, Col } from "antd";
 
-import Collaps from "../../components/Project/Collaps";
-
-import { TeamOutlined } from "@ant-design/icons";
-import { Progress } from "antd";
 import AssignProject from "../../components/Project/AssignProject";
 import AddNewTask from "../../components/Project/AddNewTask";
 import Bar from "../../components/Project/Bar";
 import ProjectInfo from "../../components/Project/ProjectInfo";
+import TasksLists from "../../components/Project/TaskList";
+
 /****************************************************************/
 
 export const Projects = {
