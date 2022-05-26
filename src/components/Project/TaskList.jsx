@@ -113,13 +113,14 @@ export default function TaskList({
 
   return (
     <>
-      <Space
+      {/* <Space
         align='baseline'
         style={{
           display: 'flex',
-          justifyContent: 'space-around',
+          justifyContent: 'space-between',
+          margin: '0 5rem',
           alignItems: 'center',
-          width: '100%',
+          // width: '100%',
         }}
       >
         <Title level={2} style={{ marginBottom: '0' }}>
@@ -131,15 +132,20 @@ export default function TaskList({
           otherTasks={tasks}
           getNewData={getNewData}
         />
-      </Space>
+      </Space> */}
       <div
         style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          minHeight: 500,
         }}
       >
+        <AddTask
+          projectId={projectId}
+          projectDueDate={projectDueDate}
+          otherTasks={tasks}
+          getNewData={getNewData}
+        />
         <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
           {loading ? (
             <Loader />
@@ -158,11 +164,12 @@ export default function TaskList({
                       style={{
                         background: snapshot.isDraggingOver
                           ? 'lightblue'
-                          : 'lightgrey',
+                          : '#f0f2f5',
+                        borderRadius: '10px',
                         padding: 4,
                         margin: 4,
                         minWidth: 200,
-                        minHeight: 500,
+                        minHeight: 200,
                       }}
                     >
                       {column.tasks.map((task, index) => (

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form, DatePicker, Input } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { updateProject } from '../../firestore/projects';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
@@ -16,7 +17,7 @@ const TaskAddForm = ({
     <Modal
       width={700}
       visible={visible}
-      title='Create a new Project'
+      title='Create a task'
       okText='Create'
       cancelText='Cancel'
       confirmLoading={confirmLoading}
@@ -116,8 +117,25 @@ export default function AddTask({
 
   return (
     <>
-      <Button type='primary' onClick={() => setVisible(true)}>
-        Add Task
+      <Button
+        type='primary'
+        onClick={() => setVisible(true)}
+        style={{
+          position: 'fixed',
+          right: '32px',
+          bottom: '30px',
+          zIndex: '2147483640',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          cursor: 'pointer',
+          borderRadius: '50%',
+          width: 45,
+          height: 45,
+        }}
+      >
+        <PlusOutlined style={{ fontSize: 32, paddingTop: '3px' }} />
       </Button>
       <TaskAddForm
         visible={visible}

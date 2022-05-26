@@ -153,10 +153,13 @@ const TaskModal = ({
               title: task.title,
               description: task.description,
               dueDate: moment(task.dueDate.toDate()),
-              students: group.students.reduce((result, student) => {
-                if (task.students.includes(student.id)) result.push(student.id);
-                return result;
-              }, []),
+              students:
+                group &&
+                group.students.reduce((result, student) => {
+                  if (task.students.includes(student.id))
+                    result.push(student.id);
+                  return result;
+                }, []),
               rating: task.rating,
             }}
             labelCol={{
