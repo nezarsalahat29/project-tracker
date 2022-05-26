@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import { Row, Col, Space, Typography, Divider, Button, Collapse } from "antd";
-import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
+import { DeleteOutlined, TeamOutlined } from "@ant-design/icons";
 import Loader from "../../components/Loader";
 import { getStudentsFromDb, updateUser } from "../../firestore/users";
 import {
@@ -10,7 +11,7 @@ import {
   updateGroup,
 } from "../../firestore/groups";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Modal } from "antd";
+import { Modal, Tooltip } from "antd";
 import AssignStudent from "../../components/AssignStudent";
 const { Title } = Typography;
 const { Panel } = Collapse;
@@ -22,7 +23,7 @@ export default function Class() {
   const [groupLoading, setGroupLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState([]);
-  const [Roles, setRoles] = useState([
+  const [Roles] = useState([
     {
       name: "Leader",
     },
@@ -39,9 +40,7 @@ export default function Class() {
       name: "Author",
     },
   ]);
-  const setRolesForAll = (data) => {
-    setRoles(data);
-  };
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -342,19 +341,22 @@ export default function Class() {
                   header={`Group ${group.id}`}
                   extra={
                     // eslint-disable-next-line
-                    <Space>
-                      <a onClick={() => deleteThisGroup(group)}>
-                        <DeleteOutlined />
-                      </a>
-                      <Button
-                        type='primary'
-                        onClick={() => {
-                          setSelectedGroup(group);
-                          showModal();
-                        }}
-                      >
-                        Assign Roles
-                      </Button>
+                    <Space size={20}>
+                      <Tooltip title='Delete Group'>
+                        <a onClick={() => deleteThisGroup(group)}>
+                          <DeleteOutlined />
+                        </a>
+                      </Tooltip>
+                      <Tooltip title='Assign Roles' placement='left'>
+                        <a
+                          onClick={() => {
+                            setSelectedGroup(group);
+                            showModal();
+                          }}
+                        >
+                          <TeamOutlined />
+                        </a>
+                      </Tooltip>
                     </Space>
                   }
                   style={{

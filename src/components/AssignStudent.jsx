@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Dropdown, Menu, Button, Row } from "antd";
 import { updateRole } from "../firestore/users";
