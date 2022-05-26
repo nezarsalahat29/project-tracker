@@ -131,7 +131,6 @@ const TaskModal = ({
               .validateFields()
               .then((values) => {
                 onUpdate(values);
-                // form.resetFields();
               })
               .catch((info) => {
                 console.log('Validate Failed:', info);
