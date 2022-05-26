@@ -215,7 +215,9 @@ export default function Class() {
       }
     }
   };
-
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
   return (
     <Row
       gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}

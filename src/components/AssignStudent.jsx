@@ -42,7 +42,7 @@ export default function AssignStudent(props) {
   );
   return (
     <div>
-      <Row justify='space-between'>
+      <Row justify='space-between' align='middle'>
         <p>{props.student.name}</p>
 
         <Dropdown overlay={menu}>
