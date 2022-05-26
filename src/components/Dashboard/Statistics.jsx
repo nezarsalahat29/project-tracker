@@ -1,76 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Bar } from "@ant-design/plots";
 import { Card } from "antd";
 import { Divider } from "antd";
 import { Typography } from "antd";
+import { getAllProjects } from "../../firestore/projects";
 
 const { Title } = Typography;
 
-const projectslist = [
-  {
-    GroupId: "Group 1",
-    tasklist: [
-      { name: "task 1", status: "To-Do" },
-      { name: "task 2", status: "in-progress" },
-      { name: "task 3", status: "Done" },
-    ],
-  },
-  {
-    GroupId: "Group 2",
-    tasklist: [
-      { name: "task 1", status: "To-Do" },
-      { name: "task 2", status: "in-progress" },
-      { name: "task 3", status: "Done" },
-      { name: "task 4", status: "Done" },
-    ],
-  },
-  {
-    GroupId: "Group 3",
-    tasklist: [
-      { name: "task 1", status: "To-Do" },
-      { name: "task 2", status: "in-progress" },
-      { name: "task 3", status: "Done" },
-      { name: "task 4", status: "To Do" },
-    ],
-  },
-];
-
-function GetCount(tasklist) {
+function GetCount(taskList) {
   let todoCount = 0;
   let doneCount = 0;
   let inProgressCount = 0;
-  tasklist.forEach((element) => {
-    console.log(element);
-    if (element.status === "Done") doneCount = doneCount + 1;
-    else if (element.status === "in-progress")
-      inProgressCount = inProgressCount + 1;
-    else todoCount = todoCount + 1;
+  taskList.forEach((element) => {
+    if (element.status === "todo") todoCount = todoCount + 1;
+    else if (element.status === "doing") inProgressCount = inProgressCount + 1;
+    else doneCount = doneCount + 1;
   });
   console.log(todoCount, doneCount, inProgressCount);
   return { todoCount, doneCount, inProgressCount };
 }
 
 export default function StatisticsBar() {
-  let data = [];
-  projectslist.forEach((element) => {
-    const { todoCount, doneCount, inProgressCount } = GetCount(
-      element.tasklist
-    );
+  const [project, setProject] = useState([]);
+  const [data] = useState([]);
+  const getProjectData = async () => {
+    const projectData = await getAllProjects();
+    setProject(projectData);
+  };
 
+  useEffect(() => {
+    const getData = async () => {
+      await Promise.all([getProjectData()]);
+    };
+
+    getData();
+  }, []);
+
+  project.forEach((element) => {
+    const { todoCount, doneCount, inProgressCount } = GetCount(element.tasks);
+    const group = element.groupId;
     data.push(
       {
         State: "In Progress",
-        Group: element.GroupId,
+        Group: group,
         value: inProgressCount,
       },
       {
         State: "To Do",
-        Group: element.GroupId,
+        Group: group,
         value: todoCount,
       },
       {
         State: "Done",
-        Group: element.GroupId,
+        Group: group,
         value: doneCount,
       }
     );
