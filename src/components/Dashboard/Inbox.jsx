@@ -23,8 +23,6 @@ export default function Inbox() {
       const chatroomsFromDb = await getChatRoomsFromDbNotOptimized(
         currentUser.chatRooms
       );
-      console.log("frontend chatRooms", chatroomsFromDb);
-      console.log("first convo: ", chatroomsFromDb[0]);
 
       setChatRooms(chatroomsFromDb);
     };

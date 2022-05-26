@@ -27,7 +27,6 @@ export default function LiquidPlot() {
     const groups = await getGroupFromDb(currentUser.groupId);
     const projectData = await getProject(groups.projectID);
     setProject(projectData);
-    console.log(projectData);
   };
 
   useEffect(() => {
