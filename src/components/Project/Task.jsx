@@ -9,17 +9,22 @@ import {
   Comment,
   Row,
   Col,
+  Avatar,
 } from 'antd';
 // import Loader from '../Loader';
 import { SendOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { useAuth } from '../../contexts/AuthContext';
+import { updateProject } from '../../firestore/projects';
 const TaskModal = ({
   visible,
-  onCreate,
+  onUpdate,
   onCancel,
   confirmLoading,
   taskProp,
+  projectId,
+  otherTasks,
+  projectDueDate,
 }) => {
   const [task, setTask] = useState();
   const [loading, setLoading] = useState(true);
@@ -38,9 +43,17 @@ const TaskModal = ({
       name: currentUser.name,
       time: new Date(),
     };
+    form.resetFields();
 
     setTask((task) => ({ ...task, comments: [...task.comments, comment] }));
-    console.log(task);
+    updateProject(projectId, {
+      otherTasks: otherTasks.map((t) => {
+        if (t.id === task.id)
+          return { ...task, comments: [...task.comments, comment] };
+        return t;
+      }),
+    });
+    console.log({ ...task, comments: [...task.comments, comment] });
   };
 
   const addResource = () => {
@@ -50,8 +63,16 @@ const TaskModal = ({
       name: currentUser.name,
       time: new Date(),
     };
+    form.resetFields();
 
     setTask((task) => ({ ...task, resources: [...task.resources, resource] }));
+    updateProject(projectId, {
+      otherTasks: otherTasks.map((t) => {
+        if (t.id === task.id)
+          return { ...task, resources: [...task.resources, resource] };
+        return t;
+      }),
+    });
     console.log(task);
   };
 
@@ -61,7 +82,7 @@ const TaskModal = ({
         <Modal
           width={1000}
           visible={visible}
-          title='Create a new Project'
+          title={task.title}
           okText='Edit'
           cancelText='Cancel'
           confirmLoading={confirmLoading}
@@ -73,7 +94,7 @@ const TaskModal = ({
             form
               .validateFields()
               .then((values) => {
-                onCreate(values);
+                onUpdate(values);
                 form.resetFields();
               })
               .catch((info) => {
@@ -114,7 +135,22 @@ const TaskModal = ({
               />
             </Form.Item>
 
-            <Form.Item name='dueDate' label='Due Date'>
+            <Form.Item
+              name='dueDate'
+              label='Due Date'
+              rules={[
+                {
+                  validator: async (_, value) => {
+                    if (
+                      value > moment(projectDueDate.toDate()) ||
+                      value < new Date()
+                    ) {
+                      return Promise.reject(new Error('Due date not valid!'));
+                    }
+                  },
+                },
+              ]}
+            >
               <DatePicker disabled={!currentUser.instructor} />
             </Form.Item>
 
@@ -132,14 +168,28 @@ const TaskModal = ({
                   header={`comments`}
                   itemLayout='horizontal'
                   dataSource={task.comments}
+                  style={{
+                    overflowY: 'auto',
+                    height: 250,
+                  }}
                   renderItem={(item) => (
                     <li>
                       <Comment
-                        // actions={item.actions}
                         author={item.name}
-                        // avatar={item.avatar}
+                        avatar={
+                          <Avatar
+                            src={
+                              'https://ui-avatars.com/api/?background=random&name=' +
+                              item.name
+                            }
+                          />
+                        }
                         content={item.text}
-                        datetime={moment(item.time.toLocaleString())}
+                        datetime={
+                          item.time.toDate
+                            ? item.time.toDate().toLocaleString()
+                            : item.time.toLocaleString()
+                        }
                       />
                     </li>
                   )}
@@ -175,14 +225,25 @@ const TaskModal = ({
                   header={`resources`}
                   itemLayout='horizontal'
                   dataSource={task.resources}
+                  style={{ overflowY: 'auto', height: 250 }}
                   renderItem={(item) => (
                     <li>
                       <Comment
-                        actions={item.actions}
                         author={item.name}
-                        avatar={item.avatar}
-                        content={item.url}
-                        datetime={item.time}
+                        avatar={
+                          <Avatar
+                            src={
+                              'https://ui-avatars.com/api/?background=random&name=' +
+                              item.name
+                            }
+                          />
+                        }
+                        content={<a href={`${item.url}`}>{item.url}</a>}
+                        datetime={
+                          item.time.toDate
+                            ? item.time.toDate().toLocaleString()
+                            : item.time.toLocaleString()
+                        }
                       />
                     </li>
                   )}
@@ -213,13 +274,34 @@ const TaskModal = ({
   );
 };
 
-export default function Task({ provided, snapshot, task }) {
+export default function Task({
+  provided,
+  snapshot,
+  task,
+  projectId,
+  otherTasks,
+  projectDueDate,
+  getNewData,
+}) {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const onCreate = () => {
+  const onUpdate = (values) => {
+    console.log(values);
     setConfirmLoading(true);
-    console.log('create');
+    updateProject(projectId, {
+      tasks: otherTasks.map((t) => {
+        if (t.id === task.id)
+          return {
+            ...task,
+            title: values.title,
+            description: values.description,
+            dueDate: values.dueDate.toDate(),
+          };
+        return t;
+      }),
+    });
+    getNewData();
     setConfirmLoading(false);
     setVisible(false);
   };
@@ -250,8 +332,11 @@ export default function Task({ provided, snapshot, task }) {
       </div>
       <TaskModal
         taskProp={task}
+        projectId={projectId}
+        projectDueDate={projectDueDate}
+        otherTasks={otherTasks}
         visible={visible}
-        onCreate={onCreate}
+        onUpdate={onUpdate}
         confirmLoading={confirmLoading}
         onCancel={() => {
           setVisible(false);

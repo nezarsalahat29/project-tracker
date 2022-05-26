@@ -175,6 +175,10 @@ export default function TaskList({
                               provided={provided}
                               snapshot={snapshot}
                               task={task}
+                              otherTasks={tasks}
+                              getNewData={getNewData}
+                              projectDueDate={projectDueDate}
+                              projectId={projectId}
                             />
                           )}
                         </Draggable>
