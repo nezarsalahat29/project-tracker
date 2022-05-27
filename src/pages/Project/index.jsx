@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  Space,
-  Typography,
-  Divider,
-  Select,
-  Card,
-  Progress,
-  Collapse,
-} from 'antd';
+import { Space, Typography, Divider, Card, Progress, Collapse } from 'antd';
 import Loader from '../../components/Loader';
 import { getProject, updateProject } from '../../firestore/projects';
 import { getGroupsFromDb } from '../../firestore/groups';
 import TaskList from '../../components/Project/TaskList';
 import Group from '../../components/Project/Group';
+import SelectGroup from '../../components/Project/SelectGroup';
 
 const { Title, Text } = Typography;
-const { Option } = Select;
 const { Panel } = Collapse;
 export default function Project() {
   const { id } = useParams();
@@ -52,7 +44,7 @@ export default function Project() {
     getData();
   }, [id]);
 
-  const onChange = (groupId) => {
+  const onGroupSelect = (groupId) => {
     console.log(`selected ${groupId}`);
     updateProject(id, { groupId });
     setProject((project) => ({ ...project, groupId }));
@@ -94,19 +86,13 @@ export default function Project() {
               <Panel
                 header={`Group`}
                 extra={
-                  <Select
-                    style={{ width: 200 }}
-                    defaultValue={project.groupId && `Group ${project.groupId}`}
-                    placeholder='Select a group'
-                    onChange={onChange}
-                  >
-                    {groups.map((group) => (
-                      <Option key={group.id} value={group.id}>
-                        {group.id}
-                      </Option>
-                    ))}
-                    <Option value={null}>None</Option>
-                  </Select>
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <SelectGroup
+                      onGroupSelect={onGroupSelect}
+                      project={project}
+                      groups={groups}
+                    />
+                  </div>
                 }
               >
                 <Group
