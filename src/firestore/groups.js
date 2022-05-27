@@ -41,6 +41,7 @@ export const getGroupsFromDb = async () => {
 };
 
 export const getGroupFromDb = async (groupId) => {
+  if (!groupId) return null;
   try {
     const doc = await firestore.collection('groups').doc(groupId).get();
     return { id: groupId, ...doc.data() };

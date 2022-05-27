@@ -66,7 +66,11 @@ export default function Project() {
         const group = await getGroupFromDb(currentUser.groupId);
         // eslint-disable-next-line
         if (group && group.projectId) id = group.projectId;
-        else setUserInProject(false);
+        else {
+          setUserInProject(false);
+          setLoading(false);
+          return;
+        }
       }
       const project = await getProject(id);
       const groups = await getGroupsFromDb();
