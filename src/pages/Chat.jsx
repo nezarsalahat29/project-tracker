@@ -81,7 +81,7 @@ export default function Chat() {
           {loading ? (
             <Loader />
           ) : (
-            <ConversationList>
+            <ConversationList scrollable>
               {chatRooms.map((chatRoom) => {
                 return (
                   <Conversation
@@ -158,9 +158,10 @@ export default function Chat() {
               messages.map((message) => {
                 return (
                   <Message
+                    key={Math.random().toString(16).slice(2)}
                     model={{
                       message: message.text,
-                      sentTime: message.createdAt,
+                      sentTime: String(message.createdAt),
                       sender: message.name,
                       direction:
                         message.name === currentUser.name
@@ -204,3 +205,4 @@ export default function Chat() {
     </div>
   );
 }
+//TODO nothing sorry
