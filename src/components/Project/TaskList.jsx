@@ -14,6 +14,7 @@ export default function TaskList({
   getNewData,
   projectDueDate,
   group,
+  getProgress,
 }) {
   const [columns, setColumns] = useState([
     {
@@ -57,7 +58,6 @@ export default function TaskList({
   }, [tasks]);
 
   const onDragEnd = (result) => {
-    console.log(result);
     if (!result.destination) return;
     const { source, destination } = result;
 
@@ -108,6 +108,7 @@ export default function TaskList({
           return column;
         })
       );
+      getProgress(columns.map((column) => column.tasks).flat());
     }
   };
 

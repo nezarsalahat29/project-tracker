@@ -59,7 +59,6 @@ const TaskModal = ({
         return t;
       }),
     });
-    console.log({ ...task, comments: [...task.comments, comment] });
   };
 
   const addResource = () => {
@@ -79,7 +78,6 @@ const TaskModal = ({
         return t;
       }),
     });
-    console.log(task);
   };
 
   const handleChange = (studentIds) => {
@@ -93,7 +91,6 @@ const TaskModal = ({
   };
 
   const onUpdate = (values) => {
-    console.log(values);
     setConfirmLoading(true);
     updateProject(projectId, {
       tasks: otherTasks.map((t) => {
@@ -207,13 +204,15 @@ const TaskModal = ({
               <DatePicker disabled={!currentUser.instructor} />
             </Form.Item>
 
-            <Form.Item name='rating' label='Rating'>
-              <Rate
-                allowHalf
-                onChange={addRating}
-                disabled={!currentUser.instructor}
-              />
-            </Form.Item>
+            {(task.status === 'done' || task.status === 'delayed') && (
+              <Form.Item name='rating' label='Rating'>
+                <Rate
+                  allowHalf
+                  onChange={addRating}
+                  disabled={!currentUser.instructor}
+                />
+              </Form.Item>
+            )}
 
             {group && (
               <Form.Item name='students' label='Students'>

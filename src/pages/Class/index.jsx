@@ -62,7 +62,6 @@ export default function Class() {
   };
 
   const onDragEnd = (result) => {
-    console.log(result);
     if (!result.destination) return;
     const { source, destination } = result;
 
@@ -102,8 +101,6 @@ export default function Class() {
       const destinationItems = [...destinationColumn];
       const [removed] = sourceItems.splice(source.index, 1);
       destinationItems.splice(destination.index, 0, removed);
-
-      console.log(destinationItems);
 
       if (source.droppableId === 'studentsDroppable') {
         setStudents(sourceItems);

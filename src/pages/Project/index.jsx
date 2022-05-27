@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import './index.css';
 import { useParams } from 'react-router-dom';
 import { Space, Typography, Divider, Card, Progress, Collapse } from 'antd';
 import Loader from '../../components/Loader';
@@ -15,6 +16,7 @@ export default function Project() {
   const [project, setProject] = useState({});
   const [loading, setLoading] = useState(true);
   const [groups, setGroups] = useState([]);
+  const [progress, setProgress] = useState();
 
   const getNewData = async () => {
     const newProject = await getProject(id);
@@ -30,6 +32,16 @@ export default function Project() {
     });
   };
 
+  const getProgress = useCallback((tasks) => {
+    const tasksLength = tasks.length;
+    let doneTasks = 0;
+    tasks.forEach((task) => {
+      if (task.status === 'done' || task.status === 'delayed') doneTasks++;
+    });
+
+    setProgress((doneTasks / tasksLength).toFixed(2) * 100);
+  }, []);
+
   useEffect(() => {
     window.scroll(0, 0);
 
@@ -39,13 +51,13 @@ export default function Project() {
       setProject(project);
       setGroups(groups);
       setLoading(false);
+      getProgress(project.tasks);
     };
 
     getData();
-  }, [id]);
+  }, [id, getProgress]);
 
   const onGroupSelect = (groupId) => {
-    console.log(`selected ${groupId}`);
     updateProject(id, { groupId });
     setProject((project) => ({ ...project, groupId }));
   };
@@ -68,7 +80,7 @@ export default function Project() {
               </Space>
               <Progress
                 strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
-                percent={59.5}
+                percent={progress}
               />
             </Card>
 
@@ -84,7 +96,7 @@ export default function Project() {
               </Panel>
 
               <Panel
-                header={`Group`}
+                header='Group'
                 extra={
                   <div onClick={(e) => e.stopPropagation()}>
                     <SelectGroup
@@ -113,6 +125,7 @@ export default function Project() {
             projectId={id}
             projectDueDate={project.dueDate}
             getNewData={getNewData}
+            getProgress={getProgress}
           />
         </>
       )}
