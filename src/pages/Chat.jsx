@@ -76,15 +76,13 @@ export default function Chat() {
   };
   return (
     <div style={{ height: screenSize.dynamicHeight * 0.8 }}>
-      {activateChat && console.log("active Chat:", activateChat)}
       <MainContainer>
         <Sidebar position='left' scrollable={true}>
           {loading ? (
             <Loader />
           ) : (
-            <ConversationList>
+            <ConversationList scrollable>
               {chatRooms.map((chatRoom) => {
-                console.log(chatRoom);
                 return (
                   <Conversation
                     info={chatRoom.lastMessage}
@@ -160,9 +158,10 @@ export default function Chat() {
               messages.map((message) => {
                 return (
                   <Message
+                    key={Math.random().toString(16).slice(2)}
                     model={{
                       message: message.text,
-                      sentTime: message.createdAt,
+                      sentTime: String(message.createdAt),
                       sender: message.name,
                       direction:
                         message.name === currentUser.name
@@ -206,3 +205,4 @@ export default function Chat() {
     </div>
   );
 }
+//TODO nothing sorry
