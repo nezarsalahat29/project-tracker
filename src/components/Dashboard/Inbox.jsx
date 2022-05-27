@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import React, { useState, useEffect } from 'react';
+import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
   ConversationList,
   Conversation,
   Avatar,
-} from "@chatscope/chat-ui-kit-react";
-import { Card } from "antd";
-import { Divider } from "antd";
-import { Typography } from "antd";
-import { getChatRoomsFromDbNotOptimized } from "../../firestore/chatRooms";
-import { useAuth } from "../../contexts/AuthContext";
-import { Link } from "react-router-dom";
+} from '@chatscope/chat-ui-kit-react';
+import { Card } from 'antd';
+import { Divider } from 'antd';
+import { Typography } from 'antd';
+import { getChatRoomsFromDbNotOptimized } from '../../firestore/chatRooms';
+import { useAuth } from '../../contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 const { Title } = Typography;
 
@@ -28,13 +28,13 @@ export default function Inbox() {
     };
 
     getData();
-  }, [currentUser.chatRooms]);
+  }, [currentUser]);
 
   return (
     <Link to='/Chat'>
-      <Card style={{ backgroundColor: "#F7F7F7", height: "100%" }}>
+      <Card style={{ backgroundColor: '#F7F7F7', height: '100%' }}>
         <Title level={2}>Inbox</Title> <Divider />
-        <div style={{ overflowY: "auto", height: "340px", padding: "5px" }}>
+        <div style={{ overflowY: 'auto', height: '340px', padding: '5px' }}>
           <ConversationList>
             {chatRooms.map((chatroom) => {
               return (
@@ -43,23 +43,23 @@ export default function Inbox() {
                   id={chatroom.id}
                   info={chatroom.lastMessage}
                   lastSenderName={
-                    chatroom.lastSender === ""
+                    chatroom.lastSender === ''
                       ? null
                       : chatroom.lastSender === currentUser.name
-                      ? "Me"
+                      ? 'Me'
                       : chatroom.lastSender
                   }
                   name={
                     currentUser.name === chatroom.name
-                      ? "Instructor"
+                      ? 'Instructor'
                       : chatroom.name
                   }
                 >
                   <Avatar
                     src={
-                      "https://ui-avatars.com/api/?background=random&name=" +
+                      'https://ui-avatars.com/api/?background=random&name=' +
                       (currentUser.name === chatroom.name
-                        ? "Instructor"
+                        ? 'Instructor'
                         : chatroom.name)
                     }
                     name={chatroom.name}
