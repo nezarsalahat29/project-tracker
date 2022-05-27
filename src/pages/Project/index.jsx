@@ -64,11 +64,9 @@ export default function Project() {
     const getData = async () => {
       if (id === 'myProject') {
         const group = await getGroupFromDb(currentUser.groupId);
-        console.log(group);
         // eslint-disable-next-line
-        if (group.projectId) id = group.projectId;
+        if (group && group.projectId) id = group.projectId;
         else setUserInProject(false);
-        console.log(group.projectId);
       }
       const project = await getProject(id);
       const groups = await getGroupsFromDb();
