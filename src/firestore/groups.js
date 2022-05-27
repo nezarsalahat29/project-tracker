@@ -5,17 +5,20 @@ import {
   deleteChatRoom,
   removeChatRoomFromAdmin,
 } from './chatRooms';
+import { updateProject } from './projects';
 
-export const createGroup = () => {
+export const createGroup = (groupNumber) => {
   firestore
     .collection('groups')
     .add({
       createdAt: new Date(),
       lastModified: new Date(),
       students: [],
+      number: groupNumber,
+      projectId: null,
     })
     .then((groupRef) => {
-      createChatRoom(groupRef.id, `group ${groupRef.id}`);
+      createChatRoom(groupRef.id, `group ${groupNumber}`);
       addChatRoomToAdmin(groupRef.id);
       console.log('Group document successfully written!');
     })
@@ -52,11 +55,12 @@ export const updateGroup = async (groupId, group) => {
   console.log('Group updated successfully');
 };
 
-export const deleteGroup = async (groupId) => {
+export const deleteGroup = async (groupId, projectId) => {
   try {
     await firestore.collection('groups').doc(groupId).delete();
     deleteChatRoom(groupId);
     removeChatRoomFromAdmin(groupId);
+    if (projectId) updateProject(projectId, { groupId: null });
     console.log('Group document successfully deleted!');
   } catch (error) {
     console.error('Error removing group document: ', error);

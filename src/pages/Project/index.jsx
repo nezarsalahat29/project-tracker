@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Space, Typography, Divider, Card, Progress, Collapse } from 'antd';
 import Loader from '../../components/Loader';
 import { getProject, updateProject } from '../../firestore/projects';
-import { getGroupsFromDb } from '../../firestore/groups';
+import { getGroupsFromDb, updateGroup } from '../../firestore/groups';
 import TaskList from '../../components/Project/TaskList';
 import Group from '../../components/Project/Group';
 import SelectGroup from '../../components/Project/SelectGroup';
@@ -57,8 +57,18 @@ export default function Project() {
     getData();
   }, [id, getProgress]);
 
-  const onGroupSelect = (groupId) => {
-    updateProject(id, { groupId });
+  const onGroupSelect = async (groupId) => {
+    if (project.groupId !== groupId) {
+      await updateProject(id, {
+        ...project,
+        tasks: project.tasks.map((task) => ({ ...task, students: [] })),
+      });
+    }
+
+    if (project.groupId)
+      await updateGroup(project.groupId, { projectId: null });
+    await updateProject(id, { groupId });
+    if (groupId) await updateGroup(groupId, { projectId: id });
     setProject((project) => ({ ...project, groupId }));
   };
 

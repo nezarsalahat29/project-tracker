@@ -1,3 +1,4 @@
+import { updateGroup } from './groups';
 import firebase, { firestore } from './index';
 
 export const createProject = ({
@@ -48,9 +49,10 @@ export const getProject = async (projectId) => {
   }
 };
 
-export const deleteProject = async (projectId) => {
+export const deleteProject = async (projectId, groupId) => {
   try {
     await firestore.collection('projects').doc(projectId).delete();
+    if (groupId) updateGroup(groupId, { projectId: null });
     console.log('Project document successfully deleted!');
   } catch (error) {
     console.error('Error removing project document: ', error);

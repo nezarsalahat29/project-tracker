@@ -52,12 +52,12 @@ export default function ProjectsTable() {
       {/* eslint-disable-next-line */}
       <a>Edit</a>
       {/* eslint-disable-next-line */}
-      <a onClick={() => deleteThisProject(record.id)}>Delete</a>
+      <a onClick={() => deleteThisProject(record)}>Delete</a>
     </Space>
   );
 
-  const deleteThisProject = async (projectId) => {
-    await deleteProject(projectId);
+  const deleteThisProject = async (project) => {
+    await deleteProject(project.id, project.groupId);
     getData();
   };
 

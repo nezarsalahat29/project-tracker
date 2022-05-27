@@ -26,7 +26,11 @@ const GroupSelectModal = ({
         <Form
           form={form}
           initialValues={{
-            group: project.groupId && `Group ${project.groupId}`,
+            group: project.groupId
+              ? `Group ${
+                  groups.find((group) => group.id === project.groupId).number
+                }`
+              : null,
           }}
           labelCol={{
             span: 8,
@@ -44,7 +48,7 @@ const GroupSelectModal = ({
             >
               {groups.map((group) => (
                 <Option key={group.id} value={group.id}>
-                  {group.id}
+                  {`Group ${group.number}`}
                 </Option>
               ))}
               <Option value={null}>None</Option>
