@@ -6,8 +6,6 @@ import GroupCollapse from "../../components/Project/GroupCollapse";
 import DeliCollapse from "../../components/Project/DeliverabelsCollapse";
 import { TeamOutlined } from "@ant-design/icons";
 import {getGroupFromDb} from "../../firestore/groups";
-import Projects from "../../pages/Project";
-import { data } from "../../pages/Project";
 import React,{ useEffect, useState }  from "react";
  function timeConverter(UNIX_timestamp){
   var a = new Date(UNIX_timestamp * 1000);

@@ -22,7 +22,7 @@ export default function DeliCollapse({ items, icon, head }) {
   return (
     <Collapse defaultActiveKey={["0"]} style={{ width: 500 }} >
       <Panel header={head} key="1">
-        <p>
+        
           <List
             itemLayout="horizontal"
             dataSource={items}
@@ -30,7 +30,7 @@ export default function DeliCollapse({ items, icon, head }) {
               <List.Item>
                 <List.Item.Meta
                   avatar={icon}
-                  title={<a href="https://ant.design">{item.title || item }</a>}
+                  title={item.title  }
                   description={`ID: ${item.id}` }
                    
               
@@ -43,7 +43,7 @@ export default function DeliCollapse({ items, icon, head }) {
               </List.Item>
             )}
           />
-        </p>
+        
       </Panel>
     </Collapse>
   );

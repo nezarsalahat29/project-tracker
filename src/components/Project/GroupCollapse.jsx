@@ -11,7 +11,7 @@ export default function GroupCollapse({ items, icon }) {
   return (
     <Collapse defaultActiveKey={["0"]} style={{ width: 500 }} >
       <Panel header={HEAD} key="1">
-        <p>
+        
           <List
             itemLayout="horizontal"
             dataSource={items.students}
@@ -19,7 +19,7 @@ export default function GroupCollapse({ items, icon }) {
               <List.Item>
                 <List.Item.Meta
                   avatar={icon}
-                  title={<a href="https://ant.design">{item.name}</a>}
+                  title={item.name}
                   description={`ID: ${item.id}` }
                    
               
@@ -27,7 +27,7 @@ export default function GroupCollapse({ items, icon }) {
               </List.Item>
             )}
           />
-        </p>
+        
       </Panel>
     </Collapse>
   );
