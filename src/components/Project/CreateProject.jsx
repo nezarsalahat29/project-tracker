@@ -2,23 +2,7 @@ import React, { useState } from 'react';
 import { Button, Modal, Form, DatePicker, Input, Space } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { createProject } from '../../firestore/projects';
-
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 4 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 20 },
-  },
-};
-// const formItemLayoutWithOutLabel = {
-//   wrapperCol: {
-//     xs: { span: 24, offset: 0 },
-//     sm: { span: 20, offset: 4 },
-//   },
-// };
+import { v4 as uuidv4 } from 'uuid';
 
 const ProjectCreateForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
   const [form] = Form.useForm();
@@ -30,13 +14,16 @@ const ProjectCreateForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
       okText='Create'
       cancelText='Cancel'
       confirmLoading={confirmLoading}
-      onCancel={onCancel}
+      onCancel={() => {
+        form.resetFields();
+        onCancel();
+      }}
       onOk={() => {
         form
           .validateFields()
           .then((values) => {
-            form.resetFields();
             onCreate(values);
+            form.resetFields();
           })
           .catch((info) => {
             console.log('Validate Failed:', info);
@@ -72,6 +59,10 @@ const ProjectCreateForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
           <Input.TextArea showCount maxLength={200} />
         </Form.Item>
 
+        <Form.Item name='dueDate' label='Due Date'>
+          <DatePicker />
+        </Form.Item>
+
         <Form.Item label='Deliverables'>
           <Form.List
             name='deliverables'
@@ -87,16 +78,15 @@ const ProjectCreateForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
           >
             {(fields, { add, remove }, { errors }) => (
               <>
-                {fields.map((field, index) => (
-                  <Form.Item
-                    {...formItemLayout}
-                    // label={index === 0 ? 'Deliverables' : ''}
-                    required={false}
-                    key={field.key}
+                {fields.map(({ key, name, ...restField }) => (
+                  <Space
+                    key={key}
+                    style={{ display: 'flex', marginBottom: 2 }}
+                    align='baseline'
                   >
                     <Form.Item
-                      {...field}
-                      validateTrigger={['onChange', 'onBlur']}
+                      {...restField}
+                      name={[name, 'title']}
                       rules={[
                         {
                           required: true,
@@ -105,20 +95,41 @@ const ProjectCreateForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
                             'Please input deliverable or delete this field.',
                         },
                       ]}
-                      noStyle
                     >
-                      <Input
-                        placeholder='deliverable'
-                        style={{ width: '60%' }}
+                      <Input placeholder='deliverable' style={{ width: 350 }} />
+                    </Form.Item>
+
+                    <Form.Item
+                      name={[name, 'dueDate']}
+                      rules={[
+                        ({ getFieldValue }) => ({
+                          validator(_, value) {
+                            if (
+                              value > getFieldValue('dueDate') ||
+                              value < new Date()
+                            ) {
+                              return Promise.reject(
+                                new Error('Due date no valid!')
+                              );
+                            }
+                            return Promise.resolve();
+                          },
+                        }),
+                      ]}
+                    >
+                      <DatePicker
+                        placeholder='Deliverable due date'
+                        style={{ width: '100%' }}
                       />
                     </Form.Item>
+
                     {fields.length > 1 ? (
                       <MinusCircleOutlined
                         className='dynamic-delete-button'
-                        onClick={() => remove(field.name)}
+                        onClick={() => remove(name)}
                       />
                     ) : null}
-                  </Form.Item>
+                  </Space>
                 ))}
                 <Form.Item style={{ marginBottom: 2 }}>
                   <Button
@@ -129,25 +140,11 @@ const ProjectCreateForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
                   >
                     Add Deliverable
                   </Button>
-                  {/* <Button
-                  type='dashed'
-                  onClick={() => {
-                    add('The head item', 0);
-                  }}
-                  style={{ width: '50%' }}
-                  icon={<PlusOutlined />}
-                >
-                  Add field at head
-                </Button> */}
                   <Form.ErrorList errors={errors} />
                 </Form.Item>
               </>
             )}
           </Form.List>
-        </Form.Item>
-
-        <Form.Item name='endDate' label='End Date'>
-          <DatePicker />
         </Form.Item>
 
         <Form.Item label='Tasks'>
@@ -178,6 +175,30 @@ const ProjectCreateForm = ({ visible, onCreate, onCancel, confirmLoading }) => {
                     >
                       <Input placeholder='Task description' />
                     </Form.Item>
+
+                    <Form.Item
+                      name={[name, 'dueDate']}
+                      rules={[
+                        ({ getFieldValue }) => ({
+                          validator(_, value) {
+                            if (
+                              value > getFieldValue('dueDate') ||
+                              value < new Date()
+                            ) {
+                              return Promise.reject(
+                                new Error('Due date not valid!')
+                              );
+                            }
+                            return Promise.resolve();
+                          },
+                        }),
+                      ]}
+                    >
+                      <DatePicker
+                        placeholder='Task due date'
+                        style={{ width: '100%' }}
+                      />
+                    </Form.Item>
                     <MinusCircleOutlined onClick={() => remove(name)} />
                   </Space>
                 ))}
@@ -205,9 +226,27 @@ export default function CreateProject({ getData }) {
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const onCreate = async (values) => {
-    console.log({ ...values, endDate: values.endDate.toDate() });
     setConfirmLoading(true);
-    await createProject({ ...values, dueDate: values.endDate.toDate() });
+    await createProject({
+      ...values,
+      dueDate: values.dueDate.toDate(),
+      tasks:
+        values.tasks.map((task) => ({
+          ...task,
+          id: uuidv4(),
+          dueDate: task.dueDate.toDate(),
+          status: 'todo',
+          comments: [],
+          resources: [],
+          students: [],
+          rating: 0,
+        })) || [],
+      deliverables: values.deliverables.map((deliverable) => ({
+        ...deliverable,
+        id: uuidv4(),
+        dueDate: deliverable.dueDate.toDate(),
+      })),
+    });
     getData();
     setConfirmLoading(false);
     setVisible(false);

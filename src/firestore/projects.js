@@ -1,3 +1,4 @@
+import { updateGroup } from './groups';
 import firebase, { firestore } from './index';
 
 export const createProject = ({
@@ -16,9 +17,9 @@ export const createProject = ({
       deliverables,
       description,
       dueDate,
-      tasks: tasks || [],
+      tasks,
     })
-    .then((projectRef) => {
+    .then(() => {
       console.log('Project document successfully written!');
     })
     .catch((error) => {
@@ -48,11 +49,18 @@ export const getProject = async (projectId) => {
   }
 };
 
-export const deleteProject = async (projectId) => {
+export const deleteProject = async (projectId, groupId) => {
   try {
     await firestore.collection('projects').doc(projectId).delete();
+    if (groupId) updateGroup(groupId, { projectId: null });
     console.log('Project document successfully deleted!');
   } catch (error) {
     console.error('Error removing project document: ', error);
   }
+};
+
+export const updateProject = async (projectId, newProject) => {
+  const projectRef = firestore.collection('projects').doc(projectId);
+  await projectRef.update(newProject);
+  console.log('Project updated successfully');
 };

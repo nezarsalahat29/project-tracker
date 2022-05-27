@@ -73,8 +73,23 @@ export default function Class() {
     getData();
   }, [Roles]);
 
+  const createGroupNumber = () => {
+    let groupNumber = 1;
+    while (true) {
+      for (let i = 0; i < groups.length; i++) {
+        if (groups[i].number === groupNumber) {
+          groupNumber++;
+          continue;
+        }
+      }
+      break;
+    }
+    return groupNumber;
+  };
+
   const createNewGroup = () => {
-    createGroup({});
+    const groupNumber = createGroupNumber();
+    createGroup(groupNumber);
     getGroupData();
   };
 
@@ -82,7 +97,7 @@ export default function Class() {
     setStudents((students) => [...students, ...group.students]);
     setGroups((groups) => [...groups.filter((g) => g.id !== group.id)]);
 
-    deleteGroup(group.id);
+    deleteGroup(group.id, group.projectId);
     group.students.forEach((student) => {
       updateUser(student.id, {
         ...student,
@@ -95,7 +110,6 @@ export default function Class() {
   };
 
   const onDragEnd = (result) => {
-    console.log(result);
     if (!result.destination) return;
     const { source, destination } = result;
 
@@ -136,9 +150,7 @@ export default function Class() {
       const [removed] = sourceItems.splice(source.index, 1);
       destinationItems.splice(destination.index, 0, removed);
 
-      console.log(destinationItems);
-
-      if (source.droppableId === "studentsDroppable") {
+      if (source.droppableId === 'studentsDroppable') {
         setStudents(sourceItems);
         setGroups(
           groups.map((group) => {
@@ -340,7 +352,7 @@ export default function Class() {
               {groups.map((group) => (
                 <Panel
                   key={group.id}
-                  header={`Group ${group.id}`}
+                  header={`Group ${group.number}`}
                   extra={
                     // eslint-disable-next-line
                     <Space size={20}>
