@@ -217,6 +217,7 @@ const TaskModal = ({
             {group && (
               <Form.Item name='students' label='Students'>
                 <Select
+                  disabled={!currentUser.instructor}
                   mode='multiple'
                   allowClear
                   placeholder='Select students'

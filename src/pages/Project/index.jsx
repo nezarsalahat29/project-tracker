@@ -1,22 +1,38 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import './index.css';
 import { useParams } from 'react-router-dom';
-import { Space, Typography, Divider, Card, Progress, Collapse } from 'antd';
+import {
+  Space,
+  Typography,
+  Divider,
+  Card,
+  Progress,
+  Collapse,
+  Alert,
+} from 'antd';
 import Loader from '../../components/Loader';
 import { getProject, updateProject } from '../../firestore/projects';
-import { getGroupsFromDb, updateGroup } from '../../firestore/groups';
+import {
+  getGroupFromDb,
+  getGroupsFromDb,
+  updateGroup,
+} from '../../firestore/groups';
 import TaskList from '../../components/Project/TaskList';
 import Group from '../../components/Project/Group';
 import SelectGroup from '../../components/Project/SelectGroup';
+import { useAuth } from '../../contexts/AuthContext';
+import FaultPage from '../faultPage';
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
 export default function Project() {
-  const { id } = useParams();
+  var { id } = useParams();
   const [project, setProject] = useState({});
   const [loading, setLoading] = useState(true);
   const [groups, setGroups] = useState([]);
   const [progress, setProgress] = useState();
+  const [userInProject, setUserInProject] = useState(true);
+  const { currentUser } = useAuth();
 
   const getNewData = async () => {
     const newProject = await getProject(id);
@@ -46,6 +62,14 @@ export default function Project() {
     window.scroll(0, 0);
 
     const getData = async () => {
+      if (id === 'myProject') {
+        const group = await getGroupFromDb(currentUser.groupId);
+        console.log(group);
+        // eslint-disable-next-line
+        if (group.projectId) id = group.projectId;
+        else setUserInProject(false);
+        console.log(group.projectId);
+      }
       const project = await getProject(id);
       const groups = await getGroupsFromDb();
       setProject(project);
@@ -76,6 +100,16 @@ export default function Project() {
     <>
       {loading ? (
         <Loader />
+      ) : !userInProject ? (
+        <>
+          <Alert
+            message='Informational Notes'
+            description='You have not been assigned to a project yet!'
+            type='info'
+            showIcon
+          />
+          <FaultPage />
+        </>
       ) : (
         <>
           <div>
@@ -96,7 +130,7 @@ export default function Project() {
 
             <Collapse>
               <Panel header='Deliverables'>
-                {project.deliverables.map((deliverable, index) => (
+                {project.deliverables.map((deliverable) => (
                   <li key={deliverable.id}>
                     {deliverable.title} - <Text strong>Due Date:</Text>{' '}
                     {deliverable.dueDate.toDate().toLocaleDateString()}
@@ -108,13 +142,15 @@ export default function Project() {
               <Panel
                 header='Group'
                 extra={
-                  <div onClick={(e) => e.stopPropagation()}>
-                    <SelectGroup
-                      onGroupSelect={onGroupSelect}
-                      project={project}
-                      groups={groups}
-                    />
-                  </div>
+                  currentUser.instructor && (
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <SelectGroup
+                        onGroupSelect={onGroupSelect}
+                        project={project}
+                        groups={groups}
+                      />
+                    </div>
+                  )
                 }
               >
                 <Group
@@ -132,7 +168,7 @@ export default function Project() {
           <TaskList
             group={groups.find((group) => group.id === project.groupId)}
             tasks={project.tasks}
-            projectId={id}
+            projectId={project.id}
             projectDueDate={project.dueDate}
             getNewData={getNewData}
             getProgress={getProgress}

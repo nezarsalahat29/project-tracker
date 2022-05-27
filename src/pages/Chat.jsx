@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   MainContainer,
   Sidebar,
@@ -10,29 +10,29 @@ import {
   ConversationList,
   Conversation,
   Avatar,
-} from "@chatscope/chat-ui-kit-react";
-import { useAuth } from "../contexts/AuthContext";
+} from '@chatscope/chat-ui-kit-react';
+import { useAuth } from '../contexts/AuthContext';
 import {
   sendMessage,
   useMessagesData,
   getChatRoomsFromDbNotOptimized,
-} from "../firestore/chatRooms";
-import { GENERAL_CHATROOM } from "../firestore/index";
-import Loader from "../components/Loader";
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en.json";
+} from '../firestore/chatRooms';
+import { GENERAL_CHATROOM } from '../firestore/index';
+import Loader from '../components/Loader';
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en.json';
 
 TimeAgo.addDefaultLocale(en);
-const timeAgo = new TimeAgo("en-US");
+const timeAgo = new TimeAgo('en-US');
 
 export default function Chat() {
   const [chatRooms, setChatRooms] = useState([]);
   const [activateChat, setActivateChat] = useState({
     id: GENERAL_CHATROOM,
-    name: "Announcements",
+    name: 'Announcements',
   });
   const { currentUser } = useAuth();
-  const [messageInputValue, setMessageInputValue] = useState("");
+  const [messageInputValue, setMessageInputValue] = useState('');
   const [loading, setLoading] = useState(true);
   const [disabledInput, setDisabledInput] = useState(!currentUser.instructor);
   const [messages] = useMessagesData(activateChat.id);
@@ -59,9 +59,9 @@ export default function Chat() {
     };
 
     getData();
-    window.addEventListener("resize", setDimension);
+    window.addEventListener('resize', setDimension);
     return () => {
-      window.removeEventListener("resize", setDimension);
+      window.removeEventListener('resize', setDimension);
     };
   }, [currentUser.chatRooms, messages, screenSize]);
 
@@ -72,11 +72,10 @@ export default function Chat() {
       currentUser.id,
       currentUser.name
     );
-    setMessageInputValue("");
+    setMessageInputValue('');
   };
   return (
     <div style={{ height: screenSize.dynamicHeight * 0.8 }}>
-      {activateChat && console.log("active Chat:", activateChat)}
       <MainContainer>
         <Sidebar position='left' scrollable={true}>
           {loading ? (
@@ -84,15 +83,14 @@ export default function Chat() {
           ) : (
             <ConversationList>
               {chatRooms.map((chatRoom) => {
-                console.log(chatRoom);
                 return (
                   <Conversation
                     info={chatRoom.lastMessage}
                     lastSenderName={
-                      chatRoom.lastSender === ""
+                      chatRoom.lastSender === ''
                         ? null
                         : chatRoom.lastSender === currentUser.name
-                        ? "Me"
+                        ? 'Me'
                         : chatRoom.lastSender
                     }
                     active={chatRoom.name === activateChat.name}
@@ -100,7 +98,7 @@ export default function Chat() {
                     id={chatRoom.id}
                     name={
                       currentUser.name === chatRoom.name
-                        ? "Instructor"
+                        ? 'Instructor'
                         : chatRoom.name
                     }
                     onClick={() => {
@@ -108,7 +106,7 @@ export default function Chat() {
                       setDisabledInput(
                         currentUser.instructor
                           ? false
-                          : chatRoom.name === "Announcements"
+                          : chatRoom.name === 'Announcements'
                           ? true
                           : false
                       );
@@ -116,9 +114,9 @@ export default function Chat() {
                   >
                     <Avatar
                       src={
-                        "https://ui-avatars.com/api/?background=random&name=" +
+                        'https://ui-avatars.com/api/?background=random&name=' +
                         (currentUser.name === chatRoom.name
-                          ? "Instructor"
+                          ? 'Instructor'
                           : chatRoom.name)
                       }
                       name={chatRoom.name}
@@ -134,14 +132,14 @@ export default function Chat() {
           <ConversationHeader>
             <Avatar
               src={
-                "https://ui-avatars.com/api/?background=random&name=" +
+                'https://ui-avatars.com/api/?background=random&name=' +
                 (currentUser.name === activateChat.name
-                  ? "Instructor"
+                  ? 'Instructor'
                   : activateChat.name)
               }
               name={
                 currentUser.name === activateChat.name
-                  ? "Instructor"
+                  ? 'Instructor'
                   : activateChat.name
               }
             />
@@ -149,7 +147,7 @@ export default function Chat() {
             <ConversationHeader.Content
               userName={
                 currentUser.name === activateChat.name
-                  ? "Instructor"
+                  ? 'Instructor'
                   : activateChat.name
               }
             />
@@ -166,15 +164,15 @@ export default function Chat() {
                       sender: message.name,
                       direction:
                         message.name === currentUser.name
-                          ? "outgoing"
-                          : "incoming",
-                      position: "single",
+                          ? 'outgoing'
+                          : 'incoming',
+                      position: 'single',
                     }}
                   >
                     <Avatar
-                      style={{ justifyContent: "flex-start" }}
+                      style={{ justifyContent: 'flex-start' }}
                       src={
-                        "https://ui-avatars.com/api/?background=random&name=" +
+                        'https://ui-avatars.com/api/?background=random&name=' +
                         message.name
                       }
                       name={message.name}

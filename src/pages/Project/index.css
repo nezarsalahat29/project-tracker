@@ -1,4 +1,4 @@
 .ant-collapse-header {
   display: flex;
-  align-items: center;
+  align-items: center !important;
 }

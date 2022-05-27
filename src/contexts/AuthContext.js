@@ -91,10 +91,8 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('currentUser'));
     if (user) {
-      console.log('signed in');
       setCurrentUser(user);
     } else {
-      console.log('signed out');
       setCurrentUser(null);
     }
     setLoading(false);

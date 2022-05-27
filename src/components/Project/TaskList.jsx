@@ -6,6 +6,7 @@ import AddTask from './AddTask';
 import Task from './Task';
 import { v4 as uuidv4 } from 'uuid';
 import { updateProject } from '../../firestore/projects';
+import { useAuth } from '../../contexts/AuthContext';
 
 const { Title } = Typography;
 export default function TaskList({
@@ -39,6 +40,7 @@ export default function TaskList({
     },
   ]);
   const [loading, setLoading] = useState(true);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     const getData = () => {
@@ -121,12 +123,14 @@ export default function TaskList({
           alignItems: 'center',
         }}
       >
-        <AddTask
-          projectId={projectId}
-          projectDueDate={projectDueDate}
-          otherTasks={tasks}
-          getNewData={getNewData}
-        />
+        {currentUser.instructor && (
+          <AddTask
+            projectId={projectId}
+            projectDueDate={projectDueDate}
+            otherTasks={tasks}
+            getNewData={getNewData}
+          />
+        )}
         <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
           {loading ? (
             <Loader />
