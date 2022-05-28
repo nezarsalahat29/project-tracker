@@ -18,7 +18,7 @@ export const createGroup = (groupNumber) => {
       projectId: null,
     })
     .then((groupRef) => {
-      createChatRoom(groupRef.id, `group ${groupNumber}`);
+      createChatRoom(groupRef.id, `Group ${groupNumber}`);
       addChatRoomToAdmin(groupRef.id);
       console.log('Group document successfully written!');
     })

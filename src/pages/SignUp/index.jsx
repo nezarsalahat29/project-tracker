@@ -22,11 +22,12 @@ export default function SignUp() {
         role: null,
         instructor: false,
       });
+      setLoading(false);
       navigate('/');
     } catch (error) {
       setError(error.message);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
