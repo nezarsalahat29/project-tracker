@@ -34,9 +34,9 @@ const instructorItems = [
 ];
 
 const studentItems = [
-  getItem(<Link to="/">Dashboard</Link>, "1", <PieChartOutlined />),
-  getItem(<Link to="/Project">Project</Link>, "4", <TeamOutlined />),
-  getItem(<Link to="/Chat">Chat</Link>, "6", <FileOutlined />),
+  getItem(<Link to='/'>Dashboard</Link>, '1', <PieChartOutlined />),
+  getItem(<Link to='/Project/myProject'>Project</Link>, '4', <TeamOutlined />),
+  getItem(<Link to='/Chat'>Chat</Link>, '6', <FileOutlined />),
 ];
 
 export default function Navbar() {
@@ -55,7 +55,7 @@ export default function Navbar() {
           style={{ height: "100vh" }}
           collapsible
           collapsed={collapsed}
-          onCollapse={() => setCollapsed(!collapsed)}
+          onCollapse={() => setCollapsed((collapsed) => !collapsed)}
         >
           <Image
             className="logo"

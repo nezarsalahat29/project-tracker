@@ -23,6 +23,7 @@ const projectid="Hp1pG6QCkzYn8h043QPE";
 //let projectato= await Promise.getProject(projectid);
 
 
+
 export default function Project() {
   
   const [project, setProject] = useState({});

@@ -6,7 +6,7 @@ name: Deploy to Firebase Hosting on merge
   push:
     branches:
       - main
-      
+
 env:
   REACT_APP_FIREBASE_API_KEY: ${{secrets.REACT_APP_FIREBASE_API_KEY}}
   REACT_APP_FIREBASE_AUTH_DOMAIN: ${{secrets.REACT_APP_FIREBASE_AUTH_DOMAIN}}
@@ -24,6 +24,6 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROJECT_TRACKER_DEMO_BC14B }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROJECT_TRACKER_2_CEDDE }}'
           channelId: live
-          projectId: project-tracker-demo-bc14b
+          projectId: project-tracker-2-cedde
