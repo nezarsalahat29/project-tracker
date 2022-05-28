@@ -54,7 +54,7 @@ export default function Navbar() {
           style={{ height: '100vh' }}
           collapsible
           collapsed={collapsed}
-          onCollapse={() => setCollapsed(!collapsed)}
+          onCollapse={() => setCollapsed((collapsed) => !collapsed)}
         >
           <Image
             className='logo'

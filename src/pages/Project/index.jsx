@@ -170,7 +170,7 @@ export default function Project() {
           <TaskList
             group={groups.find((group) => group.id === project.groupId)}
             tasks={project.tasks}
-            projectId={project.id}
+            projectId={id}
             projectDueDate={project.dueDate}
             getNewData={getNewData}
             getProgress={getProgress}

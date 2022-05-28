@@ -17,11 +17,12 @@ export default function SignIn() {
     try {
       setError(null);
       await signin(values.email, values.password);
+      setLoading(false);
       navigate('/');
     } catch (error) {
       setError(error.message);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
