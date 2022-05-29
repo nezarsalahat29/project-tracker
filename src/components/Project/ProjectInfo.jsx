@@ -19,9 +19,9 @@ import ProjectArr  from "../../pages/Project/index";
 //   return time;
 // }
 
-const ProjectInfo = ({_Project},{groups}) => {
-const [group,setGroup]=useState({})
-groups.forEach(g => {if(g.id === ProjectArr.groupId){setGroup(g)}});
+const ProjectInfo = ({_Project,groups}) => {
+  let group=null;
+groups.forEach(g => {if(g.id === ProjectArr.groupId){group=g}});
   return (
     <div>
       <div>

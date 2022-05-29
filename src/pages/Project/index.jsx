@@ -78,7 +78,7 @@ let ProjectArr  = {
     title:"Task#3 Title"
   }],
   title:"Project Tracker"
-}
+};
 
 let GroupsArr=[{
   createdAt:"1/May/2022",
@@ -222,16 +222,15 @@ else{
 
  return (DONE/Total);
 }
-
- 
+let TP=ProjectProgress()*100;
   return (
     <>
     
-     <ProjectInfo  _Project={ProjectArr} groups={GroupsArr} />
+     {/* <ProjectInfo  _Project={ProjectArr} groups={GroupsArr} />*/}
     
-      <AssignProject Project={ProjectArr} /> 
+      <AssignProject Project={ProjectArr} />  
 
-      <Bar p={ProjectProgress} />
+      <Bar p={TP} />
 
       <Divider orientation="center"></Divider>
 
@@ -240,10 +239,8 @@ else{
       </h1>
       <br />
 
-      {/* <TasksLists />
-      {ProjectProgress}; */}
-
-      <AddNewTask /> 
+      <TasksLists />
+       <AddNewTask />  
     </>
   );
 }
