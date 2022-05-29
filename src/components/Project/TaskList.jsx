@@ -1,5 +1,3 @@
-
-
 import {
   ClockCircleOutlined,
   SyncOutlined,
@@ -95,10 +93,9 @@ uuidv4(); //
 //   }
 // };
 
-
-
 //!Tasklist
-function TaskList(tasks, projectId, getNewData) {
+// function TaskList(tasks, projectId, getNewData)
+export default function TaskList({ tasks }) {
   const [columns, setColumns] = useState([
     {
       id: uuidv4(),
@@ -122,13 +119,13 @@ function TaskList(tasks, projectId, getNewData) {
     },
   ]);
 
-const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const getData = () => {
       setColumns((columns) => [
         ...columns.map((column) => {
-          Object.keys(tasks).forEach((task) => {
+          tasks.forEach((task) => {
             if (task.status === column.name) column.tasks.push(task);
           });
           return column;
@@ -137,7 +134,7 @@ const [loading, setLoading] = useState(true);
     };
 
     getData();
-    setLoading(false);
+   
   }, [tasks]);
   const onDragEnd = (result) => {
     console.log(result);
@@ -200,10 +197,8 @@ const [loading, setLoading] = useState(true);
       <div
         style={{ display: "flex", justifyContent: "center", height: "100%" }}
       >
-        <DragDropContext
-          onDragEnd={(result) => onDragEnd(result)}
-        >
-          {columns.map((column)  => {
+        <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+          {columns.map((column) => {
             return (
               <div
                 style={{
@@ -271,4 +266,3 @@ const [loading, setLoading] = useState(true);
   );
 }
 
-export default TaskList;  

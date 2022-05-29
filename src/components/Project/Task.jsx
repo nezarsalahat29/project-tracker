@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, Modal, Progress } from "antd";
 
 
-const TaskModal = ({ isModalVisible, handleOk, handleCancel,task}) => {
+const TaskModal = ({ isModalVisible, handleOk, handleCancel,tasku}) => {
   return (
     <Modal
       title="Task Description"
@@ -11,7 +11,7 @@ const TaskModal = ({ isModalVisible, handleOk, handleCancel,task}) => {
       onCancel={handleCancel}
       // confirmLoading={confirmLoading}
     >
-      <p>{task.Content}</p>
+      <p>{tasku.description}</p>
     </Modal>
   );
 };
@@ -19,11 +19,11 @@ const TaskModal = ({ isModalVisible, handleOk, handleCancel,task}) => {
 export default function Task({ provided, snapshot, task }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   // const [confirmLoading, setConfirmLoading] = useState(false);
-  // const [_Content_, set_Content_] = useState("");
+  // const [_description_, set_description_] = useState("");
   // const [_Title_, set_Title_] = useState("");
 
   // set_Title_(_Title);
-  // set_Content_(_Content);
+  // set_description_(_description);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -43,8 +43,9 @@ export default function Task({ provided, snapshot, task }) {
   return (
     <div className="site-card-border-less-wrapper">
       <Card
+       title={task.title}
        onDoubleClick={showModal}
-        title={task.Title}
+       
         size="small"
         bordered={true}
         headStyle={{
@@ -66,35 +67,31 @@ export default function Task({ provided, snapshot, task }) {
           textAlign: "center",
           fontSize: "15px",
           borderColor: "0092ff",
+          textc:"#1890ff",
           backgroundColor: snapshot.isDragging,
           ...provided.draggableProps.style,
         }}
       >
-        <p
-          style={{
-            wordbreak: "keep-all",
-          }}
-        >
-          {task.Content}
-        </p>
+        <p style={{color:"#696b6e", marginTop:20}}>double click for task info</p>
 
         <div style={{ width: 170 }}>
-          {/* <Progress
+          { /*<Progress
             strokeColor="#1890ff"
             type="line"
             percent={30}
             size="small"
             status="normal"
-          /> */}
+        />*/}
 
-          {console.log(task.Content)}
+          {console.log(task.description)}
           <TaskModal
             title="Task Description"
             isModalVisible={isModalVisible}
             handleOk={handleOk}
             handleCancel={handleCancel}
+            tasku={task}
           >
-            <p>{task.Content}</p>
+            <p>{task.description}</p>
           </TaskModal>
         </div>
       </Card>

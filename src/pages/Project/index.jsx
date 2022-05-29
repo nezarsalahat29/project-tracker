@@ -239,7 +239,7 @@ let TP=ProjectProgress()*100;
       </h1>
       <br />
 
-      <TasksLists />
+      <TasksLists tasks= {ProjectArr.tasks}/>
        
 
 

@@ -192,7 +192,9 @@ function TasksLists() {
                                           fontWeight: "bold",
                                           color: "white",
                                           fontSize: "20px",
+                                          
                                         }}
+                                        
                                         onDoubleClick={showModal}
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
@@ -200,14 +202,17 @@ function TasksLists() {
                                         style={{
                                           userSelect: "none",
                                           padding: 10,
-                                          margin: "0 0 2px 0",
+                                          margin: "0 0 2px 0", 
                                           minHeight: "50px",
                                           fontWeight: "450",
                                           textAlign: "center",
                                           fontSize: "15px",
+                                          backgroundColor: "#1890ff " , 
                                           borderColor: "0092ff",
-                                          backgroundColor: snapshot.isDragging,
-                                          ...provided.draggableProps.style,
+                                          
+                                          /*backgroundColor: snapshot.isDragging,
+                                          ...provided.draggableProps.style,*/
+                                          
                                         }}
                                       >
                                         <p
