@@ -16,23 +16,10 @@ import GroupCollapse from ".//GroupCollapse";
 
 import { TeamOutlined } from "@ant-design/icons";
 
-export default function AssignProject(Project) {
+export default function AssignProject({Project},{groups}) {
   const [Groupvisible, setGroupVisible] = React.useState(false);
 
-  const [groups, setGroups] = useState([]);
   const [group1, setGroup1] = useState({});
- 
-
-  useEffect(() => {
-    window.scroll(0, 0);
-
-    const getData = async () => {
-      const groups = await getGroupsFromDb();
-      setGroups(groups);
-    };
-
-    getData();
-  }, []);
 
   const showGroupDrawer = () => {
     setGroupVisible(true);

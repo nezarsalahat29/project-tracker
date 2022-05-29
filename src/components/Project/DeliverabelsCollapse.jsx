@@ -6,16 +6,16 @@ import { List } from "antd";
 
 
 const { Panel } = Collapse;
-function timeConverter(UNIX_timestamp){
-  var a = new Date(UNIX_timestamp * 1000);
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var year = a.getYear()-69;
-  var month = months[a.getMonth()];
-  var date = a.getDate();
+// function timeConverter(UNIX_timestamp){
+//   var a = new Date(UNIX_timestamp * 1000);
+//   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+//   var year = a.getYear()-69;
+//   var month = months[a.getMonth()];
+//   var date = a.getDate();
 
-  var time = date + '/ ' + month + ' /' + year ;
-  return time;
-}
+//   var time = date + '/ ' + month + ' /' + year ;
+//   return time;
+// }
 
 
 export default function DeliCollapse({ items, icon, head }) {
@@ -37,7 +37,7 @@ export default function DeliCollapse({ items, icon, head }) {
                 />
                 <p>
                  {`
-                     Due date:  ${timeConverter(item.dueDate)}
+                     Due date:  ${item.dueDate}
                 `}
                 </p>
               </List.Item>
