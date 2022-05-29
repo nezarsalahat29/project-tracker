@@ -24,11 +24,7 @@ import ProjectInfo from "../../components/Project/ProjectInfo";
 
 
 
-export default function Project() {
-  
-  const [project, setProject] = useState({});
-
-setProject({
+let ProjectArr  = {
   id:"1",
   groupId:"1",
   createdAt:"22/May/2022",
@@ -82,10 +78,9 @@ setProject({
     title:"Task#3 Title"
   }],
   title:"Project Tracker"
-})
+}
 
-const [Groups, setGroups] = useState([]);
-setGroups([{
+let GroupsArr=[{
   createdAt:"1/May/2022",
   id:"1",
   lastModified:"29/May/2022",
@@ -187,7 +182,16 @@ setGroups([{
     role:"Alza3eem",
     username:"Shawkat"
   },]
-}])
+}]
+
+export default function Project() {
+  
+  // const [project, setProject] = useState({});
+
+// setProject()
+
+// const [Groups, setGroups] = useState([]);
+// setGroups()
 
   // useEffect(() => {
   //   window.scroll(0, 0);
@@ -202,11 +206,11 @@ setGroups([{
   //   getData();
   // },[]);
 
-const [Progress,setProgress]=useState();
+// const [Progress,setProgress]=useState();
 function ProjectProgress(){
  let DONE=0;
   let Total=0
-  Project.tasks.forEach(task=> {
+  ProjectArr.tasks.forEach(task=> {
 if(task.status === "done" || task.status === "delayed"){
   DONE+=1;
   Total+=1;
@@ -215,17 +219,19 @@ else{
   Total+=1
 }
  });
- setProgress(DONE/Total);
+
+ return (DONE/Total);
 }
 
  
   return (
     <>
-     <ProjectInfo  _Project={project} groups={Groups} />
     
-      <AssignProject Project={project} /> 
+     <ProjectInfo  _Project={ProjectArr} groups={GroupsArr} />
+    
+      <AssignProject Project={ProjectArr} /> 
 
-      <Bar p={Progress} />
+      <Bar p={ProjectProgress} />
 
       <Divider orientation="center"></Divider>
 
@@ -234,8 +240,9 @@ else{
       </h1>
       <br />
 
-      <TasksLists />
-      {ProjectProgress};
+      {/* <TasksLists />
+      {ProjectProgress}; */}
+
       <AddNewTask /> 
     </>
   );

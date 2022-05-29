@@ -7,6 +7,7 @@ import DeliCollapse from "../../components/Project/DeliverabelsCollapse";
 import { TeamOutlined } from "@ant-design/icons";
 //import {getGroupFromDb} from "../../firestore/groups";
 import React,{ useEffect, useState }  from "react";
+import ProjectArr  from "../../pages/Project/index";
 //  function timeConverter(UNIX_timestamp){
 //   var a = new Date(UNIX_timestamp * 1000);
 //   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -20,7 +21,7 @@ import React,{ useEffect, useState }  from "react";
 
 const ProjectInfo = ({_Project},{groups}) => {
 const [group,setGroup]=useState({})
-groups.forEach(g => {if(g.id === _Project.groupId){setGroup(g)}});
+groups.forEach(g => {if(g.id === ProjectArr.groupId){setGroup(g)}});
   return (
     <div>
       <div>
