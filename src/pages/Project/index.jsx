@@ -226,9 +226,9 @@ let TP=ProjectProgress()*100;
   return (
     <>
     
-     {/* <ProjectInfo  _Project={ProjectArr} groups={GroupsArr} />*/}
+     {/* <ProjectInfo  _Project={ProjectArr} groups={GroupsArr} />
     
-      <AssignProject Project={ProjectArr} />  
+      <AssignProject Project={ProjectArr} />  */}
 
       <Bar p={TP} />
 
@@ -240,7 +240,10 @@ let TP=ProjectProgress()*100;
       <br />
 
       <TasksLists />
-       <AddNewTask />  
+       
+
+
+<AddNewTask />  
     </>
   );
 }
