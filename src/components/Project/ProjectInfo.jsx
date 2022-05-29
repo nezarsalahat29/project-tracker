@@ -20,7 +20,7 @@ import React,{ useEffect, useState }  from "react";
 
 const ProjectInfo = ({_Project},{groups}) => {
 const [group,setGroup]=useState({})
-groups.forEach(g => {if(g.id==_Project.groupId){setGroup(g)}});
+groups.forEach(g => {if(g.id === _Project.groupId){setGroup(g)}});
   return (
     <div>
       <div>
