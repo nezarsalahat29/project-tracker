@@ -20,8 +20,9 @@ import ProjectArr  from "../../pages/Project/index";
 // }
 
 const ProjectInfo = ({_Project,groups}) => {
+  
   let group=null;
-groups.forEach(g => {if(g.id === ProjectArr.groupId){group=g}});
+groups.forEach(g => { if(g.id === _Project.groupId){group=g}});
   return (
     <div>
       <div>

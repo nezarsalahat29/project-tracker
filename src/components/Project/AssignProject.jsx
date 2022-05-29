@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { ProjectArr } from "../../pages/Project";
 import { Button } from "antd";
 
 import {
@@ -16,7 +16,7 @@ import GroupCollapse from ".//GroupCollapse";
 
 import { TeamOutlined } from "@ant-design/icons";
 
-export default function AssignProject({Project},{groups}) {
+export default function AssignProject({groups}) {
   const [Groupvisible, setGroupVisible] = React.useState(false);
 
   const [group1, setGroup1] = useState({});
@@ -63,7 +63,7 @@ export default function AssignProject({Project},{groups}) {
         extra={
           <Space>
             <Button onClick={GrouponClose}>Cancel</Button>
-            <Button onClick={GrouponClose} type="primary">
+            <Button onClick={()=>{GrouponClose();console.log(ProjectArr.groupId);ProjectArr.groupId=group1.id;console.log(ProjectArr.groupId);}} type="primary">
               Assign
             </Button>
           </Space>
@@ -83,7 +83,7 @@ export default function AssignProject({Project},{groups}) {
                 >
                   <Radio.Group style={{ marginBlock: 30 }}>
                     {groups.map((group) => (
-                      <Radio.Button value={"G"} key={group.id} onClick={()=>setGroup1(group)}>{"Group: " + group.id}</Radio.Button>
+                      <Radio.Button hoverable={true} key={group.id} onClick={()=>setGroup1(group)}>{"Group: " + group.id}</Radio.Button>
                     ))}
                   </Radio.Group>
                 </Form.Item>

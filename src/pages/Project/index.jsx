@@ -9,6 +9,21 @@
 // Add new Task button and drawer
 
 import React, { useEffect, useState } from "react";
+import { Button } from "antd";
+
+import {
+  AppstoreAddOutlined,
+  UsergroupAddOutlined,
+  FileTextOutlined,
+} from "@ant-design/icons";
+//import { getGroupsFromDb } from "../../firestore/groups";
+//import { updateProject,getProject } from "../../firestore/projects";
+import { Row, Col, Collapse, Radio } from "antd";
+
+import { Drawer, Form, Space } from "antd";
+import GroupCollapse from "../../components/Project/GroupCollapse";
+
+import { TeamOutlined } from "@ant-design/icons";
 import "./index.css";
 import TasksLists from "../../components/Project/TaskList";
 import { Divider } from "antd";
@@ -21,10 +36,7 @@ import ProjectInfo from "../../components/Project/ProjectInfo";
 //const projectid="Hp1pG6QCkzYn8h043QPE";
 
 //let projectato= await Promise.getProject(projectid);
-
-
-
-let ProjectArr  = {
+export let ProjectArr  = {
   id:"1",
   groupId:"1",
   createdAt:"22/May/2022",
@@ -44,7 +56,7 @@ let ProjectArr  = {
     title:"Deloverable#3"
   },
 ],
-  description:"This grant project description template breaks down the description into separate sections for the problem to be addressed, goals and objectives, target population, project activities, and key staff. It provides additional space for background information, measurable outcomes, and a timeline and budget, and it includes separate columns for income sources and expenses.",
+  description:"This grant project description template breaks down the description into separate sections for the problem to be addressed, goals and objectives, target population, project activities, and key staff. It provides additional space for background information, measurable outcomes, and ...",
   dueDate:"25/Nov/2022",
   lastModified:"29/May/2022",
   tasks:[{
@@ -80,7 +92,7 @@ let ProjectArr  = {
   title:"Project Tracker"
 };
 
-let GroupsArr=[{
+export let GroupsArr=[{
   createdAt:"1/May/2022",
   id:"1",
   lastModified:"29/May/2022",
@@ -91,7 +103,7 @@ let GroupsArr=[{
     createdAt:"26/May/2022",
     email:"Nizar@gmail.com",
     groupId:"1",
-    id:"1",
+    id:"134564",
     instructor:"",
     lastModified:"20/May/2022",
     name:"Nizar Salahat",
@@ -103,7 +115,7 @@ let GroupsArr=[{
     createdAt:"22/May/2022",
     email:"Jebril@gmail.com",
     groupId:"1",
-    id:"2",
+    id:"13155",
     instructor:"",
     lastModified:"24/May/2022",
     name:"Jebril Mejdalawi",
@@ -114,7 +126,7 @@ let GroupsArr=[{
     createdAt:"23/May/2022",
     email:"Hidayah@gmail.com",
     groupId:"1",
-    id:"3",
+    id:"134521",
     instructor:"",
     lastModified:"16/May/2022",
     name:"Hidayah Jadaan",
@@ -126,7 +138,7 @@ let GroupsArr=[{
     createdAt:"11/May/2022",
     email:"Mohanad@gmail.com",
     groupId:"1",
-    id:"4",
+    id:"141569",
     instructor:"",
     lastModified:"28/May/2022",
     name:"Mohanad Makhzoumi",
@@ -144,7 +156,7 @@ let GroupsArr=[{
     createdAt:"12/May/2022",
     email:"Jafar@gmail.com",
     groupId:"2",
-    id:"12",
+    id:"124521",
     instructor:"",
     lastModified:"25/May/2022",
     name:"Jafar Aljuneidi",
@@ -163,7 +175,7 @@ let GroupsArr=[{
     createdAt:"17/May/2022",
     email:"7amo@gmail.com",
     groupId:"3",
-    id:"13",
+    id:"138995",
     instructor:"",
     lastModified:"13/May/2022",
     name:"7amo Beka",
@@ -175,7 +187,7 @@ let GroupsArr=[{
     createdAt:"30/May/2022",
     email:"shawkat@gmail.com",
     groupId:"3",
-    id:"23",
+    id:"234512",
     instructor:"",
     lastModified:"31/May/2022",
     name:"Abu 3essam",
@@ -223,13 +235,88 @@ else{
  return (DONE/Total);
 }
 let TP=ProjectProgress()*100;
+const [Groupvisible, setGroupVisible] = React.useState(false);
+
+  const [group1, setGroup1] = useState({});
+
+  const showGroupDrawer = () => {
+    setGroupVisible(true);
+  };
+  
+  const GrouponClose = () => {
+    setGroupVisible(false);
+  };
   return (
     <>
     
-     {/* <ProjectInfo  _Project={ProjectArr} groups={GroupsArr} />
+     
     
-      <AssignProject Project={ProjectArr} />  */}
+       
+      <ProjectInfo  _Project={ProjectArr} groups={GroupsArr} />
+      <>
+   
+      <div style={{ textAlign: "right" }}>
+        <Button
+          type="primary"
+          onClick={showGroupDrawer}
+          size="large"
+          style={{
+            backgroundColor: "0092ff",
+            borderColor: "#0092ff",
+            borderRadius: "500",
+            marginTop: "20px",
+            size: "20px",
+          }}
+          icon={
+            <UsergroupAddOutlined
+              style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
+            />
+          }
+        >
+          Assign Project To Group
+        </Button>
+      </div>
 
+      <Drawer
+        title="Assign Project To Group "
+        width={720}
+        onClose={GrouponClose}
+        visible={Groupvisible}
+        bodyStyle={{ paddingBottom: 80 }}
+        extra={
+          <Space>
+            <Button onClick={GrouponClose}>Cancel</Button>
+            <Button onClick={()=>{GrouponClose();console.log(ProjectArr.groupId);ProjectArr.groupId=group1.id;console.log(ProjectArr.groupId);}} type="primary">
+              Assign
+            </Button>
+          </Space>
+        }
+      >
+        <Form layout="vertical" hideRequiredMark style={{ paddingLeft: 70 }}>
+          <div className="GroupLabel">
+            Which Group do you want to assign to this project?:
+          </div>
+          <div className="RadioGroup">
+            <Row gutter={12}>
+              <Col span={18}>
+                <Form.Item
+                  name="radio-button"
+                  label=" "
+                  rules={[{ required: true, message: "Please pick a Group!" }]}
+                >
+                  <Radio.Group style={{ marginBlock: 30 }}>
+                    {GroupsArr.map((group) => (
+                      <Radio.Button hoverable={true} key={group.id} onClick={()=>setGroup1(group)}>{"Group: " + group.id}</Radio.Button>
+                    ))}
+                  </Radio.Group>
+                </Form.Item>
+              </Col>
+            </Row>
+          </div>
+         <GroupCollapse items={group1} icon= {<TeamOutlined/>} /> 
+        </Form>
+      </Drawer>
+    </>
       <Bar p={TP} />
 
       <Divider orientation="center"></Divider>
