@@ -83,6 +83,7 @@ setProject({
   }],
   title:"Project Tracker"
 })
+
 const [Groups, setGroups] = useState([]);
 setGroups([{
   createdAt:"1/May/2022",
@@ -203,10 +204,10 @@ setGroups([{
 
 const [Progress,setProgress]=useState();
 function ProjectProgress(){
-  DONE=0;
-  Total=0
+ let DONE=0;
+  let Total=0
   Project.tasks.forEach(task=> {
-if(task.status=="done" || task.status=="delayed"){
+if(task.status === "done" || task.status === "delayed"){
   DONE+=1;
   Total+=1;
 }
@@ -234,6 +235,7 @@ else{
       <br />
 
       <TasksLists />
+      {ProjectProgress};
       <AddNewTask /> 
     </>
   );
