@@ -38,56 +38,88 @@ import ProjectInfo from "../../components/Project/ProjectInfo";
 //let projectato= await Promise.getProject(projectid);
 export let ProjectArr  = {
   id:"1",
-  groupId:"1",
-  createdAt:"22/May/2022",
+  groupId:null,
+  createdAt:" March 15, 2022, 3:09 pm",
+  dueDate:" March 31, 2022, 11:59 pm",
   deliverables:[{
-    dueDate:"15/Aug/2022",
+    dueDate:"March 31, 2022, 11:59 pm.",
     id:"1",
-    title:"Deloverable#1"
+    title:"An initial requirements document"
   },
   {
-    dueDate:"25/Jul/2022",
+    dueDate:"March 31, 2022, 11:59 pm.",
     id:"2",
-    title:"Deloverable#2"
+    title:"An initial problem description"
   },
   {
-    dueDate:"18/Jun/2022",
+    dueDate:"March 31, 2022, 11:59 pm.",
     id:"3",
-    title:"Deloverable#3"
+    title:"A tentative project plan"
+  },{
+    dueDate:"March 31, 2022, 11:59 pm.",
+    id:"4",
+    title:"Each member role in each phase."
   },
 ],
-  description:"This grant project description template breaks down the description into separate sections for the problem to be addressed, goals and objectives, target population, project activities, and key staff. It provides additional space for background information, measurable outcomes, and ...",
+  description:`Project Tracker is a system that allows the instructor to track the work of a
+  group of students on a specific project. At the same time students can use the system
+  to manage their work and with the instructor. Suppose we have a class with enough
+  number of students to be divided into two groups or more, Therefore, the instructor
+  has the ability to assign each student to a specific team and give each member a
+  specific role. Moreover, the instructor can create a project with required
+  specifications and properties such as tasks, time, deliverables, etc. Students in the
+  same team can communicate together by broadcasting a message that appears on all
+  team members' side. They can also communicate with the instructor.
+  At any time, students can set the status of a task as to start later on, working
+  on, finished on time, finished with delay, etc. and the instructor can review the task
+  and give feedback for students on the task.
+  The task has a title, description, progress estimation, start date, end due date, actual
+  end date, or any other suggested properties. The task can be assigned to one or
+  more of the students. Group members or the instructor can put a comment on the
+  task and others can reply to it.",
   dueDate:"25/Nov/2022",
-  lastModified:"29/May/2022",
+  lastModified:"29/May/2022`,
   tasks:[{
-    comments:[],
-    description:"this is the task#1 description you will find here the full description of this Task",
+    comments:["niceTask","GoodJob"],
+    description:`you should discuss and share ideas,
+    brain storm together,
+    take notes
+    and write an initial draft
+    `,
     dueDate:"26/Jun/2022",
     id:"1",
     rating:"",
-    resources:[],
+    resources:["https://youtu.be/uO7c2tvrPj0 ","https://youtu.be/uY4YoEO9IRw"],
     status:"done",
-    title:"Task#1 Title"
+    title:"Meeting for problem description"
   },
   {
-    comments:[],
-    description:"this is the task#2 description you will find here the full description of this Task",
+    comments:["niceTask","GoodJob"],
+    description:`you should discuss and share ideas,
+    brain storm together,
+    take notes
+    and write an initial draft
+    `,
     dueDate:"26/Jul/2022",
     id:"2",
     rating:"",
-    resources:[],
+    resources:["https://web.cse.ohio-state.edu/~bair.41/616/Project/Example_Document/Req_Doc_Example.html","https://drive.google.com/drive/folders/1U7TTQ6DauoeWEOgejgJAZWBtqIeYJ5M4?usp=sharing"],
     status:"todo",
-    title:"Task#2 Title"
+    title:"Meeting for Requirements "
   },
   {
-    comments:[],
-    description:"this is the task#3 description you will find here the full description of this Task",
+    comments:["niceTask","GoodJob"],
+    description:`you should discuss and share ideas,
+    brain storm together,
+    take notes
+    and write an initial draft
+    `,
     dueDate:"10/Jun/2022",
     id:"3",
     rating:"",
-    resources:[],
+    resources:["https://youtu.be/PxirUj9FQOg","https://www.coursehero.com/file/19135592/Tentative-Project-Plan-and-Timeline/"],
     status:"doing",
-    title:"Task#3 Title"
+    title:"Meeting for Tentative project plan"
   }],
   title:"Project Tracker"
 };
