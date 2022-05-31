@@ -76,9 +76,7 @@ export let ProjectArr  = {
   The task has a title, description, progress estimation, start date, end due date, actual
   end date, or any other suggested properties. The task can be assigned to one or
   more of the students. Group members or the instructor can put a comment on the
-  task and others can reply to it.",
-  dueDate:"25/Nov/2022",
-  lastModified:"29/May/2022`,
+  task and others can reply to it.`,
   tasks:[{
     comments:["niceTask","GoodJob"],
     description:`you should discuss and share ideas,

@@ -1,57 +1,75 @@
 import React, { useState } from "react";
 import { Card, Modal, Progress } from "antd";
 import { Row, Col, Divider } from "antd";
-import {list} from 'antd';
+import { list } from "antd";
 
-const TaskModal = ({ isModalVisible, handleOk, handleCancel, tasku,title,Content }) => {
+const TaskModal = ({
+  isModalVisible,
+  handleOk,
+  handleCancel,
+  tasku,
+  title,
+  Content,
+}) => {
   return (
-    <Modal 
-    width={700}
-      title={<h2>{title}</h2>}
+    <Modal
+      width={700}
+      title={<h5>{title}</h5>}
       visible={isModalVisible}
       onOk={handleOk}
       onCancel={handleCancel}
       // confirmLoading={confirmLoading}
-    > 
-     { <di ><p><Divider orientation="left">Task ID</Divider>
+    >
+      {
+        <di>
+          <p>
+            <Divider orientation="left">Task ID</Divider>
             <Row className="TaskModalLeft">
-             
               <Col flex="auto">{tasku.id}</Col>
-            </Row></p>
-     
-    
-     <p><Divider orientation="left">Description</Divider>
-            <Row className="TaskModalLeft">
-             
-              <Col flex="auto">{tasku.description}</Col>
-            </Row></p>
-            <p><Divider orientation="left">Status</Divider>
-            <Row className="TaskModalLeft">
-             
-              <Col flex="auto">{tasku.status}</Col>
-            </Row></p>
-            <p><Divider orientation="left">DueDate</Divider>
-            <Row className="TaskModalLeft">
-             
-              <Col flex="auto">{tasku.dueDate}</Col>
-            </Row></p>
-            
-            
-            <p><Divider orientation="left">Resources</Divider>
-            <Row className="TaskModalLeft">
-             
-              <Col style={{color:"#666a6e "}} flex="auto">{tasku.resources.map((i)=> { return<p> {i} 
-               </p>})}</Col>
-            </Row></p>
-            <p><Divider orientation="left">Comments</Divider>
-            <Row className="TaskModalLeft">
-             
-              <Col style={{color:"#666a6e "}} flex="auto">{tasku.comments.map((i)=> { return<p> {i} 
-               </p>}) }</Col>
-            </Row></p></di>
-            
+            </Row>
+          </p>
 
-            }
+          <p>
+            <Divider orientation="left">Description</Divider>
+            <Row className="TaskModalLeft">
+              <Col flex="auto">{tasku.description}</Col>
+            </Row>
+          </p>
+          <p>
+            <Divider orientation="left">Status</Divider>
+            <Row className="TaskModalLeft">
+              <Col flex="auto">{tasku.status}</Col>
+            </Row>
+          </p>
+          <p>
+            <Divider orientation="left">DueDate</Divider>
+            <Row className="TaskModalLeft">
+              <Col flex="auto">{tasku.dueDate}</Col>
+            </Row>
+          </p>
+
+          <p>
+            <Divider orientation="left">Resources</Divider>
+            <Row className="TaskModalLeft">
+              <Col style={{ color: "#666a6e " }} flex="auto">
+                {tasku.resources.map((i) => {
+                  return <p> {i}</p>;
+                })}
+              </Col>
+            </Row>
+          </p>
+          <p>
+            <Divider orientation="left">Comments</Divider>
+            <Row className="TaskModalLeft">
+              <Col style={{ color: "#666a6e " }} flex="auto">
+                {tasku.comments.map((i) => {
+                  return <p> {i}</p>;
+                })}
+              </Col>
+            </Row>
+          </p>
+        </di>
+      }
     </Modal>
   );
 };
@@ -67,7 +85,7 @@ export default function Task({ provided, snapshot, task }) {
     setIsModalVisible(false);
   };
 
-  const handleCancel = () => {
+  const handleCancel = () => {  
     setIsModalVisible(false);
   };
 
@@ -78,35 +96,35 @@ export default function Task({ provided, snapshot, task }) {
   return (
     <div className="site-card-border-less-wrapper">
       <Card
-        title={task.title}
         onDoubleClick={showModal}
-        size="small"
+        size="default"
         bordered={true}
-        headStyle={{
+        
+        bodyStyle={{
           backgroundColor: "dodgerblue",
           fontWeight: "bold",
           color: "white",
-          fontSize: "20px",
+          fontSize: "15px",
         }}
         ref={provided.innerRef}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
         style={{
           userSelect: "none",
-          padding: 10,
+          padding: 3,
           margin: "0 0 2px 0",
           minHeight: "50px",
           fontWeight: "450",
           textAlign: "center",
           fontSize: "15px",
-          borderColor: "0092ff",
+          borderColor: "#07374a",
           textc: "#1890ff",
           backgroundColor: snapshot.isDragging,
           ...provided.draggableProps.style,
         }}
       >
-        <p style={{ color: "#696b6e", marginTop: 20 }}>
-          double click for task info
+        <p style={{ color: "white", marginTop: 20 }}>
+          {task.title}
         </p>
 
         <div style={{ width: 170 }}>
@@ -117,9 +135,7 @@ export default function Task({ provided, snapshot, task }) {
             handleOk={handleOk}
             handleCancel={handleCancel}
             tasku={task}
-          >
-            
-          </TaskModal>
+          ></TaskModal>
         </div>
       </Card>
     </div>
