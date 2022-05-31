@@ -82,9 +82,13 @@ export default function AssignProject({groups}) {
                   rules={[{ required: true, message: "Please pick a Group!" }]}
                 >
                   <Radio.Group style={{ marginBlock: 30 }}>
+                  <Radio.Button   onClick={()=>setGroup1(null)}>No Group</Radio.Button>
                     {groups.map((group) => (
-                      <Radio.Button hoverable={true} key={group.id} onClick={()=>setGroup1(group)}>{"Group: " + group.id}</Radio.Button>
+                      <Radio.Button  key={group.id} onClick={()=>setGroup1(group)}>{"Groups: " + group.id}</Radio.Button>
+                      
                     ))}
+                     
+                  
                   </Radio.Group>
                 </Form.Item>
               </Col>

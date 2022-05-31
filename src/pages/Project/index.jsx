@@ -318,7 +318,7 @@ const [Groupvisible, setGroupVisible] = React.useState(false);
         extra={
           <Space>
             <Button onClick={GrouponClose}>Cancel</Button>
-            <Button onClick={()=>{GrouponClose();console.log(ProjectArr.groupId);ProjectArr.groupId=group1.id;console.log(ProjectArr.groupId);}} type="primary">
+            <Button onClick={()=>{GrouponClose();;ProjectArr.groupId=group1.id;}} type="primary">
               Assign
             </Button>
           </Space>
@@ -337,8 +337,9 @@ const [Groupvisible, setGroupVisible] = React.useState(false);
                   rules={[{ required: true, message: "Please pick a Group!" }]}
                 >
                   <Radio.Group style={{ marginBlock: 30 }}>
+                  <Radio.Button  style={{color:"black"}} onClick={()=>setGroup1({})}>No Group</Radio.Button>
                     {GroupsArr.map((group) => (
-                      <Radio.Button hoverable={true} key={group.id} onClick={()=>setGroup1(group)}>{"Group: " + group.id}</Radio.Button>
+                      <Radio.Button value={"0"} hoverable={false} key={group.id} onClick={()=>setGroup1(group)}>{"Group: " + group.id}</Radio.Button>
                     ))}
                   </Radio.Group>
                 </Form.Item>
