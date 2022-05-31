@@ -9,6 +9,8 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Task from "./Task";
 //import { updateProject } from "../../firestore/projects";
 import { v4 as uuidv4 } from "uuid";
+import { Divider } from "antd";
+import Bar from "./Bar";
 uuidv4(); //
 
 // const items = [
@@ -95,7 +97,10 @@ uuidv4(); //
 
 //!Tasklist
 // function TaskList(tasks, projectId, getNewData)
+
 export default function TaskList({ tasks }) {
+
+ 
   const [columns, setColumns] = useState([
     {
       id: uuidv4(),
@@ -123,7 +128,20 @@ export default function TaskList({ tasks }) {
     },
   ]);
 
-
+  function ProjectProgress(){
+    let DONE=0;
+     let Total=0
+     tasks.forEach(task=> {
+   if(task.status === "done" || task.status === "delayed"){
+     DONE+=1;
+     Total+=1;
+   }
+   else{
+     Total+=1
+   }
+    });
+    return (DONE/Total);
+   }
 
   useEffect(() => {
     const getData = () => {
@@ -194,9 +212,20 @@ export default function TaskList({ tasks }) {
       );
     }
   };
+  let PT=Math.floor(ProjectProgress()*100);
+  console.log(PT);
 
   //!return
   return (
+    <>  
+    <Bar p={PT} />
+
+    <Divider orientation="center"></Divider>
+
+    <h1 style={{ textAlign: "center", fontWeight: "bold", marginTop: 75 }}>
+      Tasks Lists
+    </h1>
+    <br />
     <div style={{ justifyContent: "center" }}>
       <div
         style={{ display: "flex", justifyContent: "center", height: "100%" }}
@@ -267,6 +296,7 @@ export default function TaskList({ tasks }) {
         </DragDropContext>
       </div>
     </div>
+    </>
   );
 }
 

@@ -9,7 +9,8 @@ const { Panel } = Collapse;
 export default function GroupCollapse({ items, icon }) {
   let HEAD="Group:\t"+items.id;
   return (
-    <Collapse defaultActiveKey={["0"]} style={{ width: 500 }} >
+    
+    <Collapse defaultActiveKey={["1"]} style={{ width: 837 }} >
       <Panel header={HEAD} key="1">
         
           <List
