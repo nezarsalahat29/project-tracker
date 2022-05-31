@@ -38,7 +38,7 @@ import ProjectInfo from "../../components/Project/ProjectInfo";
 //let projectato= await Promise.getProject(projectid);
 export let ProjectArr  = {
   id:"1",
-  groupId:null,
+  groupId:"1",
   createdAt:" March 15, 2022, 3:09 pm",
   dueDate:" March 31, 2022, 11:59 pm",
   deliverables:[{
@@ -248,25 +248,10 @@ export default function Project() {
   //   };
 
   //   getData();
-  // },[]);
+  // },[]);s
 
 // const [Progress,setProgress]=useState();
-function ProjectProgress(){
- let DONE=0;
-  let Total=0
-  ProjectArr.tasks.forEach(task=> {
-if(task.status === "done" || task.status === "delayed"){
-  DONE+=1;
-  Total+=1;
-}
-else{
-  Total+=1
-}
- });
 
- return (DONE/Total);
-}
-let TP=ProjectProgress()*100;
 const [Groupvisible, setGroupVisible] = React.useState(false);
 
   const [group1, setGroup1] = useState({});
@@ -282,10 +267,13 @@ const [Groupvisible, setGroupVisible] = React.useState(false);
     <>
     
      
-    
+    <div>
+        <h1>{ProjectArr.title}</h1>
+        <br />
+      </div>
        
-      <ProjectInfo  _Project={ProjectArr} groups={GroupsArr} />
-      <>
+      
+      <div style={{marginRight:137}}>
    
       <div style={{ textAlign: "right" }}>
         <Button
@@ -349,16 +337,8 @@ const [Groupvisible, setGroupVisible] = React.useState(false);
          <GroupCollapse items={group1} icon= {<TeamOutlined/>} /> 
         </Form>
       </Drawer>
-    </>
-      <Bar p={TP} />
-
-      <Divider orientation="center"></Divider>
-
-      <h1 style={{ textAlign: "center", fontWeight: "bold", marginTop: 75 }}>
-        Tasks Lists
-      </h1>
-      <br />
-
+    </div>
+    <ProjectInfo  _Project={ProjectArr} groups={GroupsArr} />
       <TasksLists tasks= {ProjectArr.tasks}/>
        
 

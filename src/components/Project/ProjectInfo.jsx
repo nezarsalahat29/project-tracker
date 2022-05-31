@@ -25,25 +25,20 @@ const ProjectInfo = ({_Project,groups}) => {
 groups.forEach(g => { if(g.id === _Project.groupId){group=g}});
   return (
     <div>
-      <div>
-        <h1>{_Project.title}</h1>
-        <br />
-      </div>
-
       <Row
         gutter={8}
         style={{
           marginTop: "50px",
         }}
       >
-        <Col span={12} style={{ padding: "50px" }}>
+        <Col span={12} style={{ padding: "50px" ,paddingTop:"0"}}>
           <h1>Project ID: {_Project.id}</h1>
           <h3 className="Description">From:{_Project.createdAt}</h3>
           <h3 className="Description">To:{_Project.dueDate}</h3>
           <div className="Description">{_Project.description}</div>
         </Col>
 
-        <Col span={12} style={{ padding: "50px", marginTop: "85px" }}>
+        <Col span={11} style={{ padding: "50px",paddingTop:"0" }}>
          
          { _Project.groupId ? <GroupCollapse items={group} icon={<TeamOutlined />} />:
          
