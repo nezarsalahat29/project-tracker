@@ -1,11 +1,11 @@
 import React from "react";
 
-import { Button } from "antd";
+import { Button,Modal } from "antd";
 
 import {
   AppstoreAddOutlined,
-  UsergroupAddOutlined,
-  FileTextOutlined,
+  MinusCircleOutlined,
+  PlusOutlined
 } from "@ant-design/icons";
 
 import { Row, Col } from "antd";
@@ -21,6 +21,16 @@ export default function AddNewTask() {
   const TaskonClose = () => {
     setTaskVisible(false);
   };
+  const [newTask,setNewTask]=React.useState({});
+  const oKhandle=()=>{
+    setNewTask({
+      title:"",
+      dueDate:"",
+      description:"",
+      resources:""
+
+    })
+  }
   return (
     <>
       <div style={{ textAlign: "right" }}>
@@ -45,11 +55,12 @@ export default function AddNewTask() {
       </div>
       <Row justify="end">
         <Col span={4}>
-          <Drawer
-            title="Add New Task"
+          
+            <Modal  title="Add New Task"
             width={720}
-            onClose={TaskonClose}
+            onCancel={TaskonClose}
             visible={Taskvisible}
+            onOK={oKhandle}
             bodyStyle={{ paddingBottom: 80 }}
             extra={
               <Space>
@@ -58,13 +69,12 @@ export default function AddNewTask() {
                   Submit
                 </Button>
               </Space>
-            }
-          >
-            <Form layout="vertical" hideRequiredMark>
+            }>
+            <Form layout="vertical" hideRequiredMark onFinish={(values)=>{console.log(values.title)}}>
               <Row gutter={16}>
                 <Col span={12}>
                   <Form.Item
-                    name="Task Title"
+                    name="title"
                     label="Task Title: "
                     rules={[
                       { required: true, message: "Please Enter Task Title: " },
@@ -74,49 +84,17 @@ export default function AddNewTask() {
                   </Form.Item>
                 </Col>
               </Row>
+              
               <Row gutter={16}>
                 <Col span={12}>
                   <Form.Item
-                    name="Project Name"
-                    label="Project Name: "
+                    name="dueDate"
+                    label="Due Date"
                     rules={[
-                      {
-                        required: true,
-                        message: "Please Select Project Name: ",
-                      },
+                      { required: true, message: "Please choose the DueDate" },
                     ]}
                   >
-                    <Select placeholder=" Project Name:">
-                      <option value="xiao">Project 1 </option>
-                      <option value="mao">Project 2</option>
-                    </Select>
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    name="Project Leader"
-                    label="Project Leader: "
-                    rules={[
-                      { required: true, message: "Select Project Leader" },
-                    ]}
-                  >
-                    <Input placeholder="Please Enter Project Leader Name" />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    name="DateTime"
-                    label="DateTime"
-                    rules={[
-                      { required: true, message: "Please choose the DateTime" },
-                    ]}
-                  >
-                    <DatePicker.RangePicker
+                    <DatePicker
                       style={{ width: "120%" }}
                       getPopupContainer={(trigger) => trigger.parentElement}
                     />
@@ -139,10 +117,50 @@ export default function AddNewTask() {
                   </Form.Item>
                 </Col>
               </Row>
+              <Row gutter={16}>
+                <Col span={24}>
+
+
+
+                <Form.List name="resources">
+        {(fields, { add, remove }) => (
+          <>
+            {fields.map(({ key, name, ...restField }) => (
+              <Space
+                key={key}
+                style={{
+                  display: 'flex',
+                  marginBottom: 8,
+                }}
+                align="baseline"
+              >
+                <Form.Item
+                  {...restField}
+                  name={[name, 'first']}
+                  
+                >
+                  <Input placeholder="Please Enter URL" />
+                </Form.Item>
+               
+                <MinusCircleOutlined onClick={() => remove(name)} />
+              </Space>
+            ))}
+            <Form.Item>
+              <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                Add Resources
+              </Button>
+            </Form.Item>
+          </>
+        )}
+      </Form.List>
+                </Col>
+              </Row>
             </Form>
-          </Drawer>
+            </Modal>
+          
         </Col>
       </Row>
+    
     </>
   );
 }

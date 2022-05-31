@@ -112,7 +112,7 @@ export default function TaskList({ tasks }) {
       id: uuidv4(),
       name: "doing",
       tasks: [],
-      icon: <CheckCircleTwoTone twoToneColor="#52c41a" style={{ marginLeft:"8px"}}/>,
+      icon: <SyncOutlined spin style={{ color: "dodgerblue",marginLeft:"8px"}} twoToneColor="#52c41a" />,
     },
     {
       id: uuidv4(),
