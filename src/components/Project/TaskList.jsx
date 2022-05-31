@@ -106,25 +106,25 @@ export default function TaskList({ tasks }) {
       id: uuidv4(),
       name: "todo",
       tasks: [],
-      icon: <ClockCircleOutlined style={{ color: "dodgerblue" }}/>
+      icon: <ClockCircleOutlined style={{ color: "dodgerblue" ,marginLeft:"8px"}}/>
     },
     {
       id: uuidv4(),
       name: "doing",
       tasks: [],
-      icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
+      icon: <CheckCircleTwoTone twoToneColor="#52c41a" style={{ marginLeft:"8px"}}/>,
     },
     {
       id: uuidv4(),
       name: "done",
       tasks: [],
-      icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
+      icon: <CheckCircleTwoTone twoToneColor="#52c41a"style={{ marginLeft:"8px"}} />,
     },
     {
       id: uuidv4(),
       name: "delayed",
       tasks: [],
-      icon: <FieldTimeOutlined style={{ color: "red" }} />,
+      icon: <FieldTimeOutlined style={{ color: "red", marginLeft:"8px" }} />,
     },
   ]);
 

@@ -6,11 +6,11 @@ import { List } from "antd";
 
 const { Panel } = Collapse;
 
-export default function GroupCollapse({ items, icon }) {
+export default function GroupCollapse({ items, icon ,w}) {
   let HEAD="Group:\t"+items.id;
   return (
     
-    <Collapse defaultActiveKey={["1"]} style={{ width: 837 }} >
+    <Collapse defaultActiveKey={["1"]} style={{ width:w }} >
       <Panel header={HEAD} key="1">
         
           <List

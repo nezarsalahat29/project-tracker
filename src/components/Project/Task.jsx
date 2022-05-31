@@ -53,7 +53,7 @@ const TaskModal = ({
             <Row className="TaskModalLeft">
               <Col style={{ color: "#666a6e " }} flex="auto">
                 {tasku.resources.map((i) => {
-                  return <p> {i}</p>;
+                  return <p><a href={i}> {i}</a></p>;
                 })}
               </Col>
             </Row>

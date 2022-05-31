@@ -38,9 +38,9 @@ groups.forEach(g => { if(g.id === _Project.groupId){group=g}});
           <div className="Description">{_Project.description}</div>
         </Col>
 
-        <Col span={11} style={{ padding: "50px",paddingTop:"0" }}>
+        <Col span={12} style={{ padding: "50px",paddingTop:"0" }}>
          
-         { _Project.groupId ? <GroupCollapse items={group} icon={<TeamOutlined />} />:
+         { _Project.groupId ? <GroupCollapse items={group} icon={<TeamOutlined /> } w={837 } />:
          
           <Alert
             message="Warning"
