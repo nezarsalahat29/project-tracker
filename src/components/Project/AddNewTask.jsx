@@ -1,16 +1,30 @@
 import React from "react";
 
-import { Button,Modal } from "antd";
+import { Button,Drawer,Modal } from "antd";
 
 import {
   AppstoreAddOutlined,
-  MinusCircleOutlined,
-  PlusOutlined
+
 } from "@ant-design/icons";
 
 import { Row, Col } from "antd";
 
-import { Drawer, Form, Input, Select, DatePicker, Space } from "antd";
+import {  Form, Input,  DatePicker, Space } from "antd";
+const layout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
+const tailLayout = {
+  wrapperCol: {
+    offset: 8,
+    span: 16,
+  },
+};
+
 
 export default function AddNewTask() {
   const [Taskvisible, setTaskVisible] = React.useState(false);
@@ -21,16 +35,16 @@ export default function AddNewTask() {
   const TaskonClose = () => {
     setTaskVisible(false);
   };
-  const [newTask,setNewTask]=React.useState({});
-  const oKhandle=()=>{
-    setNewTask({
-      title:"",
-      dueDate:"",
-      description:"",
-      resources:""
+  const [newTask,setNewTask]=React.useState({ title:"",
+  dueDate:"",
+  description:"",
+  resources:[]});
 
-    })
-  }
+  const [form] = Form.useForm();
+  
+  const onReset = () => {
+    form.resetFields();
+  };
   return (
     <>
       <div style={{ textAlign: "right" }}>
@@ -56,21 +70,17 @@ export default function AddNewTask() {
       <Row justify="end">
         <Col span={4}>
           
-            <Modal  title="Add New Task"
+            <Drawer  title="Add New Task"
             width={720}
-            onCancel={TaskonClose}
+            
             visible={Taskvisible}
-            onOK={oKhandle}
             bodyStyle={{ paddingBottom: 80 }}
             extra={
               <Space>
                 <Button onClick={TaskonClose}>Cancel</Button>
-                <Button onClick={TaskonClose} type="primary">
-                  Submit
-                </Button>
               </Space>
             }>
-            <Form layout="vertical" hideRequiredMark onFinish={(values)=>{console.log(values.title)}}>
+            <Form {...layout} form={form} name="control-hooks" onFinish={(values)=>{setNewTask(...newTask,values.title,values.dueDate,values.description,values.resources1);console.log(newTask)}}>
               <Row gutter={16}>
                 <Col span={12}>
                   <Form.Item
@@ -93,6 +103,7 @@ export default function AddNewTask() {
                     rules={[
                       { required: true, message: "Please choose the DueDate" },
                     ]}
+                    style={{marginTop:"40px"}}
                   >
                     <DatePicker
                       style={{ width: "120%" }}
@@ -103,7 +114,7 @@ export default function AddNewTask() {
               </Row>
               <Row gutter={16}>
                 <Col span={24}>
-                  <Form.Item
+                  <Form.Item 
                     name="description"
                     label="Task Description: "
                     rules={[
@@ -112,6 +123,7 @@ export default function AddNewTask() {
                         message: "Please Enter Task Description",
                       },
                     ]}
+                    style={{marginTop:"40px"}}
                   >
                     <Input.TextArea rows={4} placeholder="Task Description" />
                   </Form.Item>
@@ -119,44 +131,31 @@ export default function AddNewTask() {
               </Row>
               <Row gutter={16}>
                 <Col span={24}>
-
-
-
-                <Form.List name="resources">
-        {(fields, { add, remove }) => (
-          <>
-            {fields.map(({ key, name, ...restField }) => (
-              <Space
-                key={key}
-                style={{
-                  display: 'flex',
-                  marginBottom: 8,
-                }}
-                align="baseline"
-              >
-                <Form.Item
-                  {...restField}
-                  name={[name, 'first']}
+                  <Form.Item
+                    name="resources1"
+                    label="Resources "
+                    style={{marginTop:"40px"}}
+                    
+                  >
+                    <Input rows={4} placeholder="Please Enter URL" />
+                  </Form.Item>
                   
-                >
-                  <Input placeholder="Please Enter URL" />
-                </Form.Item>
-               
-                <MinusCircleOutlined onClick={() => remove(name)} />
-              </Space>
-            ))}
-            <Form.Item>
-              <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                Add Resources
-              </Button>
-            </Form.Item>
-          </>
-        )}
-      </Form.List>
                 </Col>
               </Row>
+  
+
+              <Form.Item style={{marginTop:"40px"}} {...tailLayout} >
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+        <Button htmlType="button" onClick={onReset}>
+          Reset
+        </Button>
+       
+      </Form.Item>
+                
             </Form>
-            </Modal>
+            </Drawer>
           
         </Col>
       </Row>

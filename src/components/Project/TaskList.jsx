@@ -11,6 +11,16 @@ import Task from "./Task";
 import { v4 as uuidv4 } from "uuid";
 import { Divider } from "antd";
 import Bar from "./Bar";
+import { Button,Drawer,Modal } from "antd";
+
+import {
+  AppstoreAddOutlined,
+
+} from "@ant-design/icons";
+
+import { Row, Col } from "antd";
+
+import {  Form, Input,  DatePicker, Space } from "antd";
 uuidv4(); //
 
 // const items = [
@@ -158,6 +168,7 @@ export default function TaskList({ tasks }) {
     getData();
    
   }, [tasks]);
+  
   const onDragEnd = (result) => {
     console.log(result);
     if (!result.destination) return;
@@ -214,10 +225,155 @@ export default function TaskList({ tasks }) {
   };
   let PT=Math.floor(ProjectProgress()*100);
   console.log(PT);
+//ADDTASK
+const layout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
+const tailLayout = {
+  wrapperCol: {
+    offset: 8,
+    span: 16,
+  },
+};
 
+
+
+  const [Taskvisible, setTaskVisible] = React.useState(false);
+  const showTaskDrawer = () => {
+    setTaskVisible(true);
+  };
+
+  const TaskonClose = () => {
+    setTaskVisible(false);
+  };
+  function SETNEWTODO(){
+
+    tasks.push(newTask);
+    TaskonClose();
+    
+    
+  
+}
+  const [newTask,setNewTask]=React.useState({
+    title:"",
+    dueDate:"",
+    description:"",
+    resources:"",
+    status:"todo"
+
+  });
+  const oKhandle=()=>{
+    setNewTask({
+      title:"",
+      dueDate:"",
+      description:"",
+      resources:""
+
+    })
+  }
+  const [form] = Form.useForm();
+  
+  const onReset = () => {
+    form.resetFields();
+
+  };
+
+  
   //!return
   return (
-    <>  
+    <> 
+                <Drawer  title="Add New Task"
+            width={720}
+            
+            visible={Taskvisible}
+            bodyStyle={{ paddingBottom: 80 }}
+            extra={
+              <Space>
+                <Button onClick={TaskonClose}>Cancel</Button>
+              </Space>
+            }
+            onClose={TaskonClose}>
+            <Form {...layout} form={form} name="control-hooks" onFinish={(values)=>{setNewTask({...newTask,title: values.title,duDate:values.dueDate,description:values.description,resources:values.resources1});SETNEWTODO();console.log(tasks)}}>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item
+                    name="title"
+                    label="Task Title: "
+                    rules={[
+                      { required: true, message: "Please Enter Task Title: " },
+                    ]}
+                  >
+                    <Input placeholder="Please Enter Task Title" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item
+                    name="dueDate"
+                    label="Due Date"
+                    rules={[
+                      { required: true, message: "Please choose the DueDate" },
+                    ]}
+                    style={{marginTop:"40px"}}
+                  >
+                    <DatePicker
+                      style={{ width: "120%" }}
+                      getPopupContainer={(trigger) => trigger.parentElement}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item 
+                    name="description"
+                    label="Task Description: "
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please Enter Task Description",
+                      },
+                    ]}
+                    style={{marginTop:"40px"}}
+                  >
+                    <Input.TextArea rows={4} placeholder="Task Description" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item
+                    name="resources1"
+                    label="Resources "
+                    style={{marginTop:"40px"}}
+                    
+                  >
+                    <Input rows={4} placeholder="Please Enter URL" />
+                  </Form.Item>
+                  
+                </Col>
+              </Row>
+  
+
+              <Form.Item style={{marginTop:"40px"}} {...tailLayout} >
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+        <Button htmlType="button" onClick={onReset}>
+          Reset
+        </Button>
+       
+      </Form.Item>
+                
+            </Form>
+            </Drawer> 
     <Bar p={PT} />
 
     <Divider orientation="center"></Divider>
@@ -296,6 +452,36 @@ export default function TaskList({ tasks }) {
         </DragDropContext>
       </div>
     </div>
+    <>
+      <div style={{ textAlign: "right" }}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={showTaskDrawer}
+          style={{
+            backgroundColor: "0092ff",
+            borderColor: "#0092ff",
+            borderRadius: "500",
+            marginRight: 46,
+          }}
+          icon={
+            <AppstoreAddOutlined
+              style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
+            />
+          }
+        >
+          Add New Task
+        </Button>
+      </div>
+      <Row justify="end">
+        <Col span={4}>
+          
+
+          
+        </Col>
+      </Row>
+    
+    </>
     </>
   );
 }
