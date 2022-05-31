@@ -20,7 +20,7 @@ const { Panel } = Collapse;
 
 export default function DeliCollapse({ items, icon, head }) {
   return (
-    <Collapse defaultActiveKey={["1"]} style={{ width: 837 }} >
+    <Collapse defaultActiveKey={["1"]} style={{ width: 750 }} >
       <Panel header={head} key="1">
         
           <List

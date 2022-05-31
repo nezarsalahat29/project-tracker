@@ -1,7 +1,23 @@
 import React, { useState } from "react";
 import { Card, Modal, Progress } from "antd";
 import { Row, Col, Divider } from "antd";
-import { list } from "antd";
+import { Form, Input, Button, Select } from 'antd';
+const { Option } = Select;
+const layout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
+const tailLayout = {
+  wrapperCol: {
+    offset: 8,
+    span: 16,
+  },
+};
+
 
 const TaskModal = ({
   isModalVisible,
@@ -11,6 +27,14 @@ const TaskModal = ({
   title,
   Content,
 }) => {
+  
+  
+  const [form] = Form.useForm();
+  
+  const onReset = () => {
+    form.resetFields();
+  };
+  const [Comments, setComments] = React.useState(tasku.comments)
   return (
     <Modal
       width={700}
@@ -62,9 +86,34 @@ const TaskModal = ({
             <Divider orientation="left">Comments</Divider>
             <Row className="TaskModalLeft">
               <Col style={{ color: "#666a6e " }} flex="auto">
-                {tasku.comments.map((i) => {
+                
+                 <Form {...layout} form={form} name="control-hooks" onFinish={(values)=>{setComments([...Comments,values.note])}}>
+    {Comments.map((i) => {
                   return <p> {i}</p>;
                 })}
+      <Form.Item
+        name="note"
+        label="Comment"
+        style={{width:"80%"}}
+        rules={[
+          {
+            required: false,
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item> 
+     
+      <Form.Item {...tailLayout}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+        <Button htmlType="button" onClick={onReset}>
+          Reset
+        </Button>
+       
+      </Form.Item>
+    </Form>
               </Col>
             </Row>
           </p>

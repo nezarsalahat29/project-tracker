@@ -10,7 +10,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
-
+import Navbar from "../Navbar";
 import { UsergroupAddOutlined } from "@ant-design/icons";
 //import { getGroupsFromDb } from "../../firestore/groups";
 //import { updateProject,getProject } from "../../firestore/projects";
@@ -22,7 +22,7 @@ import GroupCollapse from "../../components/Project/GroupCollapse";
 import { TeamOutlined } from "@ant-design/icons";
 import "./index.css";
 import TasksLists from "../../components/Project/TaskList";
-import { Divider } from "antd";
+import { Layout,Avatar } from "antd";
 //import { getProject } from '../../firestore/projects';
 import AddNewTask from "../../components/Project/AddNewTask";
 import Bar from "../../components/Project/Bar";
@@ -266,7 +266,7 @@ export default function Project() {
   // },[]);s
 
   // const [Progress,setProgress]=useState();
-
+  const { Header } = Layout;
   const [Groupvisible, setGroupVisible] = React.useState(false);
 
   const [group1, setGroup1] = useState({});
@@ -280,6 +280,36 @@ export default function Project() {
   };
   return (
     <>
+       <Header
+          
+          style={{
+            position:"relative",
+            left:"44px",  
+            display: 'flex',
+            
+            justifyContent: 'space-between',
+            alignItems: 'right',
+            borderBottom: '1px solid rgba(240, 240, 240)',
+            width:"100%"
+          }}
+        >
+          <Avatar
+            style={{
+              backgroundColor: '#1890ff',
+              verticalAlign: 'middle',
+            }}
+            size='large'
+            gap={3}
+          >
+            {"Team 2"}
+          </Avatar>
+          <Button type='primary' >
+            Sign Out
+          </Button>
+        </Header>
+
+        
+       
       <div>
         <p>
                 <h1 style={{margin:"85px" ,marginBottom:"0",fontSize:70}}>{ProjectArr.title}</h1>
@@ -376,9 +406,11 @@ export default function Project() {
         </Drawer>
       </div>
       <ProjectInfo _Project={ProjectArr} groups={GroupsArr} />
+      
       <TasksLists tasks={ProjectArr.tasks} />
 
       <AddNewTask />
+     
     </>
   );
 }

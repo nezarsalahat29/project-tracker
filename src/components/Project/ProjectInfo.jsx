@@ -40,7 +40,7 @@ groups.forEach(g => { if(g.id === _Project.groupId){group=g}});
 
         <Col span={12} style={{ padding: "50px",paddingTop:"0" }}>
          
-         { _Project.groupId ? <GroupCollapse items={group} icon={<TeamOutlined /> } w={837 } />:
+         { _Project.groupId ? <GroupCollapse items={group} icon={<TeamOutlined /> } w={750 } />:
          
           <Alert
             message="Warning"
